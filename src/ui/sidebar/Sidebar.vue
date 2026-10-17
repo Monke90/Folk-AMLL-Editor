@@ -132,6 +132,11 @@ function handleResizeStart(e: MouseEvent) {
     }
     .p-tab {
       padding: 0;
+      // Tabs are <button>s, which don't inherit the page font by themselves. Without this the
+      // labels fall back to the browser's default button font once two tabs are open.
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
       animation: sidebar-tab-in 0.25s var(--global-ease);
       border: none;
       border-top: solid var(--p-tabs-active-bar-height) transparent;
