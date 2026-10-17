@@ -434,8 +434,9 @@ onUnmounted(() => {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 8px;
-  margin-left: -4px;
+  // Wide grab area, centred on the boundary
+  width: 20px;
+  margin-left: -10px;
   pointer-events: auto;
   cursor: ew-resize;
   z-index: 3;
@@ -445,15 +446,22 @@ onUnmounted(() => {
     left: 50%;
     top: 0;
     bottom: 0;
-    width: 1px;
+    // Always visible, so boundaries can be found without hovering first
+    width: 6px;
     transform: translateX(-50%);
-    background-color: color-mix(in srgb, var(--p-primary-color), transparent 20%);
-    opacity: 0;
-    transition: opacity 0.1s;
+    background-color: color-mix(in srgb, var(--p-primary-color), transparent 10%);
+    // Dark edge plus a faint light halo keep the line readable on both dark and bright parts
+    box-shadow:
+      0 0 0 1px rgb(0 0 0 / 0.5),
+      0 0 4px 1px rgb(255 255 255 / 0.25);
+    transition:
+      width 0.1s,
+      background-color 0.1s;
   }
   &:hover::after,
   &.dragging::after {
-    opacity: 1;
+    width: 9px;
+    background-color: var(--p-primary-color);
   }
   &.dragging {
     z-index: 4;
