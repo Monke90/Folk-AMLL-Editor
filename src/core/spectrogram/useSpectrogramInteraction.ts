@@ -2,14 +2,13 @@ import { useResizeObserver } from '@vueuse/core'
 import { type Ref, onUnmounted, ref, watch } from 'vue'
 
 import type { SpectrogramContext } from './SpectrogramContext'
+import { DEFAULT_ZOOM, MAX_ZOOM, MIN_ZOOM, isViewportDragging } from './viewport'
 
 interface UseSpectrogramInteractionOptions {
   ctx: SpectrogramContext
   containerEl: Ref<HTMLElement | null>
 }
 
-const MIN_ZOOM = 10
-const MAX_ZOOM = 1000
 const ZOOM_SENSITIVITY = 1.15
 const SMOOTHING_FACTOR = 0.27
 
@@ -17,10 +16,14 @@ export function useSpectrogramInteraction({ ctx, containerEl }: UseSpectrogramIn
   const { scrollLeft, zoom, containerWidth, totalContentWidth, duration } = ctx
 
   const targetScrollLeft = ref(0)
-  const targetZoom = ref(100)
+  const targetZoom = ref(DEFAULT_ZOOM)
 
   let scrollAnimId = 0
   let zoomAnimId = 0
+  // The view region on the waveform can change zoom/scroll behind our back. Targets are
+  // only trustworthy while an animation runs, so they are re-synced on the next wheel
+  // event once it has stopped. Otherwise the view would jump back to a stale target.
+  let animating = false
 
   let zoomAnchorTime = 0
   let zoomAnchorMouseX = 0
@@ -35,10 +38,16 @@ export function useSpectrogramInteraction({ ctx, containerEl }: UseSpectrogramIn
     cancelAnimationFrame(scrollAnimId)
     cancelAnimationFrame(zoomAnimId)
 
+    animating = true
     const step = () => {
+      if (isViewportDragging.value) {
+        animating = false
+        return
+      }
       const diff = targetScrollLeft.value - scrollLeft.value
       if (Math.abs(diff) < 0.5) {
         scrollLeft.value = targetScrollLeft.value
+        animating = false
         return
       }
       scrollLeft.value += diff * SMOOTHING_FACTOR
@@ -51,7 +60,12 @@ export function useSpectrogramInteraction({ ctx, containerEl }: UseSpectrogramIn
     cancelAnimationFrame(zoomAnimId)
     cancelAnimationFrame(scrollAnimId)
 
+    animating = true
     const step = () => {
+      if (isViewportDragging.value) {
+        animating = false
+        return
+      }
       const diff = targetZoom.value - zoom.value
 
       if (Math.abs(diff) < 0.1) {
@@ -59,6 +73,7 @@ export function useSpectrogramInteraction({ ctx, containerEl }: UseSpectrogramIn
         const finalScroll = zoomAnchorTime * zoom.value - zoomAnchorMouseX
         scrollLeft.value = Math.max(0, finalScroll)
         targetScrollLeft.value = scrollLeft.value
+        animating = false
         return
       }
 
@@ -77,6 +92,10 @@ export function useSpectrogramInteraction({ ctx, containerEl }: UseSpectrogramIn
   }
 
   const handleWheel = (e: WheelEvent) => {
+    if (!animating) {
+      targetZoom.value = zoom.value
+      targetScrollLeft.value = scrollLeft.value
+    }
     if (e.ctrlKey) {
       if (!containerEl.value) return
       const rect = containerEl.value.getBoundingClientRect()
@@ -134,15 +153,17 @@ export function useSpectrogramInteraction({ ctx, containerEl }: UseSpectrogramIn
   onUnmounted(() => {
     cancelAnimationFrame(scrollAnimId)
     cancelAnimationFrame(zoomAnimId)
+    animating = false
   })
 
   watch(duration, () => {
     scrollLeft.value = 0
     targetScrollLeft.value = 0
-    zoom.value = 100
-    targetZoom.value = 100
+    zoom.value = DEFAULT_ZOOM
+    targetZoom.value = DEFAULT_ZOOM
     cancelAnimationFrame(scrollAnimId)
     cancelAnimationFrame(zoomAnimId)
+    animating = false
   })
 
   return {
