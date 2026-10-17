@@ -435,8 +435,8 @@ onUnmounted(() => {
   top: 0;
   bottom: 0;
   // Wide grab area, centred on the boundary
-  width: 14px;
-  margin-left: -7px;
+  width: 20px;
+  margin-left: -10px;
   pointer-events: auto;
   cursor: ew-resize;
   z-index: 3;
@@ -447,18 +447,20 @@ onUnmounted(() => {
     top: 0;
     bottom: 0;
     // Always visible, so boundaries can be found without hovering first
-    width: 3px;
+    width: 6px;
     transform: translateX(-50%);
-    background-color: color-mix(in srgb, var(--p-primary-color), transparent 35%);
-    // Thin dark edge keeps the line readable on bright parts of the spectrogram
-    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.35);
+    background-color: color-mix(in srgb, var(--p-primary-color), transparent 10%);
+    // Dark edge plus a faint light halo keep the line readable on both dark and bright parts
+    box-shadow:
+      0 0 0 1px rgb(0 0 0 / 0.5),
+      0 0 4px 1px rgb(255 255 255 / 0.25);
     transition:
       width 0.1s,
       background-color 0.1s;
   }
   &:hover::after,
   &.dragging::after {
-    width: 5px;
+    width: 9px;
     background-color: var(--p-primary-color);
   }
   &.dragging {
