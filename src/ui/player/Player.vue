@@ -28,7 +28,7 @@
           ref="playPauseButton"
         />
         <ProgressTime />
-        <Waveform />
+        <Waveform :show-view-region="showSpectrogram" />
         <Button
           icon="mdi mdi-chart-box-outline"
           :severity="showSpectrogram ? 'primary' : 'secondary'"

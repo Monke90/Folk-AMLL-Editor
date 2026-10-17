@@ -81,11 +81,11 @@ import { computed, ref, watch } from 'vue'
 
 import { audioEngine } from '@core/audio/index.ts'
 import { useSpectrogramProvider } from '@core/spectrogram/SpectrogramContext'
-import { spectrogramZoomRequest } from '@core/spectrogram/zoomRequest'
 import { parseSpectrogramColor } from '@core/spectrogram/colors'
 import { useSpectrogramInteraction } from '@core/spectrogram/useSpectrogramInteraction'
 import { useSpectrogramResize } from '@core/spectrogram/useSpectrogramResize'
 import { useSpectrogramTiles } from '@core/spectrogram/useSpectrogramTiles'
+import { spectrogramViewport } from '@core/spectrogram/viewport'
 
 import { usePrefStore } from '@states/stores'
 
@@ -105,8 +105,12 @@ const { width: containerWidth } = useElementSize(containerEl)
 const { audioBufferComputed } = audioEngine
 
 const gainModel = ref(3)
-const zoomModel = ref(100)
-const scrollLeftModel = ref(0)
+// zoom / scroll / width live in a shared module so the waveform's view region can read and drive them
+const {
+  zoom: zoomModel,
+  scrollLeft: scrollLeftModel,
+  containerWidth: containerWidthModel,
+} = spectrogramViewport
 const paletteIdModel = computed(() => {
   if (typeof prefStore.spectrogramColor === 'string') return prefStore.spectrogramColor
   return nanoid()
@@ -121,6 +125,7 @@ const ctx = useSpectrogramProvider({
   scrollLeftModel,
   paletteIdModel,
   paletteModel,
+  containerWidthModel,
 })
 
 // 初始化交互相关
@@ -160,18 +165,6 @@ const { visibleTiles } = useSpectrogramTiles({
   ctx,
   audioBuffer: audioBufferComputed,
 })
-
-// 响应来自 Waveform.vue 高亮区间拖动的缩放请求
-watch(
-  spectrogramZoomRequest,
-  (req) => {
-    if (!req || containerWidth.value <= 0) return
-    const rangeSec = Math.max(0.05, (req.endMs - req.startMs) / 1000)
-    ctx.zoom.value = containerWidth.value / rangeSec
-    ctx.scrollLeft.value = (req.startMs / 1000) * ctx.zoom.value
-  },
-  { immediate: true },
-)
 
 // 无音频时点击「显示音节块」按钮，闪红提示而不是切换
 const noAudioFlash = ref(false)

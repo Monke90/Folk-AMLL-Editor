@@ -97,6 +97,8 @@ interface SpectrogramProviderOptions {
   scrollLeftModel: Ref<number>
   paletteIdModel: Ref<string>
   paletteModel: Ref<Uint8Array>
+  /** Optional external ref for the container width, so other components can read it */
+  containerWidthModel?: Ref<number>
 }
 
 export function useSpectrogramProvider({
@@ -106,15 +108,18 @@ export function useSpectrogramProvider({
   scrollLeftModel,
   paletteIdModel,
   paletteModel,
+  containerWidthModel,
 }: SpectrogramProviderOptions) {
-  const containerWidth = ref(0)
+  const containerWidth = containerWidthModel ?? ref(0)
 
   const mouseX = ref(0)
   const isHovering = ref(false)
 
   const gain = gainModel
   const zoom = zoomModel
-  const scrollLeft = scrollLeftModel.value ? scrollLeftModel : ref(0)
+  // Always use the model. The old `model.value ? model : ref(0)` silently swapped in a
+  // detached ref whenever the initial scroll was 0, so the model never saw updates.
+  const scrollLeft = scrollLeftModel
   const paletteId = paletteIdModel?.value ? paletteIdModel : ref('icyBlue')
   const palette = paletteModel?.value ? paletteModel : ref(generatePalette(getIcyBlueColor))
   const displayHeight = ref(240)
