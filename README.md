@@ -41,20 +41,17 @@ Known limitations of this workaround:
 - The Service Worker only takes effect after this reload
 - Compatibility checks are delayed by ~3 seconds to allow the Service Worker to fully register
 
-## Desktop app (Electron)
+## Desktop app (Tauri)
 
-The `electron/` folder wraps the built site in a desktop window. It has its own `package.json`, so it does not touch the web build.
+The `src-tauri/` folder wraps the built site in a native desktop window using [Tauri](https://tauri.app/). It needs [Rust](https://www.rust-lang.org/tools/install) (and, on Linux, the [WebKitGTK dependencies](https://tauri.app/start/prerequisites/)).
 
 ```bash
-pnpm install            # once, in the project root
-pnpm build-only         # builds the site into dist/
-cd electron
-npm install             # once
-npm start               # run the desktop app
-npm run dist            # make an installer in electron/release/
+pnpm install                          # once
+npx --yes @tauri-apps/cli@2 dev       # run the desktop app with live reload
+npx --yes @tauri-apps/cli@2 build     # build installers into src-tauri/target/release/bundle/
 ```
 
-Installers are built per OS (`.exe` on Windows, `.dmg` on macOS, `.AppImage` on Linux). The **Desktop builds** GitHub Action builds all three; run it from the Actions tab, or push a tag like `v1.0.0` to attach the installers to a release.
+Each OS builds its own formats: `.exe` and `.msi` on Windows, `.dmg` on macOS, `.deb`, `.rpm` and `.AppImage` on Linux. The **Desktop builds** GitHub Action builds all of them: run it from the Actions tab, or push a tag like `v1.0.0` to get a draft release with the installers attached.
 
 ## License
 
