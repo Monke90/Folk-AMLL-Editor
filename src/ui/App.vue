@@ -1,5 +1,6 @@
 <template>
   <FontLoader />
+  <DiscordPresence v-if="isDesktopApp" />
   <Titlebar />
   <Ribbon v-if="!runtimeStore.isPreviewView" />
   <main>
@@ -33,6 +34,7 @@ import { useCoreStore, usePrefStore, useRuntimeStore, useStaticStore } from '@st
 import { hasOverlayScrollbar } from '@utils/checkOverlayScrollbar'
 import { isInputEl } from '@utils/isInputEl'
 
+import DiscordPresence from './DiscordPresence.vue'
 import FontLoader from './components/FontLoader.vue'
 import DialogIndex from './dialogs/DialogIndex.vue'
 import ContentEditor from './editor/content/Editor.vue'
@@ -54,6 +56,8 @@ import {
 editHistory.init()
 editHistory.markSaved() // Empty state is considered saved
 applyAppTheme()
+
+const isDesktopApp = '__TAURI_INTERNALS__' in window
 
 const prefStore = usePrefStore()
 const runtimeStore = useRuntimeStore()

@@ -1,6 +1,8 @@
 // Hides the extra console window on Windows release builds
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod discord;
+
 use tauri::{WebviewUrl, WebviewWindowBuilder};
 
 /// The webview ignores `window.open` and `target="_blank"` links, so send external
@@ -45,6 +47,11 @@ const OPEN_EXTERNAL_LINKS: &str = r#"
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
+        .manage(discord::DiscordState::default())
+        .invoke_handler(tauri::generate_handler![
+            discord::set_discord_activity,
+            discord::clear_discord_activity
+        ])
         .setup(|app| {
             WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
                 .title("Folk AMLL Editor")

@@ -12,6 +12,8 @@ export interface PreferenceSchema {
   packAudioToProject: boolean
   ttmlAsDefault: boolean
   askPermissionOnOpen: boolean
+  allowConsecutiveBackgroundLines: boolean
+  discordRichPresenceEnabled: boolean
   // Shortcuts
   macStyleShortcuts: boolean
   hotkeyMap: HotKey.Map
@@ -48,6 +50,8 @@ export const getDefaultPref = (): PreferenceSchema => ({
   packAudioToProject: true,
   ttmlAsDefault: false,
   askPermissionOnOpen: true,
+  allowConsecutiveBackgroundLines: false,
+  discordRichPresenceEnabled: false,
   macStyleShortcuts: isAppleDevice(),
   hotkeyMap: getDefaultHotkeyMap(),
   audioSeekingStepMs: 5000,

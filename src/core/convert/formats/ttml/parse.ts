@@ -218,6 +218,8 @@ export function parseTTML(ttmlText: string): Persist {
       line.romanization = itunesLineRomanizations.get(itunesKey)?.[metadataAttr] ?? ''
     }
 
+    let hasBackgroundChild = false
+
     lineEl.childNodes.forEach((sylNode) => {
       if (sylNode.nodeType === Node.TEXT_NODE) {
         const text = sylNode.textContent ?? ''
@@ -234,6 +236,7 @@ export function parseTTML(ttmlText: string): Persist {
 
         if (sylEl.nodeName === 'span' && role) {
           if (role === 'x-bg') {
+            hasBackgroundChild = true
             parseLineElement(sylEl, true, line.duet, itunesKey)
           } else if (role === 'x-translation') {
             // Use inline translation only if there is no Apple Music style translation
@@ -270,6 +273,13 @@ export function parseTTML(ttmlText: string): Persist {
         }
       }
     })
+
+    // A <p> holding only background spans (standalone background vocals): the background lines
+    // are kept and the empty main line is dropped
+    if (!background && hasBackgroundChild && !line.syllables.some((syl) => syl.text.trim())) {
+      lineArr.splice(lineArr.indexOf(line), 1)
+      return
+    }
 
     if (!startTime && !endTime) alignLineTime(line)
 
