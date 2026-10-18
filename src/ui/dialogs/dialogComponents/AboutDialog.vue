@@ -12,7 +12,19 @@
     </div>
     <Divider />
     <div class="description">
-      <p v-for="(line, index) in tt.description().split('\n')" :key="index">{{ line }}</p>
+      <p>
+        <template v-for="(part, index) in descriptionParts" :key="index">
+          <a
+            v-if="part.href"
+            class="about-link"
+            :href="part.href"
+            target="_blank"
+            rel="noopener noreferrer"
+            >{{ part.text }}</a
+          >
+          <template v-else>{{ part.text }}</template>
+        </template>
+      </p>
     </div>
     <div class="actions">
       <Button
@@ -51,6 +63,19 @@ const tt = t.about
 const [visible] = defineModel<boolean>({ required: true })
 
 const keyValueFolded = ref(true)
+
+const UPSTREAM_URL = 'https://github.com/amll-dev/amll-editor'
+const AUTHOR_URL = 'https://yoursit.ee/folk'
+const descriptionLinks: Record<string, { text: string; href: string }> = {
+  '%upstream%': { text: 'amll-editor', href: UPSTREAM_URL },
+  '%author%': { text: 'InternalMonke', href: AUTHOR_URL },
+}
+// The translated sentence marks where the two links go with %upstream% and %author%
+const descriptionParts = tt
+  .description()
+  .split(/(%upstream%|%author%)/)
+  .filter((text) => text !== '')
+  .map((text) => descriptionLinks[text] ?? { text, href: undefined })
 
 const appName = __APP_DISPLAY_NAME__
 const appVersion = __APP_VERSION__
@@ -104,6 +129,18 @@ const detail: [string, string][] = [
     opacity: 0.9;
     p {
       margin: 0.5rem 0;
+    }
+  }
+  .about-link {
+    color: var(--p-primary-color);
+    text-decoration: none;
+    border-radius: 0.2rem;
+    padding: 0 0.1rem;
+    transition: background-color 0.15s;
+    &:hover,
+    &:focus-visible {
+      background-color: color-mix(in srgb, var(--p-primary-color) 22%, transparent);
+      text-decoration: underline;
     }
   }
   .actions {
