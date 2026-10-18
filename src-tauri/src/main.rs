@@ -50,6 +50,8 @@ fn main() {
                 .title("Folk AMLL Editor")
                 .inner_size(1400.0, 900.0)
                 .min_inner_size(900.0, 600.0)
+                // The editor draws its own title bar and window buttons
+                .decorations(false)
                 .initialization_script(OPEN_EXTERNAL_LINKS)
                 .build()?;
             Ok(())
