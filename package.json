@@ -1,14 +1,14 @@
 {
   "name": "amll-editor",
-  "displayName": "AMLL Editor",
-  "version": "0.0.0",
+  "displayName": "Folk AMLL Editor",
+  "version": "1.0.0",
   "private": true,
   "license": "AGPL-3.0-only",
   "type": "module",
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
   },
-  "repository": "https://github.com/amll-dev/amll-editor",
+  "repository": "https://github.com/Monke90/Folk-AMLL-Editor",
   "scripts": {
     "dev": "run-p dev-only i18n",
     "dev-only": "vite",

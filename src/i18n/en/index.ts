@@ -803,7 +803,7 @@ const en = {
     header: 'About',
     version: 'Version',
     description:
-      'Open-source per-syllable lyric editor built with Vue. Works with the AMLL ecosystem and aims to become the successor to AMLL TTML Tool.\nDevelopment takes effort — consider giving a free star!',
+      'Open-source per-syllable lyric editor built with Vue. Works with the AMLL ecosystem and is forked from %upstream%, maintained and developed by %author%.',
     githubBtn: 'GitHub Repository',
     detailBtn: 'Show Details',
     detail: {

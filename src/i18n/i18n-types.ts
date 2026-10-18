@@ -2307,8 +2307,7 @@ type RootTranslation = {
 		 */
 		version: string
 		/**
-		 * 基​于​ ​V​u​e​ ​的​开​源​逐​音​节​歌​词​编​辑​器​，​可​与​ ​A​M​L​L​ ​生​态​软​件​协​作​，​目​标​成​为​ ​A​M​L​L​ ​T​T​M​L​ ​T​o​o​l​ ​的​继​任​者​。​
-	​开​发​不​易​，​不​妨​点​个​免​费​的​ ​s​t​a​r​ ​吧​！
+		 * 基​于​ ​V​u​e​ ​的​开​源​逐​音​节​歌​词​编​辑​器​，​可​与​ ​A​M​L​L​ ​生​态​软​件​协​作​，​派​生​自​ ​%​u​p​s​t​r​e​a​m​%​，​由​ ​%​a​u​t​h​o​r​%​ ​维​护​与​开​发​。
 		 */
 		description: string
 		/**
@@ -4682,8 +4681,7 @@ export type TranslationFunctions = {
 		 */
 		version: () => LocalizedString
 		/**
-		 * 基于 Vue 的开源逐音节歌词编辑器，可与 AMLL 生态软件协作，目标成为 AMLL TTML Tool 的继任者。
-	开发不易，不妨点个免费的 star 吧！
+		 * 基于 Vue 的开源逐音节歌词编辑器，可与 AMLL 生态软件协作，派生自 %upstream%，由 %author% 维护与开发。
 		 */
 		description: () => LocalizedString
 		/**

@@ -12,8 +12,8 @@ const SUFFIX = IS_BETA ? ' BETA' : ''
 const PRIMARY_COLOR = IS_BETA ? '#FB8328' : '#22c68d'
 const INJECTED_HEAD = /* html */ `
   <link rel="manifest" href="${VIRTUAL_MANIFEST_PATH}">
-  <title>AMLL Editor${SUFFIX}</title>
-  <meta name="application-title" content="AMLL Editor${SUFFIX}" />
+  <title>Folk AMLL Editor${SUFFIX}</title>
+  <meta name="application-title" content="Folk AMLL Editor${SUFFIX}" />
   <meta name="description" content="基于 Vue 的开源逐字（逐音节）歌词编辑器" />
   <meta name="keywords" content="歌词编辑器, 逐字歌词编辑器, 逐音节歌词编辑器, LRC编辑器, 歌词制作, 歌词同步, 歌词打轴" />
   <style> #loading { --thumb-color: ${PRIMARY_COLOR}; } </style>

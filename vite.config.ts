@@ -28,7 +28,7 @@ const defineObjMap: Record<string, string | number | boolean | undefined> = {
   __APP_COMMIT_HASH__: await simpleGit().revparse(['HEAD']),
   __REPO_URL__: packageJSON.repository,
   __APP_DISPLAY_NAME__: packageJSON.displayName + (isBeta ? ` BETA` : ''),
-  __APP_BUILD_CHANNEL__: process.env.VITE_BUILD_CHANNEL || undefined,
+  __APP_BUILD_CHANNEL__: process.env.VITE_BUILD_CHANNEL || 'Stable',
   __APP_IS_BETA__: isBeta,
   __APP_BUILD_TIMESTAMP__: Date.now(),
   __AMLL_CORE_VERSION__: packageJSON.dependencies['@applemusic-like-lyrics/core'],
@@ -40,7 +40,7 @@ const channelColors: Record<string, ChalkInstance> = {
   BETA: chalk.hex('#F97316'),
   UNSPECIFIED: chalk.gray,
 }
-const channel = process.env.VITE_BUILD_CHANNEL || 'UNSPECIFIED'
+const channel = process.env.VITE_BUILD_CHANNEL || 'STABLE'
 console.log(`Current channel: ${channelColors[channel]?.(channel) || channel}\n`)
 
 // https://vite.dev/config/

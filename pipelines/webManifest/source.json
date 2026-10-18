@@ -1,6 +1,6 @@
 {
-  "name": "AMLL Editor",
-  "short_name": "amll-editor",
+  "name": "Folk AMLL Editor",
+  "short_name": "folk-amll-editor",
   "lang": "zh-CN",
   "description": "基于 Vue 的开源逐词歌词编辑器",
   "icons": [
