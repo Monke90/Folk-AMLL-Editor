@@ -239,9 +239,9 @@ type RootTranslation = {
 			 */
 			pasteTTML: string
 			/**
-			 * 导​入​纯​文​本
+			 * 导​入​歌​词...
 			 */
-			importFromText: string
+			importLyrics: string
 			/**
 			 * 导​入​其​他​格​式
 			 */
@@ -1902,6 +1902,234 @@ type RootTranslation = {
 		 */
 		emptyTipDefault: string
 	}
+	importLyrics: {
+		/**
+		 * 导​入​歌​词
+		 */
+		header: string
+		/**
+		 * 歌​词​来​源
+		 */
+		sourcesLabel: string
+		sources: {
+			/**
+			 * 纯​文​本
+			 */
+			plainText: string
+			/**
+			 * Genius
+			 */
+			genius: string
+			/**
+			 * LRCLIB
+			 */
+			lrclib: string
+			/**
+			 * Lyrically
+			 */
+			lyrically: string
+		}
+		/**
+		 * 取​消
+		 */
+		cancel: string
+		/**
+		 * 导​入
+		 */
+		import: string
+		/**
+		 * 已​导​入 {0} 行​歌​词
+		 */
+		imported: RequiredParams<'0'>
+		/**
+		 * 导​入​失​败
+		 */
+		importFailed: string
+		plain: {
+			/**
+			 * 歌​词​文​本
+			 */
+			editorLabel: string
+			/**
+			 * 选​项
+			 */
+			optionsLabel: string
+			/**
+			 * 内​容
+			 */
+			mode: string
+			modes: {
+				/**
+				 * 仅​歌​词
+				 */
+				lyric: string
+				/**
+				 * 歌​词 + 翻​译
+				 */
+				lyricTrans: string
+				/**
+				 * 歌​词 + 音​译
+				 */
+				lyricRoman: string
+				/**
+				 * 歌​词 + 翻​译 + 音​译
+				 */
+				lyricTransRoman: string
+			}
+			/**
+			 * 排​列​方​式
+			 */
+			layout: string
+			layouts: {
+				/**
+				 * 交​错​行​（​每​组​连​续​数​行​）
+				 */
+				interleavedLine: string
+				/**
+				 * 同​一​行​，​用​分​隔​符​隔​开
+				 */
+				sameLineSeparator: string
+			}
+			/**
+			 * 行​内​分​隔​符
+			 */
+			lineSeparator: string
+			/**
+			 * 交​换​翻​译​与​音​译​顺​序
+			 */
+			swap: string
+			/**
+			 * 单​词​分​隔​符
+			 */
+			wordSeparator: string
+			/**
+			 * 用​于​把​一​行​拆​分​成​多​个​音​节​，​留​空​则​整​行​作​为​一​个​音​节​。
+			 */
+			wordSeparatorTip: string
+			/**
+			 * 使​用​前​缀​标​记
+			 */
+			usePrefixes: string
+			/**
+			 * 背​景​人​声​前​缀
+			 */
+			bgPrefix: string
+			/**
+			 * 对​唱​前​缀
+			 */
+			duetPrefix: string
+			/**
+			 * 处​理​歌​词
+			 */
+			processLyrics: string
+			/**
+			 * 清​理​段​落​标​记​，​拆​分​单​词​，​并​把​括​号​内​容​变​成​背​景​人​声​行​。
+			 */
+			processLyricsTip: string
+			/**
+			 * 在​此​粘​贴​歌​词…
+			 */
+			placeholder: string
+			/**
+			 * 没​有​可​导​入​的​歌​词
+			 */
+			empty: string
+		}
+		online: {
+			/**
+			 * 连​接 Genius
+			 */
+			tokenTitle: string
+			/**
+			 * Genius 需​要​你​自​己​的 Client Access Token 才​能​搜​索​。​令​牌​只​保​存​在​此​浏​览​器​中​，​之​后​不​会​再​询​问​。
+			 */
+			tokenDesc: string
+			/**
+			 * 如​何​获​取​令​牌
+			 */
+			tokenGuide: string
+			/**
+			 * 打​开 Genius API Clients
+			 */
+			tokenCreate: string
+			/**
+			 * 粘​贴 Client Access Token
+			 */
+			tokenPlaceholder: string
+			/**
+			 * 保​存​并​继​续
+			 */
+			tokenSave: string
+			/**
+			 * 更​换​令​牌
+			 */
+			tokenChange: string
+			/**
+			 * Genius 拒​绝​了​该​令​牌​，​请​检​查​后​重​新​输​入​。
+			 */
+			tokenRejected: string
+			/**
+			 * 搜​索​歌​曲​或​歌​手
+			 */
+			searchPlaceholder: string
+			/**
+			 * 搜​索
+			 */
+			search: string
+			/**
+			 * 正​在​搜​索…
+			 */
+			searching: string
+			/**
+			 * 没​有​找​到​结​果
+			 */
+			noResults: string
+			/**
+			 * 输​入​关​键​词​后​搜​索
+			 */
+			startTip: string
+			/**
+			 * 与​当​前​音​频​时​长​一​致
+			 */
+			matchesAudio: string
+			/**
+			 * 含​逐​行​时​间​戳​版​本
+			 */
+			syncedAvailable: string
+			/**
+			 * 未​知​歌​手
+			 */
+			unknownArtist: string
+			/**
+			 * 正​在​获​取​歌​词…
+			 */
+			loadingLyrics: string
+			/**
+			 * 该​歌​曲​没​有​可​用​的​歌​词
+			 */
+			noLyrics: string
+			/**
+			 * 返​回
+			 */
+			back: string
+			/**
+			 * 手​动​编​辑
+			 */
+			manualEdit: string
+			/**
+			 * 共 {0} 行
+			 */
+			lineCount: RequiredParams<'0'>
+			/**
+			 * 搜​索​失​败
+			 */
+			searchFailed: string
+			/**
+			 * 获​取​歌​词​失​败
+			 */
+			lyricsFailed: string
+		}
+	}
 	importFromText: {
 		/**
 		 * 从​纯​文​本​导​入
@@ -2362,9 +2590,9 @@ export type TranslationFunctions = {
 			 */
 			pasteTTML: () => LocalizedString
 			/**
-			 * 导入纯文本
+			 * Import lyrics...
 			 */
-			importFromText: () => LocalizedString
+			importLyrics: () => LocalizedString
 			/**
 			 * 导入其他格式
 			 */
@@ -4019,6 +4247,234 @@ export type TranslationFunctions = {
 		 * 当前视图无内容可显示
 		 */
 		emptyTipDefault: () => LocalizedString
+	}
+	importLyrics: {
+		/**
+		 * 导入歌词
+		 */
+		header: () => LocalizedString
+		/**
+		 * 歌词来源
+		 */
+		sourcesLabel: () => LocalizedString
+		sources: {
+			/**
+			 * 纯文本
+			 */
+			plainText: () => LocalizedString
+			/**
+			 * Genius
+			 */
+			genius: () => LocalizedString
+			/**
+			 * LRCLIB
+			 */
+			lrclib: () => LocalizedString
+			/**
+			 * Lyrically
+			 */
+			lyrically: () => LocalizedString
+		}
+		/**
+		 * 取消
+		 */
+		cancel: () => LocalizedString
+		/**
+		 * 导入
+		 */
+		import: () => LocalizedString
+		/**
+		 * 已导入 {0} 行歌词
+		 */
+		imported: (arg: RequiredParams<'0'>) => LocalizedString
+		/**
+		 * 导入失败
+		 */
+		importFailed: () => LocalizedString
+		plain: {
+			/**
+			 * 歌词文本
+			 */
+			editorLabel: () => LocalizedString
+			/**
+			 * 选项
+			 */
+			optionsLabel: () => LocalizedString
+			/**
+			 * 内容
+			 */
+			mode: () => LocalizedString
+			modes: {
+				/**
+				 * 仅歌词
+				 */
+				lyric: () => LocalizedString
+				/**
+				 * 歌词 + 翻译
+				 */
+				lyricTrans: () => LocalizedString
+				/**
+				 * 歌词 + 音译
+				 */
+				lyricRoman: () => LocalizedString
+				/**
+				 * 歌词 + 翻译 + 音译
+				 */
+				lyricTransRoman: () => LocalizedString
+			}
+			/**
+			 * 排列方式
+			 */
+			layout: () => LocalizedString
+			layouts: {
+				/**
+				 * 交错行（每组连续数行）
+				 */
+				interleavedLine: () => LocalizedString
+				/**
+				 * 同一行，用分隔符隔开
+				 */
+				sameLineSeparator: () => LocalizedString
+			}
+			/**
+			 * 行内分隔符
+			 */
+			lineSeparator: () => LocalizedString
+			/**
+			 * 交换翻译与音译顺序
+			 */
+			swap: () => LocalizedString
+			/**
+			 * 单词分隔符
+			 */
+			wordSeparator: () => LocalizedString
+			/**
+			 * 用于把一行拆分成多个音节，留空则整行作为一个音节。
+			 */
+			wordSeparatorTip: () => LocalizedString
+			/**
+			 * 使用前缀标记
+			 */
+			usePrefixes: () => LocalizedString
+			/**
+			 * 背景人声前缀
+			 */
+			bgPrefix: () => LocalizedString
+			/**
+			 * 对唱前缀
+			 */
+			duetPrefix: () => LocalizedString
+			/**
+			 * 处理歌词
+			 */
+			processLyrics: () => LocalizedString
+			/**
+			 * 清理段落标记，拆分单词，并把括号内容变成背景人声行。
+			 */
+			processLyricsTip: () => LocalizedString
+			/**
+			 * 在此粘贴歌词…
+			 */
+			placeholder: () => LocalizedString
+			/**
+			 * 没有可导入的歌词
+			 */
+			empty: () => LocalizedString
+		}
+		online: {
+			/**
+			 * 连接 Genius
+			 */
+			tokenTitle: () => LocalizedString
+			/**
+			 * Genius 需要你自己的 Client Access Token 才能搜索。令牌只保存在此浏览器中，之后不会再询问。
+			 */
+			tokenDesc: () => LocalizedString
+			/**
+			 * 如何获取令牌
+			 */
+			tokenGuide: () => LocalizedString
+			/**
+			 * 打开 Genius API Clients
+			 */
+			tokenCreate: () => LocalizedString
+			/**
+			 * 粘贴 Client Access Token
+			 */
+			tokenPlaceholder: () => LocalizedString
+			/**
+			 * 保存并继续
+			 */
+			tokenSave: () => LocalizedString
+			/**
+			 * 更换令牌
+			 */
+			tokenChange: () => LocalizedString
+			/**
+			 * Genius 拒绝了该令牌，请检查后重新输入。
+			 */
+			tokenRejected: () => LocalizedString
+			/**
+			 * 搜索歌曲或歌手
+			 */
+			searchPlaceholder: () => LocalizedString
+			/**
+			 * 搜索
+			 */
+			search: () => LocalizedString
+			/**
+			 * 正在搜索…
+			 */
+			searching: () => LocalizedString
+			/**
+			 * 没有找到结果
+			 */
+			noResults: () => LocalizedString
+			/**
+			 * 输入关键词后搜索
+			 */
+			startTip: () => LocalizedString
+			/**
+			 * 与当前音频时长一致
+			 */
+			matchesAudio: () => LocalizedString
+			/**
+			 * 含逐行时间戳版本
+			 */
+			syncedAvailable: () => LocalizedString
+			/**
+			 * 未知歌手
+			 */
+			unknownArtist: () => LocalizedString
+			/**
+			 * 正在获取歌词…
+			 */
+			loadingLyrics: () => LocalizedString
+			/**
+			 * 该歌曲没有可用的歌词
+			 */
+			noLyrics: () => LocalizedString
+			/**
+			 * 返回
+			 */
+			back: () => LocalizedString
+			/**
+			 * 手动编辑
+			 */
+			manualEdit: () => LocalizedString
+			/**
+			 * 共 {0} 行
+			 */
+			lineCount: (arg: RequiredParams<'0'>) => LocalizedString
+			/**
+			 * 搜索失败
+			 */
+			searchFailed: () => LocalizedString
+			/**
+			 * 获取歌词失败
+			 */
+			lyricsFailed: () => LocalizedString
+		}
 	}
 	importFromText: {
 		/**

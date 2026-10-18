@@ -8,6 +8,7 @@ import CompatibilityDialog from './dialogComponents/CompatibilityDialog.vue'
 import FindReplaceDialog from './dialogComponents/FindReplaceDialog.vue'
 import FromOtherFormatModal from './dialogComponents/FromOtherFormatModal.vue'
 import FromTextModal from './dialogComponents/FromTextModal.vue'
+import ImportLyricsDialog from './dialogComponents/ImportLyricsDialog.vue'
 import KeyBindingDialog from './dialogComponents/KeyBindingDialog.vue'
 
 export const DialogKey = {
@@ -17,6 +18,7 @@ export const DialogKey = {
   About: 'about',
   FromOtherFormat: 'fromOtherFormat',
   FromText: 'fromText',
+  ImportLyrics: 'importLyrics',
   Compatibility: 'compatibility',
 } as const
 export type DialogKey = ValueOf<typeof DialogKey>
@@ -33,5 +35,6 @@ export const dialogRegs: DialogReg[] = [
   { key: DialogKey.About, component: AboutDialog },
   { key: DialogKey.FromOtherFormat, component: FromOtherFormatModal },
   { key: DialogKey.FromText, component: FromTextModal },
+  { key: DialogKey.ImportLyrics, component: ImportLyricsDialog },
   { key: DialogKey.Compatibility, component: CompatibilityDialog },
 ]
