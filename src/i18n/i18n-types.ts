@@ -4286,7 +4286,7 @@ export type TranslationFunctions = {
 		/**
 		 * 已导入 {0} 行歌词
 		 */
-		imported: (arg: RequiredParams<'0'>) => LocalizedString
+		imported: (arg0: unknown) => LocalizedString
 		/**
 		 * 导入失败
 		 */
@@ -4465,7 +4465,7 @@ export type TranslationFunctions = {
 			/**
 			 * 共 {0} 行
 			 */
-			lineCount: (arg: RequiredParams<'0'>) => LocalizedString
+			lineCount: (arg0: unknown) => LocalizedString
 			/**
 			 * 搜索失败
 			 */
