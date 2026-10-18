@@ -25,7 +25,9 @@ const aliasRelMap: Record<string, string> = {
 const isBeta = process.env.VITE_BUILD_CHANNEL === 'BETA'
 const defineObjMap: Record<string, string | number | boolean | undefined> = {
   __APP_VERSION__: packageJSON.version,
-  __APP_COMMIT_HASH__: await simpleGit().revparse(['HEAD']),
+  __APP_COMMIT_HASH__: await simpleGit()
+    .revparse(['HEAD'])
+    .catch(() => 'unknown'), // e.g. built from a downloaded ZIP, which has no .git folder
   __REPO_URL__: packageJSON.repository,
   __APP_DISPLAY_NAME__: packageJSON.displayName + (isBeta ? ` BETA` : ''),
   __APP_BUILD_CHANNEL__: process.env.VITE_BUILD_CHANNEL || 'Stable',
@@ -59,6 +61,10 @@ export default defineConfig(({ mode }) => ({
     }),
   ],
   worker: { format: 'es' },
+  server: {
+    // Rust's build output lives in src-tauri/target; watching it crashes Vite on Windows (EBUSY)
+    watch: { ignored: ['**/src-tauri/**'] },
+  },
   resolve: {
     alias: Object.fromEntries(
       [...Object.entries(aliasRelMap)].map(([key, rel]) => [

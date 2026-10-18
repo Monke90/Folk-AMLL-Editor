@@ -1,6 +1,6 @@
 <template>
-  <header class="titlebar">
-    <div class="leftbar">
+  <header class="titlebar" :data-tauri-drag-region="isDesktopApp || undefined">
+    <div class="leftbar" :data-tauri-drag-region="isDesktopApp || undefined">
       <SplitButton
         :label="tt.open()"
         :icon="`mdi ${openWorking ? 'mdi-refresh' : 'mdi-folder-outline'}`"
@@ -40,18 +40,18 @@
         :disabled="!editHistory.redoable.value"
         v-tooltip="tipHotkey(tt.redo(), 'redo')"
       />
-      <div class="filename-section">
+      <div class="filename-section" :data-tauri-drag-region="isDesktopApp || undefined">
         <div class="filename-text">
           <span class="name">{{ filename }}</span
           ><span class="asterisk" v-if="isDirty">*</span>
         </div>
       </div>
     </div>
-    <div class="centerbar">
+    <div class="centerbar" :data-tauri-drag-region="isDesktopApp || undefined">
       <ViewSwitcher />
     </div>
-    <div class="rightbar">
-      <div class="save-state-section">
+    <div class="rightbar" :data-tauri-drag-region="isDesktopApp || undefined">
+      <div class="save-state-section" :data-tauri-drag-region="isDesktopApp || undefined">
         <span class="readonly" v-if="!compatibilityMap.fileSystem">{{
           tt.saveStatus.compatMode()
         }}</span>
@@ -74,6 +74,7 @@
           <TieredMenuItem :item="item" :binding="props" />
         </template>
       </SplitButton>
+      <WindowControls v-if="isDesktopApp" />
     </div>
   </header>
 </template>
@@ -94,12 +95,16 @@ import { tipHotkey } from '@utils/generateTooltip'
 import { SidebarKey } from '@ui/sidebar'
 
 import ViewSwitcher from './ViewSwitcher.vue'
+import WindowControls from './WindowControls.vue'
 import TieredMenuItem from '@ui/components/TieredMenuItem.vue'
 import { Button, SplitButton } from 'primevue'
 
 import { useTitlebarFileLogics } from './fileLogics'
 
 const tt = t.titlebar
+
+// True inside the Tauri desktop app, which has no native title bar and needs its own window buttons
+const isDesktopApp = '__TAURI_INTERNALS__' in window
 
 const {
   displayFilenameComputed: filename,
