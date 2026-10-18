@@ -102,7 +102,7 @@ function selectAccent(accent: ThemeAccent) {
       />
       <PrefNumberItem pref-key="maxUndoSteps" :min="1" :max="5000" placeholder="100" />
       <PrefSwitchItem pref-key="packAudioToProject" />
-      <PrefSwitchItem pref-key="ttmlAsDefault" experimental />
+      <PrefSwitchItem pref-key="ttmlAsDefault" />
       <PrefSwitchItem pref-key="askPermissionOnOpen" />
     </div>
     <div class="pref-group">
@@ -140,14 +140,14 @@ function selectAccent(accent: ThemeAccent) {
       <div class="pref-group-title">{{ tt.groups.content() }}</div>
       <PrefSwitchItem pref-key="swapTranslateRoman" />
       <PrefSwitchItem pref-key="hideTranslateRoman" />
-      <PrefSwitchItem pref-key="sylRomanEnabled" experimental />
+      <PrefSwitchItem pref-key="sylRomanEnabled" />
     </div>
     <div class="pref-group">
       <div class="pref-group-title">{{ tt.groups.timing() }}</div>
       <PrefNumberItem pref-key="globalLatencyMs" placeholder="0" :min="-5000" :max="5000" />
       <PrefSwitchItem pref-key="alwaysIgnoreBackground" />
       <PrefSwitchItem pref-key="hideLineTiming" />
-      <PrefSwitchItem pref-key="highlightSelectedLineOnProgress" experimental />
+      <PrefSwitchItem pref-key="highlightSelectedLineOnProgress" />
     </div>
     <div class="pref-group">
       <div class="pref-group-title">{{ tt.groups.spectrogram() }}</div>

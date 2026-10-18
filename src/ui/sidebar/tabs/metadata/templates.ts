@@ -14,7 +14,6 @@ export interface MetadataTemplate {
       severity: 'error' | 'warning'
     }
   }[]
-  docUrl?: string
 }
 
 const lrcNormalFields = ['ti', 'ar', 'al', 'au', 'lr', 'by', 're'] as const
@@ -35,13 +34,13 @@ export const lrcMetaTemplate = {
       },
     },
   ],
-  docUrl: 'https://en.wikipedia.org/wiki/LRC_(file_format)',
 } as const satisfies MetadataTemplate
 
 const amllNormalFields = [
   'musicName',
   'artists',
   'album',
+  'songwriters',
   'ncmMusicId',
   'qqMusicId',
   'spotifyId',
@@ -56,6 +55,4 @@ export const amllMetaTemplate = {
     key,
     label: tt.amll[key](),
   })),
-  docUrl:
-    'https://github.com/amll-dev/amll-ttml-tool/wiki/%E6%AD%8C%E8%AF%8D%E5%85%83%E6%95%B0%E6%8D%AE',
 } as const satisfies MetadataTemplate

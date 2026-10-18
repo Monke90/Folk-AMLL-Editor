@@ -31,13 +31,7 @@
         />
       </div>
       <div class="vflex" style="gap: 0.5rem; width: 7.5rem">
-        <span style="text-align: center">
-          {{ tt.placeholdingBeat() }}
-          <span style="font-family: var(--font-monospace)"
-            >{{ currPhBeatInput ?? 'N' }}/{{ phBeatInput ?? 'A' }}</span
-          >
-        </span>
-        <div class="hflex">
+        <div class="hflex" v-tooltip="tt.placeholdingBeat()">
           <InputGroup>
             <InputNumber
               class="monospace"

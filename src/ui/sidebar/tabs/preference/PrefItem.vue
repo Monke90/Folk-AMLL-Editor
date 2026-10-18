@@ -2,12 +2,7 @@
   <div class="pref-item">
     <label class="text" :class="{ disabled }" :for="props.for">
       <div class="label">
-        {{ props.label
-        }}<i
-          v-if="props.experimental"
-          class="exp-icon mdi mdi-flask-outline"
-          v-tooltip="tt.experimentalWarning()"
-        ></i>
+        {{ props.label }}
       </div>
       <div v-if="props.desc" class="description">{{ props.desc }}</div>
     </label>
@@ -18,17 +13,12 @@
 </template>
 
 <script setup lang="ts">
-import { t } from '@i18n'
-
 const props = defineProps<{
   label: string
   desc?: string
   disabled?: boolean
-  experimental?: boolean
   for?: string
 }>()
-
-const tt = t.sidebar.preference
 </script>
 
 <style lang="scss">
@@ -51,10 +41,6 @@ const tt = t.sidebar.preference
   .description {
     font-size: 0.8rem;
     opacity: 0.6;
-  }
-  .exp-icon {
-    margin-left: 0.2rem;
-    color: var(--p-primary-color);
   }
 }
 </style>

@@ -97,3 +97,45 @@ export async function searchGenius(query: string, accessToken: string): Promise<
       : [],
   )
 }
+
+interface GeniusSongResponse {
+  response: {
+    song?: {
+      writer_artists?: { name: string }[]
+      custom_performances?: { label: string; artists?: { name: string }[] }[]
+    }
+  }
+}
+
+/** Credit labels on Genius that mean "wrote the song" */
+const WRITER_CREDIT_LABEL = /writ|compos|lyric|songwrit/i
+
+/**
+ * Songwriter credits of a Genius song: the "Writers" list plus any performance credit whose
+ * label is a writing role (Written By, Composer, Lyricist...). Names are de-duplicated and keep
+ * Genius's order. Throws an `ImportHttpError` with status 401 when the token is rejected.
+ */
+export async function fetchGeniusSongwriters(
+  songId: number | string,
+  accessToken: string,
+): Promise<string[]> {
+  const response = await fetchChecked(
+    `${BASE_URL}/songs/${encodeURIComponent(String(songId))}?access_token=${encodeURIComponent(accessToken)}`,
+    'Genius',
+  )
+  const song = ((await response.json()) as GeniusSongResponse).response.song
+  const names: string[] = [...(song?.writer_artists ?? []).map((a) => a.name)]
+  for (const credit of song?.custom_performances ?? [])
+    if (WRITER_CREDIT_LABEL.test(credit.label))
+      names.push(...(credit.artists ?? []).map((a) => a.name))
+
+  const seen = new Set<string>()
+  return names
+    .map((n) => n.trim())
+    .filter((n) => {
+      const key = n.toLowerCase()
+      if (!n || seen.has(key)) return false
+      seen.add(key)
+      return true
+    })
+}

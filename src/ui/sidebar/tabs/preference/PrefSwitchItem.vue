@@ -17,7 +17,6 @@ type BooleanKeys = PickTypeKeys<PreferenceSchema, boolean>
 const props = defineProps<{
   prefKey: BooleanKeys
   disabled?: boolean
-  experimental?: boolean
 }>()
 
 const prefStore = usePrefStore()
@@ -27,7 +26,7 @@ const desc = tt[`${props.prefKey}Desc`]()
 </script>
 
 <template>
-  <PrefItem :label :desc :disabled :experimental :for="props.prefKey">
+  <PrefItem :label :desc :disabled :for="props.prefKey">
     <ToggleSwitch v-model="prefStore[props.prefKey]" :disabled :input-id="props.prefKey" />
   </PrefItem>
 </template>
