@@ -32,3 +32,6 @@ coverage
 __pycache__
 .env
 .eslintcache
+# Electron desktop build
+electron/node_modules
+electron/release

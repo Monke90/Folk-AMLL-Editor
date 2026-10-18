@@ -41,6 +41,21 @@ Known limitations of this workaround:
 - The Service Worker only takes effect after this reload
 - Compatibility checks are delayed by ~3 seconds to allow the Service Worker to fully register
 
+## Desktop app (Electron)
+
+The `electron/` folder wraps the built site in a desktop window. It has its own `package.json`, so it does not touch the web build.
+
+```bash
+pnpm install            # once, in the project root
+pnpm build-only         # builds the site into dist/
+cd electron
+npm install             # once
+npm start               # run the desktop app
+npm run dist            # make an installer in electron/release/
+```
+
+Installers are built per OS (`.exe` on Windows, `.dmg` on macOS, `.AppImage` on Linux). The **Desktop builds** GitHub Action builds all three; run it from the Actions tab, or push a tag like `v1.0.0` to attach the installers to a release.
+
 ## License
 
 This project is licensed under the GNU Affero General Public License v3.0 only. See [LICENSE](./LICENSE) for details.
