@@ -887,6 +887,30 @@ type RootTranslation = {
 				 */
 				sylRomanEnabledDesc: string
 				/**
+				 * 允​许​连​续​与​独​立​背​景​人​声
+				 */
+				allowConsecutiveBackgroundLines: string
+				/**
+				 * 将​连​续​的​背​景​人​声​一​起​导​出​，​并​保​留​独​立​的​背​景​人​声​以​兼​容​ ​S​p​i​c​y​ ​L​y​r​i​c​s​。​其​他​播​放​器​可​能​不​支​持​此​结​构​。
+				 */
+				allowConsecutiveBackgroundLinesDesc: string
+				/**
+				 * D​i​s​c​o​r​d​ ​丰​富​状​态
+				 */
+				discordRichPresenceEnabled: string
+				/**
+				 * 与​ ​D​i​s​c​o​r​d​ ​桌​面​应​用​分​享​项​目​与​播​放​状​态​。
+				 */
+				discordRichPresenceEnabledDesc: string
+				/**
+				 * D​i​s​c​o​r​d​ ​丰​富​状​态​仅​在​桌​面​应​用​中​可​用​。​下​载​ ​F​o​l​k​ ​A​M​L​L​ ​T​o​o​l​ ​桌​面​版​以​启​用​。
+				 */
+				discordRichPresenceWebHint: string
+				/**
+				 * 下​载​桌​面​应​用
+				 */
+				discordRichPresenceDownload: string
+				/**
 				 * 全​局​延​时​补​偿
 				 */
 				globalLatencyMs: string
@@ -3265,6 +3289,30 @@ export type TranslationFunctions = {
 				 * 在音节框下方显示逐字音译，并支持查找替换
 				 */
 				sylRomanEnabledDesc: () => LocalizedString
+				/**
+				 * 允​许​连​续​与​独​立​背​景​人​声
+				 */
+				allowConsecutiveBackgroundLines: () => LocalizedString
+				/**
+				 * 将​连​续​的​背​景​人​声​一​起​导​出​，​并​保​留​独​立​的​背​景​人​声​以​兼​容​ ​S​p​i​c​y​ ​L​y​r​i​c​s​。​其​他​播​放​器​可​能​不​支​持​此​结​构​。
+				 */
+				allowConsecutiveBackgroundLinesDesc: () => LocalizedString
+				/**
+				 * D​i​s​c​o​r​d​ ​丰​富​状​态
+				 */
+				discordRichPresenceEnabled: () => LocalizedString
+				/**
+				 * 与​ ​D​i​s​c​o​r​d​ ​桌​面​应​用​分​享​项​目​与​播​放​状​态​。
+				 */
+				discordRichPresenceEnabledDesc: () => LocalizedString
+				/**
+				 * D​i​s​c​o​r​d​ ​丰​富​状​态​仅​在​桌​面​应​用​中​可​用​。​下​载​ ​F​o​l​k​ ​A​M​L​L​ ​T​o​o​l​ ​桌​面​版​以​启​用​。
+				 */
+				discordRichPresenceWebHint: () => LocalizedString
+				/**
+				 * 下​载​桌​面​应​用
+				 */
+				discordRichPresenceDownload: () => LocalizedString
 				/**
 				 * 全局延时补偿
 				 */

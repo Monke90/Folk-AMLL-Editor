@@ -1,12 +1,28 @@
 import type { LyricLine, LyricSyllable, Persist } from '@core/types'
 
+import { usePrefStore } from '@states/stores'
+
 import { ms2str } from '@utils/formatTime'
 
 // Frontend TTML stringifier, following AMLL TTML Lyric Format
 // Derived from: https://github.com/amll-dev/amll-ttml-tool , Licensed under GPLv3
 // See also https://www.w3.org/TR/2018/REC-ttml1-20181108/
 
-export function stringifyTTML(ttmlLyric: Persist): string {
+export interface TTMLStringifyOptions {
+  /**
+   * Write consecutive background lines together under one main line, and keep background lines
+   * that have no main line before them (Spicy Lyrics style). Other players may not support it.
+   * Defaults to the user's preference.
+   */
+  allowConsecutiveBackgroundLines?: boolean
+}
+
+export function stringifyTTML(
+  ttmlLyric: Persist,
+  options: TTMLStringifyOptions = {
+    allowConsecutiveBackgroundLines: usePrefStore().allowConsecutiveBackgroundLines,
+  },
+): string {
   const lineArr = ttmlLyric.lines
 
   const doc = new Document()
@@ -95,117 +111,119 @@ export function stringifyTTML(ttmlLyric: Persist): string {
     (line) => line.syllables.filter((v) => v.text.trim()).length > 1,
   )
 
+  // A main line and the background lines that go with it. With "allow consecutive and standalone
+  // background vocals" on, one main line can carry several background lines, and a background
+  // line that has no main line before it gets a group without a main line.
   interface LineGroup {
-    main: LyricLine
-    background?: LyricLine
+    main?: LyricLine
+    backgrounds: LyricLine[]
   }
+  const allowConsecutiveBackground = options.allowConsecutiveBackgroundLines ?? false
   const groupedLines: LineGroup[] = []
   for (const line of lineArr) {
     if (!line.background) {
-      groupedLines.push({ main: line })
+      groupedLines.push({ main: line, backgrounds: [] })
       continue
     }
     const lastGroup = groupedLines.at(-1)
-    if (lastGroup) {
-      if (lastGroup.background) {
-        console.warn('Multiple background lines for one main line detected.')
-        groupedLines.push({ main: line }) // TO DO: better handling
+    if (allowConsecutiveBackground) {
+      if (lastGroup) lastGroup.backgrounds.push(line)
+      else groupedLines.push({ backgrounds: [line] })
+    } else if (lastGroup?.main && !lastGroup.main.background && lastGroup.backgrounds.length === 0) {
+      lastGroup.backgrounds.push(line)
+    } else {
+      // Not supported without the option: the extra background line is written as a main line
+      groupedLines.push({ main: line, backgrounds: [] })
+    }
+  }
+
+  function makeBackgroundSpan(bgLine: LyricLine): Element {
+    const bgLineSpan = h('span', {
+      'ttm:role': 'x-bg',
+    })
+
+    if (isWordLevelLyric) {
+      let beginTime = Number.POSITIVE_INFINITY
+      let endTime = 0
+
+      const firstWordIndex = bgLine.syllables.findIndex((w) => w.text.trim().length > 0)
+      const lastWordIndex = bgLine.syllables
+        .map((w) => w.text.trim().length > 0)
+        .lastIndexOf(true)
+
+      for (const [sylIndex, word] of bgLine.syllables.entries()) {
+        if (word.text.trim().length === 0) {
+          bgLineSpan.appendChild(doc.createTextNode(word.text))
+        } else {
+          const span = makeWordSpan(word)
+
+          if (sylIndex === firstWordIndex && span.firstChild) {
+            span.firstChild.nodeValue = `(${span.firstChild.nodeValue}`
+          }
+          if (sylIndex === lastWordIndex && span.firstChild) {
+            span.firstChild.nodeValue = `${span.firstChild.nodeValue})`
+          }
+
+          bgLineSpan.appendChild(span)
+          beginTime = Math.min(beginTime, word.startTime)
+          endTime = Math.max(endTime, word.endTime)
+        }
       }
-      lastGroup.background = line
-    } else groupedLines.push({ main: line }) // TO DO: better handling
+      bgLineSpan.setAttribute('begin', ms2str(beginTime))
+      bgLineSpan.setAttribute('end', ms2str(endTime))
+    } else {
+      const word = bgLine.syllables[0]!
+      bgLineSpan.appendChild(doc.createTextNode(`(${word.text})`))
+      bgLineSpan.setAttribute('begin', ms2str(word.startTime))
+      bgLineSpan.setAttribute('end', ms2str(word.endTime))
+    }
+
+    if (bgLine.translation) bgLineSpan.appendChild(makeLineTransSpan(bgLine.translation))
+    if (bgLine.romanization) bgLineSpan.appendChild(makeLineRomanSpan(bgLine.romanization))
+    return bgLineSpan
   }
 
   const lineEls: Element[] = []
 
   for (const [lineKey, lineGroup] of groupedLines.entries()) {
-    const { main: line, background: bgLine } = lineGroup
+    const { main: line, backgrounds } = lineGroup
+    // Group without a main line: the first background line stands in for it
+    const lead = line ?? backgrounds[0]!
 
-    const beginTime = line.startTime ?? 0
-    const endTime = line.endTime
+    const beginTime = line ? line.startTime : lead.startTime
+    const endTime = line ? line.endTime : (backgrounds.at(-1)?.endTime ?? lead.endTime)
 
     const itunesKey = `L${lineKey}`
     const lineP = h('p', {
-      begin: ms2str(beginTime),
+      begin: ms2str(beginTime ?? 0),
       end: ms2str(endTime),
-      'ttm:agent': line.duet ? 'v2' : 'v1',
+      'ttm:agent': lead.duet ? 'v2' : 'v1',
       'itunes:key': itunesKey,
-      'amll:connect-next': line.connectNext ? 'true' : undefined,
-      'amll:bookmarked': line.bookmarked ? 'true' : undefined,
+      'amll:connect-next': line?.connectNext ? 'true' : undefined,
+      'amll:bookmarked': line?.bookmarked ? 'true' : undefined,
     })
 
-    const mainWords = line.syllables
-    let bgWords: LyricSyllable[] = []
+    const mainWords = line ? line.syllables : []
+    const bgWords = backgrounds.flatMap((bgLine) => bgLine.syllables)
 
-    if (isWordLevelLyric) {
-      let beginTime = Number.POSITIVE_INFINITY
-      let endTime = 0
-      for (const word of line.syllables) {
-        if (word.text.trim().length === 0) lineP.appendChild(doc.createTextNode(word.text))
-        else {
-          const span = makeWordSpan(word)
-          lineP.appendChild(span)
-          beginTime = Math.min(beginTime, word.startTime)
-          endTime = Math.max(endTime, word.endTime)
-        }
-      }
-    } else {
-      const word = line.syllables[0]!
-      lineP.appendChild(doc.createTextNode(word.text))
-      lineP.setAttribute('begin', ms2str(word.startTime))
-      lineP.setAttribute('end', ms2str(word.endTime))
-    }
-
-    if (bgLine) {
-      bgWords = bgLine.syllables
-
-      const bgLineSpan = h('span', {
-        'ttm:role': 'x-bg',
-      })
-
+    if (line) {
       if (isWordLevelLyric) {
-        let beginTime = Number.POSITIVE_INFINITY
-        let endTime = 0
-
-        const firstWordIndex = bgLine.syllables.findIndex((w) => w.text.trim().length > 0)
-        const lastWordIndex = bgLine.syllables
-          .map((w) => w.text.trim().length > 0)
-          .lastIndexOf(true)
-
-        for (const [sylIndex, word] of bgLine.syllables.entries()) {
-          if (word.text.trim().length === 0) {
-            bgLineSpan.appendChild(doc.createTextNode(word.text))
-          } else {
-            const span = makeWordSpan(word)
-
-            if (sylIndex === firstWordIndex && span.firstChild) {
-              span.firstChild.nodeValue = `(${span.firstChild.nodeValue}`
-            }
-            if (sylIndex === lastWordIndex && span.firstChild) {
-              span.firstChild.nodeValue = `${span.firstChild.nodeValue})`
-            }
-
-            bgLineSpan.appendChild(span)
-            beginTime = Math.min(beginTime, word.startTime)
-            endTime = Math.max(endTime, word.endTime)
-          }
+        for (const word of line.syllables) {
+          if (word.text.trim().length === 0) lineP.appendChild(doc.createTextNode(word.text))
+          else lineP.appendChild(makeWordSpan(word))
         }
-        bgLineSpan.setAttribute('begin', ms2str(beginTime))
-        bgLineSpan.setAttribute('end', ms2str(endTime))
       } else {
-        const word = bgLine.syllables[0]!
-        bgLineSpan.appendChild(doc.createTextNode(`(${word.text})`))
-        bgLineSpan.setAttribute('begin', ms2str(word.startTime))
-        bgLineSpan.setAttribute('end', ms2str(word.endTime))
+        const word = line.syllables[0]!
+        lineP.appendChild(doc.createTextNode(word.text))
+        lineP.setAttribute('begin', ms2str(word.startTime))
+        lineP.setAttribute('end', ms2str(word.endTime))
       }
-
-      if (bgLine.translation) bgLineSpan.appendChild(makeLineTransSpan(bgLine.translation))
-      if (bgLine.romanization) bgLineSpan.appendChild(makeLineRomanSpan(bgLine.romanization))
-
-      lineP.appendChild(bgLineSpan)
     }
 
-    if (line.translation) lineP.appendChild(makeLineTransSpan(line.translation))
-    if (line.romanization) lineP.appendChild(makeLineRomanSpan(line.romanization))
+    for (const bgLine of backgrounds) lineP.appendChild(makeBackgroundSpan(bgLine))
+
+    if (line?.translation) lineP.appendChild(makeLineTransSpan(line.translation))
+    if (line?.romanization) lineP.appendChild(makeLineRomanSpan(line.romanization))
 
     if (
       mainWords.some((w) => w.romanization && w.romanization.trim().length > 0) ||

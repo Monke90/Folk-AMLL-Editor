@@ -36,6 +36,11 @@ async function handleReset() {
   }
 }
 
+const isDesktopApp = '__TAURI_INTERNALS__' in window
+function openReleases() {
+  window.open(`${__REPO_URL__}/releases`, '_blank')
+}
+
 function openGithubRepo() {
   window.open(__REPO_URL__, '_blank')
 }
@@ -106,6 +111,20 @@ function selectAccent(accent: ThemeAccent) {
       <PrefSwitchItem pref-key="askPermissionOnOpen" />
     </div>
     <div class="pref-group">
+      <div class="pref-group-title">Discord</div>
+      <PrefSwitchItem pref-key="discordRichPresenceEnabled" :disabled="!isDesktopApp" />
+      <div v-if="!isDesktopApp" class="desktop-only-hint">
+        <span>{{ tt.items.discordRichPresenceWebHint() }}</span>
+        <Button
+          size="small"
+          severity="secondary"
+          icon="mdi mdi-download"
+          :label="tt.items.discordRichPresenceDownload()"
+          @click="openReleases"
+        />
+      </div>
+    </div>
+    <div class="pref-group">
       <div class="pref-group-title">Appearance</div>
       <PrefItem label="Theme" desc="Follow the system, or force light/dark mode">
         <Select v-model="selectedThemeModeOptn" :options="themeModeOptns" optionLabel="label" />
@@ -141,6 +160,7 @@ function selectAccent(accent: ThemeAccent) {
       <PrefSwitchItem pref-key="swapTranslateRoman" />
       <PrefSwitchItem pref-key="hideTranslateRoman" />
       <PrefSwitchItem pref-key="sylRomanEnabled" />
+      <PrefSwitchItem pref-key="allowConsecutiveBackgroundLines" />
     </div>
     <div class="pref-group">
       <div class="pref-group-title">{{ tt.groups.timing() }}</div>
@@ -217,6 +237,15 @@ function selectAccent(accent: ThemeAccent) {
 .pref-group-title {
   color: var(--p-primary-color);
   font-weight: bold;
+}
+.desktop-only-hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  opacity: 0.8;
 }
 .refresh-tip {
   padding-top: 0.5rem;
