@@ -157,9 +157,9 @@ export function useTitlebarFileLogics({ openWorking, saveWorking }: TitlebarFile
       tip: getHotkeyStr('importFromClipboard'),
     },
     {
-      label: to.importFromText(),
-      icon: 'mdi mdi-text',
-      command: () => (runtimeStore.dialogShown.fromText = true),
+      label: to.importLyrics(),
+      icon: 'mdi mdi-text-search',
+      command: () => (runtimeStore.dialogShown.importLyrics = true),
     },
     {
       label: to.importFromOtherFormats(),
