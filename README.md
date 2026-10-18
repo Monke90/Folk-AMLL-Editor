@@ -41,6 +41,18 @@ Known limitations of this workaround:
 - The Service Worker only takes effect after this reload
 - Compatibility checks are delayed by ~3 seconds to allow the Service Worker to fully register
 
+## Desktop app (Tauri)
+
+The `src-tauri/` folder wraps the built site in a native desktop window using [Tauri](https://tauri.app/). It needs [Rust](https://www.rust-lang.org/tools/install) (and, on Linux, the [WebKitGTK dependencies](https://tauri.app/start/prerequisites/)).
+
+```bash
+pnpm install                          # once
+npx --yes @tauri-apps/cli@2 dev       # run the desktop app with live reload
+npx --yes @tauri-apps/cli@2 build     # build installers into src-tauri/target/release/bundle/
+```
+
+Each OS builds its own formats: `.exe` and `.msi` on Windows, `.dmg` on macOS, `.deb`, `.rpm` and `.AppImage` on Linux. The **Desktop builds** GitHub Action builds all of them: run it from the Actions tab, or push a tag like `v1.0.0` to get a draft release with the installers attached.
+
 ## License
 
 This project is licensed under the GNU Affero General Public License v3.0 only. See [LICENSE](./LICENSE) for details.

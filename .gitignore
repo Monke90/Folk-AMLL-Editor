@@ -32,3 +32,6 @@ coverage
 __pycache__
 .env
 .eslintcache
+# Tauri desktop build
+src-tauri/target
+src-tauri/gen
