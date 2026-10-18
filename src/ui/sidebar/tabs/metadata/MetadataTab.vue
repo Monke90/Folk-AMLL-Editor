@@ -13,23 +13,24 @@
       />
       <label for="metadataTemplate">{{ tt.templateLabel() }}</label>
     </IftaLabel>
-    <div class="top-buttons" v-if="currentTemplate">
+    <div class="top-buttons">
       <Button
-        v-if="currentTemplate.docUrl"
-        :label="tt.documentBtn()"
-        icon="mdi mdi-open-in-new"
-        fluid
-        severity="secondary"
-        @click="handleOpenDocUrl"
-        style="flex: 1"
-      />
-      <Button
+        v-if="currentTemplate"
         :label="tt.addAllPresets()"
         icon="mdi mdi-format-list-group-plus"
         fluid
         severity="secondary"
         @click="handleAddAllFields"
         style="flex: 2"
+      />
+      <Button
+        :label="tt.clear()"
+        icon="mdi mdi-notification-clear-all"
+        fluid
+        severity="secondary"
+        @click="handleClearAllFields"
+        style="flex: 1"
+        :disabled="internalMetadataList.length === 0"
       />
     </div>
     <Divider v-if="currentTemplate" />
@@ -87,22 +88,21 @@
     </div>
     <div class="add-field">
       <Button
-        :label="tt.clear()"
-        icon="mdi mdi-notification-clear-all"
-        fluid
-        severity="secondary"
-        @click="handleClearAllFields"
-        style="flex: 1"
-        v-if="internalMetadataList.length > 0"
-      />
-      <Button
         class="add-field-btn"
         :label="tt.addField()"
         icon="mdi mdi-plus"
         severity="secondary"
         fluid
         @click="handleAddField"
-        style="flex: 2"
+        style="flex: 1"
+      />
+      <Button
+        :label="tt.fetchSongwriters()"
+        icon="mdi mdi-account-music-outline"
+        severity="secondary"
+        fluid
+        @click="runtimeStore.dialogShown.fetchSongwriters = true"
+        style="flex: 1.3"
       />
     </div>
   </div>
@@ -113,7 +113,7 @@ import { t } from '@i18n'
 import stableStringify from 'json-stable-stringify'
 import { computed, onMounted, ref, shallowRef, useTemplateRef, watch } from 'vue'
 
-import { useCoreStore } from '@states/stores'
+import { useCoreStore, useRuntimeStore } from '@states/stores'
 
 import MultiInputText from '@ui/components/MultiInputText.vue'
 import { AutoComplete, Button, Divider, IftaLabel, InputText, Select } from 'primevue'
@@ -135,6 +135,7 @@ const currentTemplateKeys = computed(() => {
   return currentTemplate.value?.fields.map((field) => field.key) || []
 })
 const coreStore = useCoreStore()
+const runtimeStore = useRuntimeStore()
 
 type MetadataList = { key: string; values: string[] }[]
 
@@ -163,10 +164,6 @@ function flushToStore() {
   coreStore.metadata = newMetadataMap
 }
 
-function handleOpenDocUrl() {
-  if (!currentTemplate.value?.docUrl) return
-  window.open(currentTemplate.value.docUrl, '_blank')
-}
 function handleAddAllFields() {
   if (!currentTemplate.value) return
   currentTemplate.value.fields.forEach((field) => {

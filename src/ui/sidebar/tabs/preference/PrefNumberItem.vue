@@ -21,7 +21,6 @@ const props = defineProps<{
   min?: number
   max?: number
   disabled?: boolean
-  experimental?: boolean
   placeholder?: string
 }>()
 
@@ -41,7 +40,7 @@ const desc = tt[`${props.prefKey}Desc`]()
 </script>
 
 <template>
-  <PrefItem :label :desc :disabled :experimental :for="props.prefKey">
+  <PrefItem :label :desc :disabled :for="props.prefKey">
     <InputNumber
       v-model="model"
       :min

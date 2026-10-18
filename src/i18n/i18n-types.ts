@@ -671,12 +671,12 @@ type RootTranslation = {
 					 * T​T​M​L​ ​作​者​ ​G​i​t​H​u​b​ ​用​户​名
 					 */
 					ttmlAuthorGithubLogin: string
+					/**
+					 * 词​曲​作​者
+					 */
+					songwriters: string
 				}
 			}
-			/**
-			 * 文​档
-			 */
-			documentBtn: string
 			/**
 			 * 添​加​全​部​预​设
 			 */
@@ -693,6 +693,36 @@ type RootTranslation = {
 			 * 添​加​字​段
 			 */
 			addField: string
+			/**
+			 * 获​取​词​曲​作​者
+			 */
+			fetchSongwriters: string
+			songwriters: {
+				/**
+				 * 从​ ​G​e​n​i​u​s​ ​获​取​词​曲​作​者
+				 */
+				header: string
+				/**
+				 * 选​择​匹​配​的​歌​曲
+				 */
+				pickSong: string
+				/**
+				 * 正​在​获​取​词​曲​作​者​…
+				 */
+				fetching: string
+				/**
+				 * G​e​n​i​u​s​ ​上​没​有​这​首​歌​的​词​曲​作​者​信​息
+				 */
+				noneFound: string
+				/**
+				 * 已​添​加​ ​{​0​}​ ​位​词​曲​作​者
+				 */
+				added: RequiredParams<'0'>
+				/**
+				 * 获​取​词​曲​作​者​失​败
+				 */
+				failed: string
+			}
 		}
 		preference: {
 			/**
@@ -3021,12 +3051,12 @@ export type TranslationFunctions = {
 					 * TTML 作者 GitHub 用户名
 					 */
 					ttmlAuthorGithubLogin: () => LocalizedString
+					/**
+					 * Songwriters
+					 */
+					songwriters: () => LocalizedString
 				}
 			}
-			/**
-			 * 文档
-			 */
-			documentBtn: () => LocalizedString
 			/**
 			 * 添加全部预设
 			 */
@@ -3043,6 +3073,36 @@ export type TranslationFunctions = {
 			 * 添加字段
 			 */
 			addField: () => LocalizedString
+			/**
+			 * Fetch songwriters
+			 */
+			fetchSongwriters: () => LocalizedString
+			songwriters: {
+				/**
+				 * Fetch songwriters from Genius
+				 */
+				header: () => LocalizedString
+				/**
+				 * Pick the matching song
+				 */
+				pickSong: () => LocalizedString
+				/**
+				 * Fetching songwriters…
+				 */
+				fetching: () => LocalizedString
+				/**
+				 * Genius has no songwriter credits for this song
+				 */
+				noneFound: () => LocalizedString
+				/**
+				 * Added {0} songwriters
+				 */
+				added: (arg0: unknown) => LocalizedString
+				/**
+				 * Could not fetch songwriters
+				 */
+				failed: () => LocalizedString
+			}
 		}
 		preference: {
 			/**
