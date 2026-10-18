@@ -9,7 +9,7 @@ use std::time::{Duration, Instant};
 /// paste its "Application ID" here (or set FOLK_DISCORD_CLIENT_ID when building).
 const DISCORD_CLIENT_ID: &str = match option_env!("FOLK_DISCORD_CLIENT_ID") {
     Some(id) => id,
-    None => "REPLACE_WITH_YOUR_DISCORD_APPLICATION_ID",
+    None => "1561459642838552766",
 };
 const REPOSITORY_URL: &str = "https://github.com/Monke90/Folk-AMLL-Editor";
 const RETRY_DELAY: Duration = Duration::from_secs(15);
