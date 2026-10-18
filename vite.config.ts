@@ -61,6 +61,10 @@ export default defineConfig(({ mode }) => ({
     }),
   ],
   worker: { format: 'es' },
+  server: {
+    // Rust's build output lives in src-tauri/target; watching it crashes Vite on Windows (EBUSY)
+    watch: { ignored: ['**/src-tauri/**'] },
+  },
   resolve: {
     alias: Object.fromEntries(
       [...Object.entries(aliasRelMap)].map(([key, rel]) => [
