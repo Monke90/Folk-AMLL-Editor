@@ -911,6 +911,14 @@ type RootTranslation = {
 				 */
 				discordRichPresenceDownload: string
 				/**
+				 * 高​性​能​模​式
+				 */
+				highPerformanceMode: string
+				/**
+				 * 通​过​多​线​程​渲​染​并​在​内​存​中​缓​存​更​多​频​谱​图​，​使​频​谱​图​加​载​和​滚​动​更​快​。​可​能​会​明​显​占​用​更​多​ ​C​P​U​ ​和​内​存​。
+				 */
+				highPerformanceModeDesc: string
+				/**
 				 * 全​局​延​时​补​偿
 				 */
 				globalLatencyMs: string
@@ -3313,6 +3321,14 @@ export type TranslationFunctions = {
 				 * 下​载​桌​面​应​用
 				 */
 				discordRichPresenceDownload: () => LocalizedString
+				/**
+				 * 高​性​能​模​式
+				 */
+				highPerformanceMode: () => LocalizedString
+				/**
+				 * 通​过​多​线​程​渲​染​并​在​内​存​中​缓​存​更​多​频​谱​图​，​使​频​谱​图​加​载​和​滚​动​更​快​。​可​能​会​明​显​占​用​更​多​ ​C​P​U​ ​和​内​存​。
+				 */
+				highPerformanceModeDesc: () => LocalizedString
 				/**
 				 * 全局延时补偿
 				 */

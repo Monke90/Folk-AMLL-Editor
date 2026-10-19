@@ -14,6 +14,7 @@ export interface PreferenceSchema {
   askPermissionOnOpen: boolean
   allowConsecutiveBackgroundLines: boolean
   discordRichPresenceEnabled: boolean
+  highPerformanceMode: boolean
   // Shortcuts
   macStyleShortcuts: boolean
   hotkeyMap: HotKey.Map
@@ -52,6 +53,7 @@ export const getDefaultPref = (): PreferenceSchema => ({
   askPermissionOnOpen: true,
   allowConsecutiveBackgroundLines: false,
   discordRichPresenceEnabled: false,
+  highPerformanceMode: false,
   macStyleShortcuts: isAppleDevice(),
   hotkeyMap: getDefaultHotkeyMap(),
   audioSeekingStepMs: 5000,

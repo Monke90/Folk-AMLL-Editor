@@ -111,6 +111,10 @@ function selectAccent(accent: ThemeAccent) {
       <PrefSwitchItem pref-key="askPermissionOnOpen" />
     </div>
     <div class="pref-group">
+      <div class="pref-group-title">Performance</div>
+      <PrefSwitchItem pref-key="highPerformanceMode" />
+    </div>
+    <div class="pref-group">
       <div class="pref-group-title">Discord</div>
       <PrefSwitchItem pref-key="discordRichPresenceEnabled" :disabled="!isDesktopApp" />
       <div v-if="!isDesktopApp" class="desktop-only-hint">

@@ -308,6 +308,8 @@ const en = {
         discordRichPresenceEnabledDesc: 'Share project and playback details with the Discord desktop app.',
         discordRichPresenceWebHint: 'Discord Rich Presence is only available in the desktop app. Download Folk AMLL Tool for desktop to turn it on.',
         discordRichPresenceDownload: 'Download desktop app',
+        highPerformanceMode: 'High performance mode',
+        highPerformanceModeDesc: 'Makes the spectrogram load and scroll faster by rendering it on several threads and keeping more of it in memory. May use noticeably more CPU and RAM on your PC.',
         globalLatencyMs: 'Global latency compensation',
         globalLatencyMsDesc: 'Positive value = audio is delayed (ms)',
         alwaysIgnoreBackground: 'Always ignore background lines',
