@@ -110,7 +110,7 @@ function selectAccent(accent: ThemeAccent) {
       <PrefSwitchItem pref-key="ttmlAsDefault" />
       <PrefSwitchItem pref-key="askPermissionOnOpen" />
     </div>
-    <div class="pref-group">
+    <div v-if="isDesktopApp" class="pref-group">
       <div class="pref-group-title">Performance</div>
       <PrefSwitchItem pref-key="highPerformanceMode" />
     </div>
