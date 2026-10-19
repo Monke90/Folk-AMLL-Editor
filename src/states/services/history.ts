@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash-es'
-import { computed, nextTick, reactive, ref, toRaw, watch } from 'vue'
+import { computed, reactive, ref, toRaw, watch } from 'vue'
 
 import type { LyricLine, LyricSyllable, RuntimeSnapShot, Snapshot } from '@core/types'
 
@@ -16,12 +16,45 @@ const state = reactive({
   tail: 0,
 })
 const redoable = computed(() => state.current < state.head)
-const undoable = computed(() => state.current > state.tail)
+const undoable = computed(() => state.current > state.tail || snapshotPending.value)
 let stopRecording = false
 
 const savedStatePointer = ref<number>(NaN)
-const isDirty = computed(() => savedStatePointer.value !== state.current)
-const markSaved = () => (savedStatePointer.value = state.current)
+// A change has been made but its snapshot is still waiting (see scheduleSnapshot)
+const snapshotPending = ref(false)
+const isDirty = computed(() => savedStatePointer.value !== state.current || snapshotPending.value)
+const markSaved = () => {
+  flushPendingSnapshot()
+  savedStatePointer.value = state.current
+}
+
+// Copying the whole lyric list for every tiny change (e.g. every mouse move while dragging a
+// syllable) made the editor laggy. Changes that come in quick succession are now saved as one
+// undo step, taken once things calm down.
+const SNAPSHOT_DELAY_MS = 250
+const SNAPSHOT_MAX_WAIT_MS = 2000
+let snapshotTimer: ReturnType<typeof setTimeout> | undefined
+let snapshotFirstChangeAt = 0
+
+function scheduleSnapshot() {
+  const now = Date.now()
+  if (!snapshotPending.value) snapshotFirstChangeAt = now
+  snapshotPending.value = true
+  clearTimeout(snapshotTimer)
+  const wait = Math.max(
+    0,
+    Math.min(SNAPSHOT_DELAY_MS, snapshotFirstChangeAt + SNAPSHOT_MAX_WAIT_MS - now),
+  )
+  snapshotTimer = setTimeout(flushPendingSnapshot, wait)
+}
+
+function flushPendingSnapshot() {
+  clearTimeout(snapshotTimer)
+  snapshotTimer = undefined
+  if (!snapshotPending.value) return
+  snapshotPending.value = false
+  if (shutdownHook && !stopRecording) take()
+}
 
 const preventClose = (e: BeforeUnloadEvent) => {
   e.preventDefault()
@@ -36,6 +69,8 @@ watch(isDirty, () => {
 let shutdownHook: (() => void) | null = null
 
 function clear() {
+  clearTimeout(snapshotTimer)
+  snapshotPending.value = false
   state.head = state.current = -1
   state.tail = 0
   stopRecording = false
@@ -51,16 +86,11 @@ function init() {
   }
   const coreStore = useCoreStore()
   const runtimeStore = useRuntimeStore()
-  let isTakingSnapshot = false
   const coreStoreWatcher = watch(
     [() => coreStore.lyricLines, () => coreStore.metadata],
     () => {
       if (stopRecording) return
-      isTakingSnapshot = true
-      nextTick(() => {
-        take()
-        isTakingSnapshot = false
-      })
+      scheduleSnapshot()
     },
     { deep: true },
   )
@@ -71,7 +101,7 @@ function init() {
       () => runtimeStore.selectedSyllables,
     ],
     () => {
-      if (stopRecording || isTakingSnapshot) return
+      if (stopRecording || snapshotPending.value) return
       const currentSnapshot = snapshotList.get(state.current)
       if (!currentSnapshot) return
       currentSnapshot.lastRuntime = takeRuntime()
@@ -170,6 +200,7 @@ function wayback(snapshot: Readonly<Snapshot>, isRedo = false) {
 
 function undo() {
   forceCheckInited()
+  flushPendingSnapshot()
   if (!undoable.value) return null
   const snapshot = snapshotList.get(--state.current)
   if (!snapshot) throw new Error('Snapshot not found during undo')
@@ -178,6 +209,7 @@ function undo() {
 
 function redo() {
   forceCheckInited()
+  flushPendingSnapshot()
   if (!redoable.value) return null
   const snapshot = snapshotList.get(++state.current)
   if (!snapshot) throw new Error('Snapshot not found during redo')
@@ -186,6 +218,7 @@ function redo() {
 
 function shutdown() {
   forceCheckInited()
+  flushPendingSnapshot()
   if (shutdownHook) {
     shutdownHook()
     shutdownHook = null

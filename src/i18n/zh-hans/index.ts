@@ -299,6 +299,8 @@ const zhHans = {
         discordRichPresenceEnabledDesc: '与 Discord 桌面应用分享项目与播放状态。',
         discordRichPresenceWebHint: 'Discord 丰富状态仅在桌面应用中可用。下载 Folk AMLL Tool 桌面版以启用。',
         discordRichPresenceDownload: '下载桌面应用',
+        highPerformanceMode: '高性能模式',
+        highPerformanceModeDesc: '让整个编辑器更流畅：关闭动画和模糊效果，滚动时提前渲染更多歌词行，并以多线程渲染频谱图、缓存更多内容。可能会明显占用更多 CPU、GPU 和内存。',
         globalLatencyMs: '全局延时补偿',
         globalLatencyMsDesc: '正值表示实际音频落后 (毫秒)',
         alwaysIgnoreBackground: '始终忽略背景行',

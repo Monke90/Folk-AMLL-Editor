@@ -59,6 +59,14 @@ export class LRUCache<K, V> {
   }
 
   /**
+   * @description 调整容量，超出时驱逐最久未使用的条目
+   */
+  resize(maxSize: number) {
+    this.maxSize = maxSize > 0 ? maxSize : 1
+    while (this.map.size > this.maxSize) this.evict()
+  }
+
+  /**
    * @description 清空缓存
    */
   clear() {

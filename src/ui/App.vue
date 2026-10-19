@@ -70,6 +70,12 @@ const notifier = (summary: string, detail: string, severity: ToastMessageOptions
 
 fileState.init(notifier)
 
+watch(
+  () => prefStore.highPerformanceMode,
+  (on) => document.documentElement.classList.toggle('perf-high', on),
+  { immediate: true },
+)
+
 const isStandalone = useMediaQuery('(display-mode: standalone)')
 watch(
   [isStandalone, fileState.displayFilenameComputed, editHistory.isDirty],

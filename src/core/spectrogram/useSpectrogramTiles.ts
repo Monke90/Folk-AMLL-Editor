@@ -2,9 +2,14 @@ import { type Ref, shallowRef, watch } from 'vue'
 
 import { useSpectrogramWorker } from '@core/spectrogram/useSpectrogramWorker'
 
+import { usePrefStore } from '@states/stores'
+
 import type { SpectrogramContext } from './SpectrogramContext'
 
 const TILE_DURATION_S = 5
+// Extra tiles rendered beyond each edge of the view (more in high performance mode)
+const TILE_MARGIN = 2
+const TILE_MARGIN_HIGH_PERFORMANCE = 6
 const LOD_WIDTHS = [512, 1024, 2048, 4096, 8192]
 
 export interface VisibleTile {
@@ -27,6 +32,8 @@ export function useSpectrogramTiles({ ctx, audioBuffer }: UseSpectrogramTilesOpt
     audioBuffer,
     ctx.palette,
   )
+
+  const prefStore = usePrefStore()
 
   const visibleTiles = shallowRef<VisibleTile[]>([])
 
@@ -51,7 +58,9 @@ export function useSpectrogramTiles({ ctx, audioBuffer }: UseSpectrogramTilesOpt
     const currentGain = ctx.gain.value
     const currentPaletteId = ctx.paletteId.value
 
-    for (let i = firstVisibleIndex - 2; i <= lastVisibleIndex + 2; i++) {
+    const margin = prefStore.highPerformanceMode ? TILE_MARGIN_HIGH_PERFORMANCE : TILE_MARGIN
+
+    for (let i = firstVisibleIndex - margin; i <= lastVisibleIndex + margin; i++) {
       if (i < 0 || i >= totalTiles) continue
 
       const targetLodWidth =
@@ -97,6 +106,7 @@ export function useSpectrogramTiles({ ctx, audioBuffer }: UseSpectrogramTilesOpt
       ctx.renderHeight,
       lastTileTimestamp,
       audioBuffer,
+      () => prefStore.highPerformanceMode,
     ],
     () => {
       updateVisibleTiles()
