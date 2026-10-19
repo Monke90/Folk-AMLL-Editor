@@ -60,6 +60,13 @@ const scopeLines = computed<LyricLine[]>(() => {
   return line ? [line] : []
 })
 
+// Index of every line, built once per change instead of searching the whole list for each block
+const lineIndexMap = computed(() => {
+  const map = new Map<LyricLine, number>()
+  coreStore.lyricLines.forEach((line, index) => map.set(line, index))
+  return map
+})
+
 interface BlockEntry {
   line: LyricLine
   lineIndex: number
@@ -77,7 +84,7 @@ const visibleEntries = computed<BlockEntry[]>(() => {
   const endMs = ctx.viewEndTime.value * 1000 + bufferMs
   const entries: BlockEntry[] = []
   for (const line of scopeLines.value) {
-    const lineIndex = coreStore.lyricLines.indexOf(line)
+    const lineIndex = lineIndexMap.value.get(line) ?? coreStore.lyricLines.indexOf(line)
     for (const syl of textSyls(line)) {
       if (!inView(syl.startTime, syl.endTime, startMs, endMs)) continue
       entries.push({ line, lineIndex, syl })
@@ -161,12 +168,19 @@ const visibleHandles = computed<HandleEntry[]>(() => {
   return handles
 })
 
+// Playback progress changes every frame. Reading it per block would re-render every block on
+// every frame, so reduce it to a string that only changes when a different syllable becomes active.
+const activeKey = computed(() => {
+  const progress = audioEngine.amendedProgressComputed.value
+  let key = ''
+  for (const { syl } of visibleEntries.value) {
+    if ((syl.startTime || syl.endTime) && progress >= syl.startTime && progress <= syl.endTime)
+      key += `|${syl.id}`
+  }
+  return key
+})
 function isActiveSyl(syl: LyricSyllable) {
-  return (
-    Boolean(syl.startTime || syl.endTime) &&
-    audioEngine.amendedProgressComputed.value >= syl.startTime &&
-    audioEngine.amendedProgressComputed.value <= syl.endTime
-  )
+  return activeKey.value.includes(`|${syl.id}`)
 }
 
 function msToPx(ms: number) {
