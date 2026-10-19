@@ -239,3 +239,18 @@ hr {
   transform: scale(1.25);
   transform-origin: 50% 40%;
 }
+
+// High performance mode (Preferences → Performance): drop animations and blur effects
+// so the interface responds instantly and the GPU has less to draw.
+html.perf-high {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+    transition-delay: 0s !important;
+    animation-duration: 1ms !important;
+    animation-delay: 0s !important;
+    scroll-behavior: auto !important;
+    backdrop-filter: none !important;
+  }
+}
