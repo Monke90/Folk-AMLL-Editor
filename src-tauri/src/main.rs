@@ -2,6 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod discord;
+mod performance;
 
 use tauri::{WebviewUrl, WebviewWindowBuilder};
 
@@ -50,17 +51,19 @@ fn main() {
         .manage(discord::DiscordState::default())
         .invoke_handler(tauri::generate_handler![
             discord::set_discord_activity,
-            discord::clear_discord_activity
+            discord::clear_discord_activity,
+            performance::set_high_performance
         ])
         .setup(|app| {
-            WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
+            let builder = WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
                 .title("Folk AMLL Editor")
                 .inner_size(1400.0, 900.0)
                 .min_inner_size(900.0, 600.0)
                 // The editor draws its own title bar and window buttons
                 .decorations(false)
-                .initialization_script(OPEN_EXTERNAL_LINKS)
-                .build()?;
+                .initialization_script(OPEN_EXTERNAL_LINKS);
+            let builder = performance::apply(app.handle(), builder);
+            builder.build()?;
             Ok(())
         })
         .run(tauri::generate_context!())

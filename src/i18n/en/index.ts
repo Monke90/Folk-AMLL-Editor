@@ -309,7 +309,7 @@ const en = {
         discordRichPresenceWebHint: 'Discord Rich Presence is only available in the desktop app. Download Folk AMLL Tool for desktop to turn it on.',
         discordRichPresenceDownload: 'Download desktop app',
         highPerformanceMode: 'High performance mode',
-        highPerformanceModeDesc: 'Makes the whole editor feel faster: turns off animations and blur effects, draws more of long lyric lists ahead of scrolling, and renders the spectrogram on several threads with more of it kept in memory. May use noticeably more CPU, GPU and RAM on your PC.',
+        highPerformanceModeDesc: 'Lets Folk AMLL Tool use more of your PC for a smoother, faster editor: it turns on graphics card acceleration and stops the window from being slowed down in the background. Uses noticeably more CPU, GPU and RAM. Desktop app only, and it takes effect the next time you start the app.',
         globalLatencyMs: 'Global latency compensation',
         globalLatencyMsDesc: 'Positive value = audio is delayed (ms)',
         alwaysIgnoreBackground: 'Always ignore background lines',

@@ -70,11 +70,21 @@ const notifier = (summary: string, detail: string, severity: ToastMessageOptions
 
 fileState.init(notifier)
 
-watch(
-  () => prefStore.highPerformanceMode,
-  (on) => document.documentElement.classList.toggle('perf-high', on),
-  { immediate: true },
-)
+// Desktop app only: tell it whether to start with high performance settings (see main.rs)
+if (isDesktopApp)
+  watch(
+    () => prefStore.highPerformanceMode,
+    (on) => {
+      ;(
+        window as unknown as {
+          __TAURI_INTERNALS__: { invoke: (cmd: string, args?: object) => Promise<unknown> }
+        }
+      ).__TAURI_INTERNALS__
+        .invoke('set_high_performance', { enabled: on })
+        .catch((e) => console.warn('High performance mode:', e))
+    },
+    { immediate: true },
+  )
 
 const isStandalone = useMediaQuery('(display-mode: standalone)')
 watch(
