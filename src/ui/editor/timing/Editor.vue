@@ -2,7 +2,6 @@
   <div class="editor timing" data-escape-auto-blur @mousedown="handleMouseDown">
     <VList
       :data="coreStore.lyricLines"
-      :buffer-size="prefStore.highPerformanceMode ? 1500 : 200"
       class="editor-scroller editor-timing-scroller"
       #default="{ item: line, index: lineIndex }"
       ref="vscroll"

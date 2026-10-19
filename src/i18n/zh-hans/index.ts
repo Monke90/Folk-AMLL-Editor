@@ -300,7 +300,7 @@ const zhHans = {
         discordRichPresenceWebHint: 'Discord 丰富状态仅在桌面应用中可用。下载 Folk AMLL Tool 桌面版以启用。',
         discordRichPresenceDownload: '下载桌面应用',
         highPerformanceMode: '高性能模式',
-        highPerformanceModeDesc: '让整个编辑器更流畅：关闭动画和模糊效果，滚动时提前渲染更多歌词行，并以多线程渲染频谱图、缓存更多内容。可能会明显占用更多 CPU、GPU 和内存。',
+        highPerformanceModeDesc: '让 Folk AMLL Tool 使用更多电脑资源，使编辑器更流畅：启用显卡加速，并避免窗口在后台被降速。会明显占用更多 CPU、GPU 和内存。仅限桌面应用，下次启动应用时生效。',
         globalLatencyMs: '全局延时补偿',
         globalLatencyMsDesc: '正值表示实际音频落后 (毫秒)',
         alwaysIgnoreBackground: '始终忽略背景行',

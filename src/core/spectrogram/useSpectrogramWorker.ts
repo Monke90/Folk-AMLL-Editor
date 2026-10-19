@@ -6,15 +6,10 @@ import type {
   WorkerResponse,
 } from '@core/spectrogram/workers/types'
 
-import { usePrefStore } from '@states/stores'
-
 import { LRUCache } from './lruCache'
 import SpectrogramWorker from './workers/spectrogram.worker?worker'
 
 const MAX_CACHED_TILES = 70
-// "High performance mode": keep many more tiles in memory and render them on several threads.
-const MAX_CACHED_TILES_HIGH_PERFORMANCE = 240
-const maxWorkers = () => Math.min(4, Math.max(2, Math.floor((navigator.hardwareConcurrency || 4) / 2)))
 
 export type TileEntry = {
   bitmap: ImageBitmap
@@ -90,16 +85,9 @@ export function useSpectrogramWorker(
   audioBuffer: Ref<AudioBuffer | null>,
   paletteData: Ref<Uint8Array>,
 ) {
-  const prefStore = usePrefStore()
-  const workerCount = () => (prefStore.highPerformanceMode ? maxWorkers() : 1)
-  const cacheSize = () =>
-    prefStore.highPerformanceMode ? MAX_CACHED_TILES_HIGH_PERFORMANCE : MAX_CACHED_TILES
+  let client: SpectrogramWorkerClient | null = null
 
-  const clients: SpectrogramWorkerClient[] = []
-  let nextClient = 0
-  const workersSupported = typeof window !== 'undefined' && typeof Worker !== 'undefined'
-
-  const tileCache = new LRUCache<string, TileEntry>(cacheSize(), (_key, entry) => {
+  const tileCache = new LRUCache<string, TileEntry>(MAX_CACHED_TILES, (_key, entry) => {
     entry.bitmap.close()
   })
 
@@ -107,37 +95,28 @@ export function useSpectrogramWorker(
 
   const lastTileTimestamp = ref(0)
 
-  // Each worker keeps its own copy of the audio, so more workers means more memory.
-  function setupClients(buffer: AudioBuffer | null) {
-    if (!workersSupported) return
-    const wanted = workerCount()
-    while (clients.length > wanted) clients.pop()!.terminate()
-    const fresh: SpectrogramWorkerClient[] = []
-    while (clients.length < wanted) {
-      const c = new SpectrogramWorkerClient()
-      clients.push(c)
-      fresh.push(c)
-    }
-    for (const c of fresh) {
-      if (paletteData.value) c.setPalette(paletteData.value)
-      if (buffer) c.initAudio(buffer.getChannelData(0).slice(), buffer.sampleRate)
-    }
-    nextClient = 0
+  if (typeof window !== 'undefined' && typeof Worker !== 'undefined') {
+    client = new SpectrogramWorkerClient()
   }
-
-  setupClients(null)
+  if (paletteData.value) {
+    client?.setPalette(paletteData.value)
+  }
 
   watch(
     audioBuffer,
     (newBuffer) => {
-      if (!newBuffer || !clients.length) return
+      if (!newBuffer || !client) return
 
       tileCache.clear()
       activeRequests.clear()
 
-      for (const c of clients) {
-        c.initAudio(newBuffer.getChannelData(0).slice(), newBuffer.sampleRate)
-        if (paletteData.value) c.setPalette(paletteData.value)
+      const channelData = newBuffer.getChannelData(0)
+      const channelDataCopy = channelData.slice()
+
+      client.initAudio(channelDataCopy, newBuffer.sampleRate)
+
+      if (paletteData.value) {
+        client.setPalette(paletteData.value)
       }
 
       lastTileTimestamp.value = Date.now()
@@ -145,29 +124,20 @@ export function useSpectrogramWorker(
     { immediate: true },
   )
 
-  watch(
-    () => prefStore.highPerformanceMode,
-    () => {
-      tileCache.resize(cacheSize())
-      activeRequests.clear()
-      setupClients(audioBuffer.value)
-      lastTileTimestamp.value = Date.now()
-    },
-  )
-
   watch(paletteData, (newPalette) => {
-    if (newPalette) for (const c of clients) c.setPalette(newPalette)
+    if (client && newPalette) {
+      client.setPalette(newPalette)
+    }
   })
 
   onUnmounted(() => {
-    for (const c of clients) c.terminate()
-    clients.length = 0
+    client?.terminate()
+    client = null
     tileCache.clear()
   })
 
   const requestTileIfNeeded = async (params: TileGenerationParams) => {
-    if (!clients.length) return
-    const client = clients[nextClient++ % clients.length]!
+    if (!client) return
 
     const cacheKey = `tile-${params.tileIndex}`
     const requestFingerprint = `${params.tileIndex}-w${params.tileWidthPx}-h${params.height}-g${params.gain}-p${params.paletteId}`
