@@ -32,9 +32,13 @@
           :disabled="!query.trim() || searching || applying"
         />
       </form>
+      <label class="real-names">
+        <Checkbox v-model="findRealNames" binary :disabled="applying" />
+        <span>{{ tt.realNames() }}</span>
+      </label>
       <div class="error" v-if="error">{{ error }}</div>
       <div class="status" v-else-if="searching">{{ ti.searching() }}</div>
-      <div class="status" v-else-if="applying">{{ tt.fetching() }}</div>
+      <div class="status" v-else-if="applying">{{ progress || tt.fetching() }}</div>
       <div class="status" v-else-if="searched && !results.length">{{ ti.noResults() }}</div>
       <div class="results" v-if="results.length">
         <button
@@ -71,6 +75,7 @@ import {
   GENIUS_API_CLIENTS_URL,
   GENIUS_TOKEN_GUIDE_URL,
   ImportHttpError,
+  applyGeniusSongMetadata,
   fetchGeniusSongwriters,
   searchTracks,
 } from '@core/lyricsImport/sources'
@@ -79,7 +84,7 @@ import type { ImportTrack } from '@core/lyricsImport/types'
 
 import { useCoreStore } from '@states/stores'
 
-import { Button, Dialog, InputText, useToast } from 'primevue'
+import { Button, Checkbox, Dialog, InputText, useToast } from 'primevue'
 
 const tt = t.sidebar.metadata.songwriters
 const ti = t.importLyrics.online
@@ -95,6 +100,9 @@ const searched = ref(false)
 const searching = ref(false)
 const applying = ref(false)
 const error = ref('')
+// Replace stage names with real names. On by default, as in ttml-tool.
+const findRealNames = ref(true)
+const progress = ref('')
 
 /** "Title Artist" from the project's metadata, or else the audio file's name */
 function defaultQuery(): string {
@@ -160,23 +168,27 @@ async function runSearch() {
 async function choose(track: ImportTrack) {
   applying.value = true
   error.value = ''
+  progress.value = ''
   try {
-    const names = await fetchGeniusSongwriters(track.id, geniusAccessToken.value)
-    if (!names.length) {
+    const result = await fetchGeniusSongwriters(track.id, geniusAccessToken.value, {
+      findRealNames: findRealNames.value,
+      onProgress: (name, current, total) => {
+        progress.value = tt.findingRealName(name, current, total)
+      },
+    })
+    if (!result.songwriters.length) {
       error.value = tt.noneFound()
       return
     }
-    // Keep what is already in the field, add the new names after it
-    const existing = coreStore.metadata.songwriters ?? []
-    const have = new Set(existing.map((n) => n.trim().toLowerCase()))
-    const added = names.filter((n) => !have.has(n.toLowerCase()))
-    coreStore.metadata = { ...coreStore.metadata, songwriters: [...existing, ...added] }
-    toast.add({ severity: 'success', summary: tt.added(added.length), life: 3000 })
+    // Songwriters are replaced; title, artist and album are only filled in when empty
+    coreStore.metadata = applyGeniusSongMetadata(coreStore.metadata, result)
+    toast.add({ severity: 'success', summary: tt.fetched(), life: 3000 })
     visible.value = false
   } catch (e) {
     handleError(e, tt.failed())
   } finally {
     applying.value = false
+    progress.value = ''
   }
 }
 </script>
@@ -205,6 +217,13 @@ async function choose(track: ImportTrack) {
     input {
       flex: 1;
     }
+  }
+  .real-names {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    cursor: pointer;
   }
   .error {
     color: var(--p-button-text-danger-color);

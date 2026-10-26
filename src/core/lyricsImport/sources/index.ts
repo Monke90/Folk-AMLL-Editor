@@ -4,7 +4,12 @@ import { searchLrcLib } from './lrclib'
 import { searchLyrically } from './lyrically'
 
 export { ImportHttpError } from './http'
-export { GENIUS_API_CLIENTS_URL, GENIUS_TOKEN_GUIDE_URL, fetchGeniusSongwriters } from './genius'
+export {
+  GENIUS_API_CLIENTS_URL,
+  GENIUS_TOKEN_GUIDE_URL,
+  applyGeniusSongMetadata,
+  fetchGeniusSongwriters,
+} from './genius'
 
 /** Search one of the online sources. `geniusToken` is only used for Genius. */
 export function searchTracks(

@@ -154,6 +154,20 @@ function parseMetadata(ttmlDoc: XMLDocument): MetadataMap {
     if (metadataMap.has(key)) metadataMap.get(key)!.push(value)
     else metadataMap.set(key, [value])
   })
+
+  // ttml-tool, Spicy Lyrics and Apple Music keep songwriters in <iTunesMetadata><songwriters>
+  // rather than in <amll:meta>, so they have to be read from there (same as ttml-tool's parser).
+  // Names already present from <amll:meta> are not added twice.
+  const songwriters = metadataMap.get('songwriters') ?? []
+  const seen = new Set(songwriters.map((name) => name.trim().toLowerCase()))
+  ttmlDoc.querySelectorAll('iTunesMetadata > songwriters > songwriter').forEach((el) => {
+    const name = el.textContent?.trim()
+    if (!name || seen.has(name.toLowerCase())) return
+    seen.add(name.toLowerCase())
+    songwriters.push(name)
+  })
+  if (songwriters.length > 0) metadataMap.set('songwriters', songwriters)
+
   return Object.fromEntries([...metadataMap.entries()])
 }
 
