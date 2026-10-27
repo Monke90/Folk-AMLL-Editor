@@ -711,13 +711,21 @@ type RootTranslation = {
 				 */
 				fetching: string
 				/**
+				 * Look up real (legal) names
+				 */
+				realNames: string
+				/**
+				 * Finding real name for {0} ({1}/{2})…
+				 */
+				findingRealName: RequiredParams<'0' | '1' | '2'>
+				/**
 				 * G​e​n​i​u​s​ ​上​没​有​这​首​歌​的​词​曲​作​者​信​息
 				 */
 				noneFound: string
 				/**
-				 * 已​添​加​ ​{​0​}​ ​位​词​曲​作​者
+				 * 已从 Genius 获取词曲作者
 				 */
-				added: RequiredParams<'0'>
+				fetched: string
 				/**
 				 * 获​取​词​曲​作​者​失​败
 				 */
@@ -3122,13 +3130,21 @@ export type TranslationFunctions = {
 				 */
 				fetching: () => LocalizedString
 				/**
+				 * Look up real (legal) names
+				 */
+				realNames: () => LocalizedString
+				/**
+				 * Finding real name for {0} ({1}/{2})…
+				 */
+				findingRealName: (arg0: unknown, arg1: unknown, arg2: unknown) => LocalizedString
+				/**
 				 * Genius has no songwriter credits for this song
 				 */
 				noneFound: () => LocalizedString
 				/**
-				 * Added {0} songwriters
+				 * Fetched songwriters from Genius
 				 */
-				added: (arg0: unknown) => LocalizedString
+				fetched: () => LocalizedString
 				/**
 				 * Could not fetch songwriters
 				 */

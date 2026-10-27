@@ -88,15 +88,22 @@ export function stringifyTTML(
       'ttm:role': 'x-roman',
     })
 
+  // Songwriters are written the way Apple Music, Spicy Lyrics and ttml-tool do it, inside
+  // <iTunesMetadata>, so they are left out of the <amll:meta> list below.
+  const SONGWRITERS_KEY = 'songwriters'
+  const songwriters = (ttmlLyric.metadata[SONGWRITERS_KEY] ?? [])
+    .map((name) => name.trim())
+    .filter((name) => name.length > 0)
+
   function makeMetadataEl(extraChildren?: Element[]): Element {
     const hasDuet = lineArr.some((v) => v.duet)
     const agentChildren: Element[] = [h('ttm:agent', { type: 'person', 'xml:id': 'v1' })]
     if (hasDuet) agentChildren.push(h('ttm:agent', { type: 'other', 'xml:id': 'v2' }))
     const metadataEl = h('metadata', [
       ...agentChildren,
-      ...[...Object.entries(ttmlLyric.metadata)].flatMap(([key, values]) =>
-        values.map((v) => h('amll:meta', { key, value: v })),
-      ),
+      ...[...Object.entries(ttmlLyric.metadata)]
+        .filter(([key]) => key !== SONGWRITERS_KEY)
+        .flatMap(([key, values]) => values.map((v) => h('amll:meta', { key, value: v }))),
       ...(extraChildren ?? []),
     ])
     return metadataEl
@@ -235,12 +242,7 @@ export function stringifyTTML(
     lineEls.push(lineP)
   }
 
-  function makeItunesRomanMetadataEls(): Element[] {
-    if (!romanizationMap.size) return []
-    const itunesMeta = h('iTunesMetadata', {
-      xmlns: 'http://music.apple.com/lyric-ttml-internal',
-    })
-
+  function makeTransliterationsEl(): Element {
     const transliterations = h('transliterations')
     const transliteration = h('transliteration')
 
@@ -283,13 +285,28 @@ export function stringifyTTML(
     }
 
     transliterations.appendChild(transliteration)
-    itunesMeta.appendChild(transliterations)
+    return transliterations
+  }
+
+  function makeItunesMetadataEls(): Element[] {
+    if (!romanizationMap.size && songwriters.length === 0) return []
+    const itunesMeta = h('iTunesMetadata', {
+      xmlns: 'http://music.apple.com/lyric-ttml-internal',
+    })
+    if (romanizationMap.size) itunesMeta.appendChild(makeTransliterationsEl())
+    if (songwriters.length > 0)
+      itunesMeta.appendChild(
+        h(
+          'songwriters',
+          songwriters.map((name) => h('songwriter', name)),
+        ),
+      )
     return [itunesMeta]
   }
 
   doc.appendChild(
     makeRootTT([
-      h('head', [makeMetadataEl(makeItunesRomanMetadataEls())]),
+      h('head', [makeMetadataEl(makeItunesMetadataEls())]),
       h('body', { dur: ms2str(docEndTime) }, [
         h('div', { begin: ms2str(docStartTime), end: ms2str(docEndTime) }, lineEls),
       ]),
