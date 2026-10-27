@@ -250,6 +250,9 @@ export function parseTTML(ttmlText: string): Persist {
 
         if (sylEl.nodeName === 'span' && role) {
           if (role === 'x-bg') {
+            // Empty background spans (older versions wrote one with begin="Infinity:NaN.NaN")
+            // carry nothing and their times cannot be parsed, so they are skipped
+            if (!sylEl.textContent?.trim()) return
             hasBackgroundChild = true
             parseLineElement(sylEl, true, line.duet, itunesKey)
           } else if (role === 'x-translation') {

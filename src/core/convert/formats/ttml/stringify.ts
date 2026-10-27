@@ -144,7 +144,8 @@ export function stringifyTTML(
     }
   }
 
-  function makeBackgroundSpan(bgLine: LyricLine): Element {
+  /** `null` when the background line has no timed text: nothing worth writing */
+  function makeBackgroundSpan(bgLine: LyricLine): Element | null {
     const bgLineSpan = h('span', {
       'ttm:role': 'x-bg',
     })
@@ -176,10 +177,13 @@ export function stringifyTTML(
           endTime = Math.max(endTime, word.endTime)
         }
       }
+      // No timed word: begin would be Infinity, written as "Infinity:NaN.NaN"
+      if (!Number.isFinite(beginTime)) return null
       bgLineSpan.setAttribute('begin', ms2str(beginTime))
       bgLineSpan.setAttribute('end', ms2str(endTime))
     } else {
-      const word = bgLine.syllables[0]!
+      const word = bgLine.syllables[0]
+      if (!word) return null
       bgLineSpan.appendChild(doc.createTextNode(`(${word.text})`))
       bgLineSpan.setAttribute('begin', ms2str(word.startTime))
       bgLineSpan.setAttribute('end', ms2str(word.endTime))
@@ -227,7 +231,10 @@ export function stringifyTTML(
       }
     }
 
-    for (const bgLine of backgrounds) lineP.appendChild(makeBackgroundSpan(bgLine))
+    for (const bgLine of backgrounds) {
+      const bgSpan = makeBackgroundSpan(bgLine)
+      if (bgSpan) lineP.appendChild(bgSpan)
+    }
 
     if (line?.translation) lineP.appendChild(makeLineTransSpan(line.translation))
     if (line?.romanization) lineP.appendChild(makeLineRomanSpan(line.romanization))
