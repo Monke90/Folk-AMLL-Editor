@@ -97,8 +97,10 @@ function init() {
   const runtimeStoreWatcher = watch(
     [
       () => runtimeStore.currentView,
-      () => runtimeStore.selectedLines,
-      () => runtimeStore.selectedSyllables,
+      // Only membership matters. A deep watch would walk every selected line and syllable
+      // (and re-run on any edit to them), which gets slow with many lines selected.
+      () => [...runtimeStore.selectedLines],
+      () => [...runtimeStore.selectedSyllables],
     ],
     () => {
       if (stopRecording || snapshotPending.value) return
@@ -106,7 +108,6 @@ function init() {
       if (!currentSnapshot) return
       currentSnapshot.lastRuntime = takeRuntime()
     },
-    { deep: true },
   )
   shutdownHook = () => {
     coreStoreWatcher()
