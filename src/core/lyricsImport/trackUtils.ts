@@ -1,4 +1,7 @@
 // Derived from NaeNae-AMLL-TTML-TOOL (modules/lyrics-import/track-duration.ts), licensed under AGPL-3.0.
+import type { MetadataMap } from '@core/types'
+
+import type { ImportTrack } from './types'
 
 /** Durations are compared in seconds. Two songs within 2s of each other are treated as the same. */
 export const matchesAudioDuration = (duration: number | undefined, audioDuration: number) =>
@@ -48,4 +51,22 @@ export function lrcToPlainLyrics(lrc: string): string {
     )
     .filter(Boolean)
     .join('\n')
+}
+
+/**
+ * Fills the song's title, artist and album from an online track, the way ttml-tool does:
+ * details the project already has stay, only missing or empty ones are filled in.
+ */
+export function applyTrackMetadata(metadata: MetadataMap, track: ImportTrack): MetadataMap {
+  const next: MetadataMap = { ...metadata }
+  const fillIfEmpty = (key: string, value: string | undefined) => {
+    const trimmed = value?.trim()
+    if (!trimmed) return
+    const existing = next[key]
+    if (!existing || existing.every((item) => !item.trim())) next[key] = [trimmed]
+  }
+  fillIfEmpty('musicName', track.name)
+  fillIfEmpty('artists', track.artist)
+  fillIfEmpty('album', track.album)
+  return next
 }

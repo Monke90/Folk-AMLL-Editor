@@ -1,4 +1,5 @@
 // Shared types for the lyrics import feature (plain text, Genius, LRCLIB, Lyrically)
+import type { LyricPrepOptions } from './lyricPrep'
 
 export type ImportSourceId = 'plainText' | 'genius' | 'lrclib' | 'lyrically'
 export type OnlineSourceId = Exclude<ImportSourceId, 'plainText'>
@@ -25,8 +26,10 @@ export type TextImportMode = 'lyric' | 'lyric-trans' | 'lyric-roman' | 'lyric-tr
 /** Where translation / romanization sit relative to the original line */
 export type TextImportLayout = 'interleaved-line' | 'same-line-separator'
 
-/** Options for the plain text pane. Persisted so they survive between imports. */
+/** Options of the import panel. Persisted so they survive between imports. */
 export interface LyricsImportPrefs {
+  /** The source tab the panel was last left on */
+  source: ImportSourceId
   mode: TextImportMode
   layout: TextImportLayout
   lineSeparator: string
@@ -35,11 +38,35 @@ export interface LyricsImportPrefs {
   usePrefixes: boolean
   bgPrefix: string
   duetPrefix: string
-  /** "Process lyrics" checkbox on the online preview */
-  processOnlineLyrics: boolean
+  /** Which Process lyrics steps run. Missing keys keep their default (on) */
+  processSteps: Partial<LyricPrepOptions>
+  /** Whether the list of Process lyrics steps is expanded */
+  processStepsOpen: boolean
+  /** Key of the syllable engine Split syllables uses */
+  syllableEngine: string
+  /** Fetch songwriters from Genius after importing a Genius song */
+  fetchSongwriters: boolean
+  /** Turn ’ ‘ ´ and similar marks into the plain apostrophe on import */
+  normalizeApostrophes: boolean
+  /** Turn Cyrillic Е/е hidden inside Latin words into Latin E/e on import */
+  normalizeCyrillicEs: boolean
 }
 
+/** The part of the options that says how the text area is read */
+export type ImportTextFormat = Pick<
+  LyricsImportPrefs,
+  | 'mode'
+  | 'layout'
+  | 'lineSeparator'
+  | 'swapTransAndRoman'
+  | 'wordSeparator'
+  | 'usePrefixes'
+  | 'bgPrefix'
+  | 'duetPrefix'
+>
+
 export const getDefaultLyricsImportPrefs = (): LyricsImportPrefs => ({
+  source: 'plainText',
   mode: 'lyric',
   layout: 'interleaved-line',
   lineSeparator: '|',
@@ -48,7 +75,12 @@ export const getDefaultLyricsImportPrefs = (): LyricsImportPrefs => ({
   usePrefixes: true,
   bgPrefix: '<',
   duetPrefix: '>',
-  processOnlineLyrics: false,
+  processSteps: {},
+  processStepsOpen: false,
+  syllableEngine: 'basic',
+  fetchSongwriters: false,
+  normalizeApostrophes: true,
+  normalizeCyrillicEs: false,
 })
 
 /** One imported line, before it is turned into editor objects */
