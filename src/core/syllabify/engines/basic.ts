@@ -12,13 +12,31 @@ function basicSplitCore(strs: string[]): string[][] {
   return strs.map((str) => str.match(tokenReg) || [])
 }
 
+const apostrophes = `'’`
+/** Opening brackets and quotes, which belong to the word that follows them */
+const openingPunc = `([{<“‘«¿¡「『（【《〈〔｢`
+
+export interface BasicSplitOptions {
+  /**
+   * Keep a hyphen at the end of the piece before it, the way Spicy Lyrics does:
+   * `so-so-so-so` becomes `so-`, `so-`, `so-`, `so`. Without it the hyphen leads the
+   * next piece (`so`, `-so`, `-so`, `-so`).
+   */
+  trailingHyphen?: boolean
+  /** Treat apostrophes as part of the word, so `don't` reaches the splitter whole */
+  apostrophesInWords?: boolean
+}
+
 export function basicSplit(
   strs: string[],
   rewrites: Readonly<SL.Rewrite>[],
   caseSensitive: boolean,
   splitter?: (s: string) => string[],
+  options: BasicSplitOptions = {},
 ): string[][] {
-  const tokenReg = new RegExp(`[${pureLatin}]+|[^${pureLatin}]+`, 'gu')
+  const { trailingHyphen = false, apostrophesInWords = false } = options
+  const wordChars = apostrophesInWords ? pureLatin + apostrophes : pureLatin
+  const tokenReg = new RegExp(`[${wordChars}]+|[^${wordChars}]+`, 'gu')
   const pureLatinReg = new RegExp(`[${pureLatin}]`)
   const isLatin = (s: string) => pureLatinReg.test(s)
   const isFrontAssocPunc = (s: string) => s.length === 1 && frontAssocPunc.includes(s)
@@ -33,6 +51,8 @@ export function basicSplit(
       lineParts.flatMap((part) => {
         const split = part.match(tokenReg) || []
         const partResult: string[] = []
+        /** The last piece ended with a hyphen, so the next word starts a new piece */
+        let afterHyphen = false
         for (const token of split) {
           const stickToLast = () => {
             if (partResult.length) {
@@ -42,13 +62,30 @@ export function basicSplit(
           const handleSubparts = (subParts: string[]) => {
             if (subParts.length === 0) stickToLast()
             else {
-              if (partResult.length) partResult[partResult.length - 1] += subParts.shift()!
+              if (partResult.length && !afterHyphen)
+                partResult[partResult.length - 1] += subParts.shift()!
               else partResult.push(subParts.shift()!)
               partResult.push(...subParts)
             }
+            afterHyphen = false
           }
           if (!isLatin(token)) {
-            if (token === '-') partResult.push(token)
+            if (trailingHyphen) {
+              // Hyphens stay with the word before them; opening brackets go with the next one
+              for (const run of token.match(/-+|[^-]+/g) || []) {
+                if (run[0] === '-') {
+                  if (partResult.length) {
+                    partResult[partResult.length - 1] += run
+                    afterHyphen = true
+                  } else partResult.push(run)
+                } else if (afterHyphen && openingPunc.includes(run[0]!)) {
+                  partResult.push(run)
+                  afterHyphen = false
+                } else if (partResult.length) {
+                  partResult[partResult.length - 1] += run
+                } else partResult.push(run)
+              }
+            } else if (token === '-') partResult.push(token)
             else stickToLast()
             continue
           }
@@ -64,7 +101,7 @@ export function basicSplit(
             handleSubparts([...subParts])
             continue
           }
-          stickToLast()
+          handleSubparts([token])
         }
         return partResult
       }),
