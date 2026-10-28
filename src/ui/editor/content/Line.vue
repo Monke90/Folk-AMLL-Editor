@@ -67,7 +67,7 @@
       <div class="cline-content">
         <slot></slot>
       </div>
-      <div class="cline-secondary" ref="secondaryInputShellEl" v-if="!prefStore.hideTranslateRoman">
+      <div class="cline-secondary" ref="secondaryInputShellEl" v-if="showSecondary">
         <template v-for="f in orderedFields" :key="f.key">
           <FloatLabel variant="on">
             <InputGroup>
@@ -110,7 +110,7 @@
 
 <script setup lang="ts">
 import { t } from '@i18n'
-import { computed, onMounted, onUnmounted, useTemplateRef } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
 
 import type { LyricLine } from '@core/types'
 
@@ -124,7 +124,6 @@ import type { TimeoutHandle } from '@utils/types'
 
 import InputText from '@ui/components/InputText.vue'
 import { Button, FloatLabel, InputGroup, InputGroupAddon } from 'primevue'
-
 
 const tt = t.editor.line
 
@@ -230,13 +229,28 @@ const orderedFields = computed(() =>
 )
 
 const secondaryInputShellEl = useTemplateRef('secondaryInputShellEl')
+// The translation and romanization boxes only show on the selected line
+const showSecondary = computed(() => !prefStore.hideTranslateRoman && isSelected.value)
+// A focused box is about to be removed: blur it first so a pending lazy edit is committed
+watch(
+  isSelected,
+  (selected) => {
+    if (selected) return
+    const active = document.activeElement
+    if (active instanceof HTMLElement && secondaryInputShellEl.value?.contains(active))
+      active.blur()
+  },
+  { flush: 'pre' },
+)
 const lineHooks: LineComponentActions = {
   focusRomanInput: (position) => handleSecondaryInputFocus('roman', position),
   focusTranslationInput: (position) => handleSecondaryInputFocus('translation', position),
   hightLightRoman: () => handleSecondaryInputHighlight('roman'),
   hightLightTranslation: () => handleSecondaryInputHighlight('translation'),
 }
-function handleSecondaryInputFocus(fieldKey: string, position?: number) {
+async function handleSecondaryInputFocus(fieldKey: string, position?: number) {
+  // The boxes only exist once the line is selected and rendered
+  await nextTick()
   const inputEl = secondaryInputShellEl.value?.querySelector(
     `input[data-line-field-key="${fieldKey}"]`,
   ) as HTMLInputElement | null
@@ -250,7 +264,8 @@ function handleSecondaryInputFocus(fieldKey: string, position?: number) {
   } else inputEl.setSelectionRange(position, position)
 }
 const elementTimeouts = new WeakMap<HTMLElement, TimeoutHandle>()
-function handleSecondaryInputHighlight(fieldKey: string) {
+async function handleSecondaryInputHighlight(fieldKey: string) {
+  await nextTick()
   document.querySelectorAll('.p-inputtext[data-highlight]').forEach((el) => {
     delete (el as HTMLInputElement).dataset.highlight
   })

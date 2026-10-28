@@ -31,6 +31,7 @@
 import type { DomLyricPlayer } from '@applemusic-like-lyrics/core'
 import { LyricPlayer } from '@applemusic-like-lyrics/vue'
 import { t } from '@i18n'
+import { debounce } from 'lodash-es'
 import { onMounted, onUnmounted, ref, shallowRef, useTemplateRef, watch } from 'vue'
 
 import { audioEngine } from '@core/audio'
@@ -53,11 +54,11 @@ const { progressComputed, playingComputed, amendedProgressComputed, seek } = aud
 const playerKey = ref(Symbol())
 const playerRef = useTemplateRef('playerRef')
 const amllLyricLines = shallowRef(convertToAMLL(collectPersist()))
-watch(
-  () => coreStore.lyricLines,
-  () => (amllLyricLines.value = convertToAMLL(collectPersist())),
-  { deep: true },
-)
+// Rebuilding the whole preview on every keystroke or drag step is wasteful, so changes that
+// come in quick succession are applied once
+const rebuildLyrics = debounce(() => (amllLyricLines.value = convertToAMLL(collectPersist())), 80)
+watch(() => coreStore.lyricLines, rebuildLyrics, { deep: true })
+onUnmounted(() => rebuildLyrics.cancel())
 
 const jumpSeek = (line: any) => {
   const time = line?.line?.lyricLine?.startTime

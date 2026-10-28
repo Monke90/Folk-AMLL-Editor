@@ -11,6 +11,7 @@
     <VList
       :data="coreStore.lyricLines"
       class="editor-scroller"
+      :buffer-size="1500"
       #default="{ item: line, index: lineIndex }"
       ref="vscroll"
     >
