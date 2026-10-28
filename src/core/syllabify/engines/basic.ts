@@ -2,7 +2,7 @@ import type { Syllabify as SL } from '..'
 import { splitTextByIndices } from '../shared'
 
 const pureLatin = `0-9A-Za-z\\u00C0-\\u024F\\u1E00-\\u1EFF\\u0300-\\u036F`
-const halfwidthPunc = `'"‘’“”.,\\-/#!?¿¡$%^&*;:{}=\\-_\`~()`
+const halfwidthPunc = `'"‘’“”.,\\-—/#!?¿¡$%^&*;:{}=\\-_\`~()`
 const frontAssocPunc = `，。？！；：）】］｝〉》」』〗］）»`
 const backAssocPunc = `（【［｛〈《「『〖〔［（«`
 
@@ -72,8 +72,8 @@ export function basicSplit(
           if (!isLatin(token)) {
             if (trailingHyphen) {
               // Hyphens stay with the word before them; opening brackets go with the next one
-              for (const run of token.match(/-+|[^-]+/g) || []) {
-                if (run[0] === '-') {
+              for (const run of token.match(/[-—]+|[^-—]+/g) || []) {
+                if (run[0] === '-' || run[0] === '—') {
                   if (partResult.length) {
                     partResult[partResult.length - 1] += run
                     afterHyphen = true
