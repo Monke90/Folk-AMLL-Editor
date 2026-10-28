@@ -1983,7 +1983,7 @@ type RootTranslation = {
 		sourcesLabel: string
 		sources: {
 			/**
-			 * 纯​文​本
+			 * 粘​贴
 			 */
 			plainText: string
 			/**
@@ -1994,19 +1994,23 @@ type RootTranslation = {
 			 * LRCLIB
 			 */
 			lrclib: string
-			/**
-			 * Lyrically
-			 */
-			lyrically: string
 		}
 		/**
-		 * 取​消
+		 * 歌​词​文​本
 		 */
-		cancel: string
+		textLabel: string
 		/**
-		 * 导​入
+		 * 在​此​粘​贴​歌​词​，​每​行​一​句​。[Chorus] 这​类​标​题​行​需​单​独​占​一​行​，​导​入​时​会​被​移​除​。
 		 */
-		import: string
+		textPlaceholder: string
+		/**
+		 * 共 {0} 行
+		 */
+		lineCount: RequiredParams<'0'>
+		/**
+		 * 导​入​歌​词
+		 */
+		'import': string
 		/**
 		 * 已​导​入 {0} 行​歌​词
 		 */
@@ -2015,17 +2019,171 @@ type RootTranslation = {
 		 * 导​入​失​败
 		 */
 		importFailed: string
-		plain: {
+		/**
+		 * 没​有​可​导​入​的​歌​词
+		 */
+		empty: string
+		/**
+		 * 从 Genius 获​取​词​曲​作​者
+		 */
+		songwriters: string
+		/**
+		 * 获​取​词​曲​作​者​失​败
+		 */
+		songwritersFailed: string
+		cleanUp: {
 			/**
-			 * 歌​词​文​本
+			 * 整​理
 			 */
-			editorLabel: string
+			title: string
 			/**
-			 * 选​项
+			 * 还​原​原​始​文​本
 			 */
-			optionsLabel: string
+			restore: string
 			/**
-			 * 内​容
+			 * 处​理​歌​词
+			 */
+			process: string
+			/**
+			 * 拆​分​单​词​，​整​理​标​点​与​空​格​，​并​把​括​号​内​的​人​声​移​到​背​景​人​声​行​。
+			 */
+			processHint: string
+			/**
+			 * 歌​词​已​准​备​好​用​于​音​节​打​轴​。
+			 */
+			processed: string
+			/**
+			 * 拆​分​音​节
+			 */
+			split: string
+			/**
+			 * 使​用​下​方​的​音​节​引​擎​，​用​单​词​分​隔​符​标​出​音​节​。​导​入​前​请​检​查​并​修​正​标​记​。
+			 */
+			splitHint: string
+			/**
+			 * 音​节​引​擎
+			 */
+			splitEngine: string
+			/**
+			 * 已​标​出​音​节​，​导​入​前​请​检​查​。
+			 */
+			splitDone: string
+			/**
+			 * 没​有​可​拆​分​的​内​容​。
+			 */
+			splitNothing: string
+			/**
+			 * 拆​分​音​节​失​败
+			 */
+			splitFailed: string
+		}
+		steps: {
+			/**
+			 * 高​级
+			 */
+			advanced: string
+			/**
+			 * 移​除​行​内​注​释
+			 */
+			removeInlineBrackets: string
+			/**
+			 * 删​除​行​中​的 [注​释]，​标​题​行​会​保​留​。
+			 */
+			removeInlineBracketsHint: string
+			/**
+			 * 括​号​转​为​背​景​人​声
+			 */
+			backgroundVocals: string
+			/**
+			 * 把 (人​声) 移​到​单​独​的​背​景​人​声​行​。
+			 */
+			backgroundVocalsHint: string
+			/**
+			 * 背​景​人​声​行​首​字​母​大​写
+			 */
+			capitalizeBackground: string
+			/**
+			 * 让​每​个​背​景​人​声​行​以​大​写​字​母​开​头​。
+			 */
+			capitalizeBackgroundHint: string
+			/**
+			 * 破​折​号
+			 */
+			emDashes: string
+			/**
+			 * 把​双​连​字​符​和​孤​立​的​连​字​符​换​成​破​折​号​。
+			 */
+			emDashesHint: string
+			/**
+			 * 拆​分​带​连​字​符​的​单​词
+			 */
+			splitHyphens: string
+			/**
+			 * 在​连​字​符​之​后​拆​分​，​如 mm-hmm。
+			 */
+			splitHyphensHint: string
+			/**
+			 * 拆​分​中​日​韩​字​符
+			 */
+			splitCjk: string
+			/**
+			 * 把​中​文​、​日​文​、​韩​文​逐​字​拆​开​，​并​在​文​字​类​型​切​换​处​拆​分​。
+			 */
+			splitCjkHint: string
+			/**
+			 * 整​理​标​点
+			 */
+			punctuationSpacing: string
+			/**
+			 * 逗​号​后​留​一​个​空​格​，​标​点​前​不​留​空​格​，​引​号​紧​贴​其​单​词​。
+			 */
+			punctuationSpacingHint: string
+			/**
+			 * 合​并​空​格
+			 */
+			collapseSpaces: string
+			/**
+			 * 把​连​续​空​格​合​并​为​一​个​。
+			 */
+			collapseSpacesHint: string
+			/**
+			 * 按​空​格​拆​分
+			 */
+			splitWords: string
+			/**
+			 * 把​每​个​空​格​标​为​导​入​时​的​单​词​边​界​。
+			 */
+			splitWordsHint: string
+		}
+		normalize: {
+			/**
+			 * 规​范​化
+			 */
+			title: string
+			/**
+			 * 统​一​撇​号
+			 */
+			apostrophes: string
+			/**
+			 * 把 ’ ‘ ´ 等​类​似​符​号​换​成​普​通​撇​号​。
+			 */
+			apostrophesHint: string
+			/**
+			 * 修​正​拉​丁​词​中​的​西​里​尔 Е/е
+			 */
+			cyrillicEs: string
+			/**
+			 * 替​换​藏​在​英​文​单​词​里​的​西​里​尔​形​近​字​母​。
+			 */
+			cyrillicEsHint: string
+		}
+		format: {
+			/**
+			 * 文​本​格​式
+			 */
+			title: string
+			/**
+			 * 文​本​内​容
 			 */
 			mode: string
 			modes: {
@@ -2047,12 +2205,12 @@ type RootTranslation = {
 				lyricTransRoman: string
 			}
 			/**
-			 * 排​列​方​式
+			 * 翻​译​与​音​译​的​排​列​方​式
 			 */
 			layout: string
 			layouts: {
 				/**
-				 * 交​错​行​（​每​组​连​续​数​行​）
+				 * 分​行​排​列
 				 */
 				interleavedLine: string
 				/**
@@ -2065,17 +2223,13 @@ type RootTranslation = {
 			 */
 			lineSeparator: string
 			/**
-			 * 交​换​翻​译​与​音​译​顺​序
+			 * 交​换​翻​译​与​音​译​行
 			 */
 			swap: string
 			/**
 			 * 单​词​分​隔​符
 			 */
 			wordSeparator: string
-			/**
-			 * 用​于​把​一​行​拆​分​成​多​个​音​节​，​留​空​则​整​行​作​为​一​个​音​节​。
-			 */
-			wordSeparatorTip: string
 			/**
 			 * 使​用​前​缀​标​记
 			 */
@@ -2088,22 +2242,66 @@ type RootTranslation = {
 			 * 对​唱​前​缀
 			 */
 			duetPrefix: string
+		}
+		markup: {
 			/**
-			 * 处​理​歌​词
+			 * 行​工​具
 			 */
-			processLyrics: string
+			toolbar: string
 			/**
-			 * 清​理​段​落​标​记​，​拆​分​单​词​，​并​把​括​号​内​容​变​成​背​景​人​声​行​。
+			 * 背​景​人​声​行
 			 */
-			processLyricsTip: string
+			background: string
 			/**
-			 * 在​此​粘​贴​歌​词…
+			 * 对​唱​行
 			 */
-			placeholder: string
+			duet: string
 			/**
-			 * 没​有​可​导​入​的​歌​词
+			 * 拆​分​或​合​并​音​节
 			 */
-			empty: string
+			split: string
+			/**
+			 * 按​住 Alt 点​击​字​母​之​间​可​拆​分​，​点​击​圆​点​可​合​并​。
+			 */
+			hint: string
+			/**
+			 * 合​并​音​节
+			 */
+			joinSyllables: string
+			gutter: {
+				/**
+				 * 背​景
+				 */
+				background: string
+				/**
+				 * 对​唱
+				 */
+				duet: string
+				/**
+				 * 翻​译
+				 */
+				translation: string
+				/**
+				 * 音​译
+				 */
+				romanization: string
+				/**
+				 * 将​移​除
+				 */
+				removed: string
+				/**
+				 * 不​会​导​入
+				 */
+				dropped: string
+				/**
+				 * 缺​少​翻​译
+				 */
+				missingTranslation: string
+				/**
+				 * 缺​少​音​译
+				 */
+				missingRomanization: string
+			}
 		}
 		online: {
 			/**
@@ -2171,25 +2369,9 @@ type RootTranslation = {
 			 */
 			unknownArtist: string
 			/**
-			 * 正​在​获​取​歌​词…
-			 */
-			loadingLyrics: string
-			/**
 			 * 该​歌​曲​没​有​可​用​的​歌​词
 			 */
 			noLyrics: string
-			/**
-			 * 返​回
-			 */
-			back: string
-			/**
-			 * 手​动​编​辑
-			 */
-			manualEdit: string
-			/**
-			 * 共 {0} 行
-			 */
-			lineCount: RequiredParams<'0'>
 			/**
 			 * 搜​索​失​败
 			 */
@@ -2198,6 +2380,22 @@ type RootTranslation = {
 			 * 获​取​歌​词​失​败
 			 */
 			lyricsFailed: string
+			/**
+			 * 显​示​搜​索​结​果
+			 */
+			showResults: string
+			/**
+			 * 返​回​文​本
+			 */
+			backToText: string
+			/**
+			 * 歌​曲​信​息​来​自 {0}（{1}）
+			 */
+			usingTrack: RequiredParams<'0' | '1'>
+			/**
+			 * 不​使​用​这​些​信​息
+			 */
+			dropTrack: string
 		}
 	}
 	importFromText: {
@@ -4398,7 +4596,7 @@ export type TranslationFunctions = {
 		sourcesLabel: () => LocalizedString
 		sources: {
 			/**
-			 * 纯文本
+			 * 粘贴
 			 */
 			plainText: () => LocalizedString
 			/**
@@ -4409,19 +4607,23 @@ export type TranslationFunctions = {
 			 * LRCLIB
 			 */
 			lrclib: () => LocalizedString
-			/**
-			 * Lyrically
-			 */
-			lyrically: () => LocalizedString
 		}
 		/**
-		 * 取消
+		 * 歌词文本
 		 */
-		cancel: () => LocalizedString
+		textLabel: () => LocalizedString
 		/**
-		 * 导入
+		 * 在此粘贴歌词，每行一句。[Chorus] 这类标题行需单独占一行，导入时会被移除。
 		 */
-		import: () => LocalizedString
+		textPlaceholder: () => LocalizedString
+		/**
+		 * 共 {0} 行
+		 */
+		lineCount: (arg0: unknown) => LocalizedString
+		/**
+		 * 导入歌词
+		 */
+		'import': () => LocalizedString
 		/**
 		 * 已导入 {0} 行歌词
 		 */
@@ -4430,17 +4632,171 @@ export type TranslationFunctions = {
 		 * 导入失败
 		 */
 		importFailed: () => LocalizedString
-		plain: {
+		/**
+		 * 没有可导入的歌词
+		 */
+		empty: () => LocalizedString
+		/**
+		 * 从 Genius 获取词曲作者
+		 */
+		songwriters: () => LocalizedString
+		/**
+		 * 获取词曲作者失败
+		 */
+		songwritersFailed: () => LocalizedString
+		cleanUp: {
 			/**
-			 * 歌词文本
+			 * 整理
 			 */
-			editorLabel: () => LocalizedString
+			title: () => LocalizedString
 			/**
-			 * 选项
+			 * 还原原始文本
 			 */
-			optionsLabel: () => LocalizedString
+			restore: () => LocalizedString
 			/**
-			 * 内容
+			 * 处理歌词
+			 */
+			process: () => LocalizedString
+			/**
+			 * 拆分单词，整理标点与空格，并把括号内的人声移到背景人声行。
+			 */
+			processHint: () => LocalizedString
+			/**
+			 * 歌词已准备好用于音节打轴。
+			 */
+			processed: () => LocalizedString
+			/**
+			 * 拆分音节
+			 */
+			split: () => LocalizedString
+			/**
+			 * 使用下方的音节引擎，用单词分隔符标出音节。导入前请检查并修正标记。
+			 */
+			splitHint: () => LocalizedString
+			/**
+			 * 音节引擎
+			 */
+			splitEngine: () => LocalizedString
+			/**
+			 * 已标出音节，导入前请检查。
+			 */
+			splitDone: () => LocalizedString
+			/**
+			 * 没有可拆分的内容。
+			 */
+			splitNothing: () => LocalizedString
+			/**
+			 * 拆分音节失败
+			 */
+			splitFailed: () => LocalizedString
+		}
+		steps: {
+			/**
+			 * 高级
+			 */
+			advanced: () => LocalizedString
+			/**
+			 * 移除行内注释
+			 */
+			removeInlineBrackets: () => LocalizedString
+			/**
+			 * 删除行中的 [注释]，标题行会保留。
+			 */
+			removeInlineBracketsHint: () => LocalizedString
+			/**
+			 * 括号转为背景人声
+			 */
+			backgroundVocals: () => LocalizedString
+			/**
+			 * 把 (人声) 移到单独的背景人声行。
+			 */
+			backgroundVocalsHint: () => LocalizedString
+			/**
+			 * 背景人声行首字母大写
+			 */
+			capitalizeBackground: () => LocalizedString
+			/**
+			 * 让每个背景人声行以大写字母开头。
+			 */
+			capitalizeBackgroundHint: () => LocalizedString
+			/**
+			 * 破折号
+			 */
+			emDashes: () => LocalizedString
+			/**
+			 * 把双连字符和孤立的连字符换成破折号。
+			 */
+			emDashesHint: () => LocalizedString
+			/**
+			 * 拆分带连字符的单词
+			 */
+			splitHyphens: () => LocalizedString
+			/**
+			 * 在连字符之后拆分，如 mm-hmm。
+			 */
+			splitHyphensHint: () => LocalizedString
+			/**
+			 * 拆分中日韩字符
+			 */
+			splitCjk: () => LocalizedString
+			/**
+			 * 把中文、日文、韩文逐字拆开，并在文字类型切换处拆分。
+			 */
+			splitCjkHint: () => LocalizedString
+			/**
+			 * 整理标点
+			 */
+			punctuationSpacing: () => LocalizedString
+			/**
+			 * 逗号后留一个空格，标点前不留空格，引号紧贴其单词。
+			 */
+			punctuationSpacingHint: () => LocalizedString
+			/**
+			 * 合并空格
+			 */
+			collapseSpaces: () => LocalizedString
+			/**
+			 * 把连续空格合并为一个。
+			 */
+			collapseSpacesHint: () => LocalizedString
+			/**
+			 * 按空格拆分
+			 */
+			splitWords: () => LocalizedString
+			/**
+			 * 把每个空格标为导入时的单词边界。
+			 */
+			splitWordsHint: () => LocalizedString
+		}
+		normalize: {
+			/**
+			 * 规范化
+			 */
+			title: () => LocalizedString
+			/**
+			 * 统一撇号
+			 */
+			apostrophes: () => LocalizedString
+			/**
+			 * 把 ’ ‘ ´ 等类似符号换成普通撇号。
+			 */
+			apostrophesHint: () => LocalizedString
+			/**
+			 * 修正拉丁词中的西里尔 Е/е
+			 */
+			cyrillicEs: () => LocalizedString
+			/**
+			 * 替换藏在英文单词里的西里尔形近字母。
+			 */
+			cyrillicEsHint: () => LocalizedString
+		}
+		format: {
+			/**
+			 * 文本格式
+			 */
+			title: () => LocalizedString
+			/**
+			 * 文本内容
 			 */
 			mode: () => LocalizedString
 			modes: {
@@ -4462,12 +4818,12 @@ export type TranslationFunctions = {
 				lyricTransRoman: () => LocalizedString
 			}
 			/**
-			 * 排列方式
+			 * 翻译与音译的排列方式
 			 */
 			layout: () => LocalizedString
 			layouts: {
 				/**
-				 * 交错行（每组连续数行）
+				 * 分行排列
 				 */
 				interleavedLine: () => LocalizedString
 				/**
@@ -4480,17 +4836,13 @@ export type TranslationFunctions = {
 			 */
 			lineSeparator: () => LocalizedString
 			/**
-			 * 交换翻译与音译顺序
+			 * 交换翻译与音译行
 			 */
 			swap: () => LocalizedString
 			/**
 			 * 单词分隔符
 			 */
 			wordSeparator: () => LocalizedString
-			/**
-			 * 用于把一行拆分成多个音节，留空则整行作为一个音节。
-			 */
-			wordSeparatorTip: () => LocalizedString
 			/**
 			 * 使用前缀标记
 			 */
@@ -4503,22 +4855,66 @@ export type TranslationFunctions = {
 			 * 对唱前缀
 			 */
 			duetPrefix: () => LocalizedString
+		}
+		markup: {
 			/**
-			 * 处理歌词
+			 * 行工具
 			 */
-			processLyrics: () => LocalizedString
+			toolbar: () => LocalizedString
 			/**
-			 * 清理段落标记，拆分单词，并把括号内容变成背景人声行。
+			 * 背景人声行
 			 */
-			processLyricsTip: () => LocalizedString
+			background: () => LocalizedString
 			/**
-			 * 在此粘贴歌词…
+			 * 对唱行
 			 */
-			placeholder: () => LocalizedString
+			duet: () => LocalizedString
 			/**
-			 * 没有可导入的歌词
+			 * 拆分或合并音节
 			 */
-			empty: () => LocalizedString
+			split: () => LocalizedString
+			/**
+			 * 按住 Alt 点击字母之间可拆分，点击圆点可合并。
+			 */
+			hint: () => LocalizedString
+			/**
+			 * 合并音节
+			 */
+			joinSyllables: () => LocalizedString
+			gutter: {
+				/**
+				 * 背景
+				 */
+				background: () => LocalizedString
+				/**
+				 * 对唱
+				 */
+				duet: () => LocalizedString
+				/**
+				 * 翻译
+				 */
+				translation: () => LocalizedString
+				/**
+				 * 音译
+				 */
+				romanization: () => LocalizedString
+				/**
+				 * 将移除
+				 */
+				removed: () => LocalizedString
+				/**
+				 * 不会导入
+				 */
+				dropped: () => LocalizedString
+				/**
+				 * 缺少翻译
+				 */
+				missingTranslation: () => LocalizedString
+				/**
+				 * 缺少音译
+				 */
+				missingRomanization: () => LocalizedString
+			}
 		}
 		online: {
 			/**
@@ -4586,25 +4982,9 @@ export type TranslationFunctions = {
 			 */
 			unknownArtist: () => LocalizedString
 			/**
-			 * 正在获取歌词…
-			 */
-			loadingLyrics: () => LocalizedString
-			/**
 			 * 该歌曲没有可用的歌词
 			 */
 			noLyrics: () => LocalizedString
-			/**
-			 * 返回
-			 */
-			back: () => LocalizedString
-			/**
-			 * 手动编辑
-			 */
-			manualEdit: () => LocalizedString
-			/**
-			 * 共 {0} 行
-			 */
-			lineCount: (arg0: unknown) => LocalizedString
 			/**
 			 * 搜索失败
 			 */
@@ -4613,6 +4993,22 @@ export type TranslationFunctions = {
 			 * 获取歌词失败
 			 */
 			lyricsFailed: () => LocalizedString
+			/**
+			 * 显示搜索结果
+			 */
+			showResults: () => LocalizedString
+			/**
+			 * 返回文本
+			 */
+			backToText: () => LocalizedString
+			/**
+			 * 歌曲信息来自 {0}（{1}）
+			 */
+			usingTrack: (arg0: unknown, arg1: unknown) => LocalizedString
+			/**
+			 * 不使用这些信息
+			 */
+			dropTrack: () => LocalizedString
 		}
 	}
 	importFromText: {

@@ -10,6 +10,8 @@ import { getHotkeyStr } from '@core/hotkey'
 import { collectPersist } from '@states/services/port'
 import { useRuntimeStore } from '@states/stores'
 
+import { SidebarKey } from '@ui/sidebar'
+
 import { useToast } from 'primevue'
 import type { MenuItem } from 'primevue/menuitem'
 
@@ -159,7 +161,7 @@ export function useTitlebarFileLogics({ openWorking, saveWorking }: TitlebarFile
     {
       label: to.importLyrics(),
       icon: 'mdi mdi-text-search',
-      command: () => (runtimeStore.dialogShown.importLyrics = true),
+      command: () => runtimeStore.openSidebar(SidebarKey.ImportLyrics),
     },
     {
       label: to.importFromOtherFormats(),
