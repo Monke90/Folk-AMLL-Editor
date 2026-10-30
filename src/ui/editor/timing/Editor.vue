@@ -24,6 +24,7 @@
         </Line>
       </div>
     </VList>
+    <TimingHelper />
     <EmptyTip
       v-if="coreStore.lyricLines.length === 0"
       :title="tt.emptyTip.title.noLines()"
@@ -59,6 +60,7 @@ import { tryRaf } from '@utils/tryRaf'
 
 import Line from './Line.vue'
 import Syllable from './Syllable.vue'
+import TimingHelper from './TimingHelper.vue'
 import EmptyTip from '@ui/components/EmptyTip.vue'
 
 import { toogleAttr } from '../shared'
@@ -302,7 +304,13 @@ onUnmounted(() => {
 .editor-scroller {
   height: 100%;
 }
+.editor.timing {
+  display: flex;
+  min-width: 0;
+}
 .editor-timing-scroller {
+  flex: 1;
+  min-width: 0;
   padding: 0.5rem 0;
 }
 </style>

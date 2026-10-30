@@ -50,6 +50,11 @@ const en = {
         deleteSyl: 'Delete syllable',
       },
     },
+    timingHelper: {
+      nowTiming: 'Now timing',
+      nothingSelected: 'Select a syllable to see its timing here',
+      hotkeys: 'Hotkeys',
+    },
     dragGhost: {
       copyLine: 'Copy line{{s}}',
       moveLine: 'Move line{{s}}',

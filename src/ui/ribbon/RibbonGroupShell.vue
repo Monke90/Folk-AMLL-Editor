@@ -69,7 +69,7 @@ const props = defineProps<{
   align-items: end;
 }
 .ribbon-group-label-text {
-  color: var(--p-slate-400);
+  color: var(--p-text-muted-color);
   font-size: 0.85rem;
   margin: 0.1rem 0.5rem 0.25rem;
 }
@@ -78,6 +78,6 @@ const props = defineProps<{
   --p-button-sm-padding-x: 0.2rem;
   --p-button-sm-icon-only-width: 1.5rem;
   --p-button-sm-font-size: 0.7rem;
-  --p-button-text-secondary-color: var(--p-slate-400);
+  --p-button-text-secondary-color: var(--p-text-muted-color);
 }
 </style>

@@ -91,6 +91,20 @@ type RootTranslation = {
 				deleteSyl: string
 			}
 		}
+		timingHelper: {
+			/**
+			 * 当前音节
+			 */
+			nowTiming: string
+			/**
+			 * 选择一个音节以在此查看其时间
+			 */
+			nothingSelected: string
+			/**
+			 * 快捷键
+			 */
+			hotkeys: string
+		}
 		dragGhost: {
 			/**
 			 * {​{​复​制​行​}​}
@@ -2708,6 +2722,20 @@ export type TranslationFunctions = {
 				 */
 				deleteSyl: () => LocalizedString
 			}
+		}
+		timingHelper: {
+			/**
+			 * 当前音节
+			 */
+			nowTiming: () => LocalizedString
+			/**
+			 * 选择一个音节以在此查看其时间
+			 */
+			nothingSelected: () => LocalizedString
+			/**
+			 * 快捷键
+			 */
+			hotkeys: () => LocalizedString
 		}
 		dragGhost: {
 			/**
