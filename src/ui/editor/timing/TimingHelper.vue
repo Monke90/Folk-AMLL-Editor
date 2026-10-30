@@ -56,14 +56,17 @@ const hotkeyStr = (cmd: HotKey.Command) => (prefStore.hotkeyMap[cmd] ? getHotkey
 
 <style lang="scss">
 .timing-helper {
-  width: 17rem;
+  width: 16rem;
+  align-self: stretch;
   flex-shrink: 0;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
   padding: 1rem;
-  border-left: 1px solid var(--p-content-border-color);
+  margin: 0.25rem 1rem 0.25rem 0;
+  border: 1px solid var(--p-content-border-color);
+  border-radius: 0.7rem;
   background: var(--p-content-background);
   overflow-y: auto;
   @media screen and (max-width: 1100px) {
