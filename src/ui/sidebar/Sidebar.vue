@@ -120,15 +120,24 @@ function handleResizeStart(e: MouseEvent) {
     padding: 0.3rem 0.5rem 0 1rem;
   }
   &.multiple {
-    --p-tabs-tab-padding: 0.9rem 0.6rem 0.9rem 1rem;
-    --p-tabs-active-bar-height: 2px;
+    --p-tabs-tab-padding: 0.4rem 0.4rem 0.4rem 0.9rem;
+    --p-tabs-active-bar-height: 0px;
     --p-tabs-tablist-border-width: 0;
     --p-tabs-tablist-border-color: transparent;
-    --p-tabs-tab-active-background: var(--global-background);
+    --p-tabs-tablist-background: transparent;
+    --p-tabs-tab-background: transparent;
     --p-button-sm-icon-only-width: 1.3rem;
     --p-button-sm-font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    padding: 0 0.5rem;
     .p-tablist-active-bar {
       display: none;
+    }
+    .p-tablist-tab-list {
+      gap: 0.3rem;
+      background: transparent;
+      border: none;
     }
     .p-tab {
       padding: 0;
@@ -138,10 +147,21 @@ function handleResizeStart(e: MouseEvent) {
       font-size: inherit;
       line-height: inherit;
       animation: sidebar-tab-in 0.25s var(--global-ease);
-      border: none;
-      border-top: solid var(--p-tabs-active-bar-height) transparent;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--p-text-muted-color);
+      transition:
+        background 0.15s,
+        border-color 0.15s,
+        color 0.15s;
+      &:hover {
+        background: color-mix(in srgb, var(--p-text-color), transparent 92%);
+      }
       &-active {
-        border-top-color: var(--p-primary-color);
+        background: var(--p-content-background);
+        border-color: var(--p-primary-color);
+        color: var(--p-primary-color);
       }
       &:nth-child(1) {
         animation: none;

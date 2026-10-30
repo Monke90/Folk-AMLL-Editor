@@ -5,32 +5,52 @@
         <Spectrogram v-if="showSpectrogram" class="spectrogram-view" />
       </KeepAlive>
       <div class="player-toolbar">
-        <Button
-          :icon="`mdi ${loading ? 'mdi-refresh' : 'mdi-folder-music-outline'}`"
-          :disabled="loading"
-          severity="secondary"
-          variant="text"
-          @click="() => handleSelectFile()"
-          v-tooltip="tipHotkey(tt.chooseAudioFile(), 'chooseMedia')"
-        />
-        <Button
-          icon="mdi mdi-tune-vertical"
-          severity="secondary"
-          variant="text"
-          @click="tooglePopover"
-          v-tooltip="tipMultiLine(tt.playOptions(), tt.playOptionsWheel())"
-          @wheel="handlePopBtnWheel"
-        />
-        <Popover ref="popover"> <PopoverPane /> </Popover>
-        <Button
-          :icon="`mdi ${playingComputed ? 'mdi-pause' : 'mdi-play'}`"
-          class="player-play"
-          rounded
-          @click="audioEngine.togglePlay()"
-          :disabled="!activatedRef"
-          v-tooltip="tipHotkey(playingComputed ? tt.pause() : tt.play(), 'playPauseAudio')"
-          ref="playPauseButton"
-        />
+        <div class="player-group">
+          <Button
+            :icon="`mdi ${loading ? 'mdi-refresh' : 'mdi-folder-music-outline'}`"
+            :disabled="loading"
+            severity="secondary"
+            variant="text"
+            @click="() => handleSelectFile()"
+            v-tooltip="tipHotkey(tt.chooseAudioFile(), 'chooseMedia')"
+          />
+          <Button
+            icon="mdi mdi-tune-vertical"
+            severity="secondary"
+            variant="text"
+            @click="tooglePopover"
+            v-tooltip="tipMultiLine(tt.playOptions(), tt.playOptionsWheel())"
+            @wheel="handlePopBtnWheel"
+          />
+          <Popover ref="popover"> <PopoverPane /> </Popover>
+        </div>
+        <div class="player-group player-transport">
+          <Button
+            icon="mdi mdi-rewind"
+            severity="secondary"
+            variant="text"
+            :disabled="!activatedRef"
+            @click="audioEngine.seekBy(-optimizedStep)"
+            v-tooltip="tipHotkey(t.hotkey.commands.seekBackward(), 'seekBackward')"
+          />
+          <Button
+            :icon="`mdi ${playingComputed ? 'mdi-pause' : 'mdi-play'}`"
+            class="player-play"
+            rounded
+            @click="audioEngine.togglePlay()"
+            :disabled="!activatedRef"
+            v-tooltip="tipHotkey(playingComputed ? tt.pause() : tt.play(), 'playPauseAudio')"
+            ref="playPauseButton"
+          />
+          <Button
+            icon="mdi mdi-fast-forward"
+            severity="secondary"
+            variant="text"
+            :disabled="!activatedRef"
+            @click="audioEngine.seekBy(optimizedStep)"
+            v-tooltip="tipHotkey(t.hotkey.commands.seekForward(), 'seekForward')"
+          />
+        </div>
         <ProgressTime />
         <Waveform :show-view-region="showSpectrogram" />
         <Button
@@ -188,13 +208,30 @@ const showSpectrogram = ref(false)
   .player-toolbar {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
     padding: 0.6rem 0.8rem;
+  }
+  .player-group {
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+    padding: 3px;
+    border-radius: 12px;
+    border: 1px solid var(--p-content-border-color);
+    background: var(--global-background);
+    flex-shrink: 0;
+    --p-button-icon-only-width: 2.2rem;
   }
   .player-play {
     flex-shrink: 0;
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    margin: 0 0.15rem;
+  }
+  .waveform {
+    border: 1px solid var(--p-content-border-color);
+    border-radius: 10px;
+    background: var(--global-background);
   }
 }
 </style>
