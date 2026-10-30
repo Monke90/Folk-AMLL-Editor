@@ -42,7 +42,7 @@ nav {
   z-index: 1;
 }
 .ribbon {
-  border: 1px solid color-mix(in srgb, var(--p-zinc-600), transparent 85%);
+  border: 1px solid var(--p-content-border-color);
   margin: 0 0.5rem;
   .p-card-body {
     padding: 0.2rem 0;

@@ -31,7 +31,7 @@ const props = defineProps<{
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  color: light-dark(var(--p-zinc-500), var(--p-zinc-400));
+  color: var(--p-text-muted-color);
   &.compact {
     gap: 0.3rem;
   }

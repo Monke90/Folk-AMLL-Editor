@@ -9,12 +9,14 @@
           :icon="`mdi ${loading ? 'mdi-refresh' : 'mdi-folder-music-outline'}`"
           :disabled="loading"
           severity="secondary"
+          variant="text"
           @click="() => handleSelectFile()"
           v-tooltip="tipHotkey(tt.chooseAudioFile(), 'chooseMedia')"
         />
         <Button
           icon="mdi mdi-tune-vertical"
           severity="secondary"
+          variant="text"
           @click="tooglePopover"
           v-tooltip="tipMultiLine(tt.playOptions(), tt.playOptionsWheel())"
           @wheel="handlePopBtnWheel"
@@ -22,6 +24,8 @@
         <Popover ref="popover"> <PopoverPane /> </Popover>
         <Button
           :icon="`mdi ${playingComputed ? 'mdi-pause' : 'mdi-play'}`"
+          class="player-play"
+          rounded
           @click="audioEngine.togglePlay()"
           :disabled="!activatedRef"
           v-tooltip="tipHotkey(playingComputed ? tt.pause() : tt.play(), 'playPauseAudio')"
@@ -32,6 +36,7 @@
         <Button
           icon="mdi mdi-chart-box-outline"
           :severity="showSpectrogram ? 'primary' : 'secondary'"
+          :variant="showSpectrogram ? undefined : 'text'"
           @click="showSpectrogram = !showSpectrogram"
           v-tooltip="
             !compatibilityMap.sharedArrayBuffer
@@ -160,7 +165,7 @@ const showSpectrogram = ref(false)
 
 <style lang="scss">
 .player {
-  border: 1px solid color-mix(in srgb, var(--p-zinc-600), transparent 85%);
+  border: 1px solid var(--p-content-border-color);
   overflow: hidden;
   margin: 0 0.5rem;
   display: flex;
@@ -182,8 +187,14 @@ const showSpectrogram = ref(false)
 
   .player-toolbar {
     display: flex;
+    align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.6rem 0.8rem;
+  }
+  .player-play {
+    flex-shrink: 0;
+    width: 2.4rem;
+    height: 2.4rem;
   }
 }
 </style>

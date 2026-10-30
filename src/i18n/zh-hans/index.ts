@@ -50,6 +50,11 @@ const zhHans = {
         deleteSyl: '删除音节',
       },
     },
+    timingHelper: {
+      nowTiming: '当前音节',
+      nothingSelected: '选择一个音节以在此查看其时间',
+      hotkeys: '快捷键',
+    },
     dragGhost: {
       copyLine: '{{ 复制行 }}', // Reserved for languages with plural
       moveLine: '{{ 移动行 }}', // Reserved for languages with plural
