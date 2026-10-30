@@ -21,6 +21,12 @@
   --p-border-radius-md: 8px;
   --p-border-radius-lg: 10px;
   --p-border-radius-xl: 12px;
+  // Buttons, inputs and dropdowns share one corner radius so they line up in forms
+  --p-button-border-radius: 10px;
+  --p-form-field-border-radius: 10px;
+  --p-inputtext-border-radius: 10px;
+  --p-select-border-radius: 10px;
+  --p-textarea-border-radius: 10px;
 
   --e-duet-text-color: light-dark(#2c5fd6, #7fa6ff);
   --e-bg-text-color: light-dark(#7a45d1, #c3a0ff);
@@ -103,28 +109,37 @@
     vertical-align: middle;
   }
 }
-.view-switcher.view-switcher {
+// Every segmented control (view switcher, import source picker, ...) shares one look: a
+// pill with the checked option filled in the accent color.
+.p-selectbutton {
   padding: 3px;
   gap: 2px;
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--p-content-background);
   border: 1px solid var(--p-content-border-color);
-  --p-togglebutton-border-radius: 7px;
+  --p-togglebutton-border-radius: 9px;
   --p-togglebutton-background: transparent;
   --p-togglebutton-border-color: transparent;
   --p-togglebutton-color: var(--p-text-muted-color);
-  --p-togglebutton-hover-background: transparent;
+  --p-togglebutton-hover-background: color-mix(in srgb, var(--p-text-color), transparent 92%);
   --p-togglebutton-hover-color: var(--p-text-color);
   --p-togglebutton-checked-background: var(--p-primary-color);
   --p-togglebutton-checked-border-color: transparent;
   --p-togglebutton-checked-color: var(--p-primary-contrast-color);
   --p-togglebutton-content-checked-background: transparent;
   --p-togglebutton-content-checked-shadow: none;
-  --p-togglebutton-padding: 0.35rem 1.4rem;
   .p-togglebutton {
     font-weight: 500;
-    border-radius: 7px;
+    border-radius: 9px;
+    // PrimeVue draws a sliding highlight behind the checked label; the filled button
+    // replaces it.
+    &::before {
+      display: none;
+    }
   }
+}
+.view-switcher.view-switcher {
+  --p-togglebutton-padding: 0.35rem 1.4rem;
 }
 
 // ---- Ribbon ----
