@@ -187,5 +187,7 @@
 // ---- Sidebar ----
 .sidebar.sidebar {
   margin: 0;
-  background: var(--p-content-background);
+  // Sidebar tabs paint their sticky bars with the page background, so the sidebar itself
+  // must sit on the page background too or those bars show up as darker strips.
+  background: var(--global-background);
 }
