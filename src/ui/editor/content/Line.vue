@@ -18,48 +18,15 @@
     <div class="cline-drag-ghost" ref="dragGhostEl"></div>
     <div class="cline-head" draggable="true">
       <div class="cline-drag-indicator">
-        <i class="cline-drag-icon mdi mdi-menu"></i>
+        <i class="cline-drag-icon mdi mdi-drag-vertical"></i>
       </div>
-      <div class="cline-head-info" :class="{ compact: prefStore.hideTranslateRoman }">
-        <div class="cline-head-info-primary">
-          <Button
-            class="cline-tag cline-bookmark"
-            :severity="props.line.bookmarked ? 'warn' : 'secondary'"
-            variant="text"
-            :icon="`mdi mdi-bookmark${props.line.bookmarked ? '' : '-outline'}`"
-            :class="{ active: props.line.bookmarked }"
-            @click.stop="props.line.bookmarked = !props.line.bookmarked"
-            v-tooltip="tt.bookmark()"
-          />
-          <div
-            class="cline-index"
-            @dblclick="props.line.ignoreInTiming = !props.line.ignoreInTiming"
-            v-tooltip="tipMultiLine(tt.index(), tt.indexDbClickToToogleIgnore())"
-          >
-            {{ props.index + 1 }}
-          </div>
-        </div>
-        <div class="cline-head-info-secondary">
-          <Button
-            class="cline-tag cline-tag-duet"
-            :severity="props.line.duet ? undefined : 'secondary'"
-            variant="text"
-            size="small"
-            icon="mdi mdi-align-horizontal-right"
-            :class="{ active: props.line.duet }"
-            @click.stop="props.line.duet = !props.line.duet"
-            v-tooltip="tt.duet()"
-          />
-          <Button
-            class="cline-tag cline-tag-background"
-            :severity="props.line.background ? undefined : 'secondary'"
-            variant="text"
-            size="small"
-            icon="mdi mdi-focus-field"
-            :class="{ active: props.line.background }"
-            @click.stop="props.line.background = !props.line.background"
-            v-tooltip="tt.background()"
-          />
+      <div class="cline-head-info">
+        <div
+          class="cline-index"
+          @dblclick="props.line.ignoreInTiming = !props.line.ignoreInTiming"
+          v-tooltip="tipMultiLine(tt.index(), tt.indexDbClickToToogleIgnore())"
+        >
+          {{ props.index + 1 }}
         </div>
       </div>
     </div>
@@ -104,6 +71,35 @@
           </FloatLabel>
         </template>
       </div>
+    </div>
+    <div class="cline-tools">
+      <Button
+        class="cline-tag cline-bookmark"
+        :severity="props.line.bookmarked ? 'warn' : 'secondary'"
+        variant="text"
+        :icon="`mdi mdi-bookmark${props.line.bookmarked ? '' : '-outline'}`"
+        :class="{ active: props.line.bookmarked }"
+        @click.stop="props.line.bookmarked = !props.line.bookmarked"
+        v-tooltip="tt.bookmark()"
+      />
+      <Button
+        class="cline-tag cline-tag-duet"
+        :severity="props.line.duet ? undefined : 'secondary'"
+        variant="text"
+        icon="mdi mdi-align-horizontal-right"
+        :class="{ active: props.line.duet }"
+        @click.stop="props.line.duet = !props.line.duet"
+        v-tooltip="tt.duet()"
+      />
+      <Button
+        class="cline-tag cline-tag-background"
+        :severity="props.line.background ? undefined : 'secondary'"
+        variant="text"
+        icon="mdi mdi-focus-field"
+        :class="{ active: props.line.background }"
+        @click.stop="props.line.background = !props.line.background"
+        v-tooltip="tt.background()"
+      />
     </div>
   </div>
 </template>
@@ -319,25 +315,30 @@ function handleRomanGenerate() {
 
 <style lang="scss">
 .cline {
-  margin: 0 0.5rem;
+  margin: 0 1rem;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr auto;
   overflow: hidden;
-  border: 2px var(--c-border-color) solid;
+  border: 1px var(--c-border-color) solid;
   background-color: var(--c-bg-color);
-  border-radius: 0.5rem;
-  --c-border-color: var(--p-button-secondary-background);
+  border-radius: 0.7rem;
+  --c-border-color: var(--p-content-border-color);
   --c-bg-color: transparent;
   --c-syl-gap: 0.5rem;
   opacity: 0.8;
-  transition: transform 0.2s;
-  // animation: fade 0.2s;
+  transition:
+    transform 0.2s,
+    border-color 0.15s,
+    opacity 0.15s;
   &:hover,
   &.selected {
     --c-bg-color: var(--p-content-background);
   }
+  &:hover {
+    opacity: 0.95;
+  }
   &.selected {
-    --c-border-color: var(--p-button-secondary-hover-background);
+    --c-border-color: var(--p-primary-color);
     opacity: 1;
   }
   &.removing {
@@ -346,50 +347,46 @@ function handleRomanGenerate() {
   }
 }
 .cline-head {
-  display: grid;
-  grid-template-columns: auto auto;
-  --cline-head-background: color-mix(in srgb, var(--c-border-color), transparent 40%);
+  display: flex;
+  align-items: flex-start;
+  --cline-head-background: color-mix(in srgb, var(--p-content-border-color), transparent 55%);
   background-color: var(--cline-head-background);
-  color: var(--p-button-secondary-color);
+  color: var(--p-text-muted-color);
   cursor: move;
+  .cline.selected & {
+    --cline-head-background: color-mix(in srgb, var(--p-primary-color), transparent 88%);
+  }
 }
 .cline-drag-indicator {
-  width: 1.2rem;
+  width: 1.4rem;
+  padding-top: 0.75rem;
   display: flex;
-  align-items: center;
-  justify-content: right;
+  justify-content: center;
 }
 .cline-drag-icon {
-  opacity: 0.5;
-  font-size: 0.9rem;
+  opacity: 0.4;
+  font-size: 1.1rem;
   .cline.selected & {
     opacity: 0.8;
   }
 }
 .cline-head-info {
-  &,
-  &-primary,
-  &-secondary {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  justify-content: space-between;
-  padding: 0 0.3rem 0.1rem;
-  &.compact {
-    flex-direction: row;
-    align-items: center;
-    gap: 0rem;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.55rem 0.5rem 0 0;
 }
 .cline-index {
-  padding: 0.3rem 0 0.5rem;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 500;
   text-align: center;
-  width: 3ch;
+  min-width: 2.2ch;
   font-family: var(--font-monospace);
   position: relative;
   --ignore-line-bg: currentColor;
+  .cline.selected & {
+    color: var(--p-primary-color);
+  }
   .cline.pgmignored & {
     --ignore-line-bg: var(--p-primary-color);
   }
@@ -412,21 +409,24 @@ function handleRomanGenerate() {
     border-radius: 0.1rem;
   }
 }
-.cline-bookmark {
-  padding-top: 0;
-  border-top: none !important;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+.cline-tools {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.4rem 0.4rem;
+  --p-button-icon-only-width: 2rem;
+  --p-button-padding-y: 0.35rem;
 }
 .cline-tag {
   --p-button-text-secondary-color: color-mix(
     in srgb,
     var(--p-form-field-placeholder-color),
-    transparent 70%
+    transparent 30%
   );
   --p-button-text-secondary-hover-background: color-mix(
     in srgb,
-    var(--c-border-color),
+    var(--p-content-border-color),
     transparent 40%
   );
   &-duet {
@@ -444,7 +444,7 @@ function handleRomanGenerate() {
 .cline-secondary {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem 0.6rem;
   gap: 0.5rem;
   align-items: stretch;
   .p-floatlabel {

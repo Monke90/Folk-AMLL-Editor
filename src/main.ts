@@ -19,6 +19,7 @@ import '@mdi/font/css/materialdesignicons.css'
 import '@ui/styles/common.scss'
 import '@ui/styles/rewrites.scss'
 import '@ui/styles/themes.scss'
+import '@ui/styles/redesign.scss'
 import 'floating-vue/dist/style.css'
 import 'primeicons/primeicons.css'
 

@@ -121,7 +121,10 @@ function handleTextDbClick() {
     }
   }
   &.active {
-    background-color: color-mix(in srgb, var(--p-primary-color), transparent 75%);
+    background-color: color-mix(in srgb, var(--p-primary-color), transparent 82%);
+    .tsyl-content {
+      color: var(--p-primary-color);
+    }
   }
 }
 .tsyl-timestamp {
@@ -130,6 +133,7 @@ function handleTextDbClick() {
 .tsyl-content {
   text-align: center;
   font-size: 1.5rem;
+  font-weight: 500;
 }
 .tsyl-text {
   white-space: pre;
