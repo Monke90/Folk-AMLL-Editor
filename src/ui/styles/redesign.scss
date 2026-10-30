@@ -28,6 +28,14 @@
   --p-select-border-radius: 10px;
   --p-textarea-border-radius: 10px;
 
+  // Toggle switches: accent track with a light knob in both states
+  --p-toggleswitch-checked-background: var(--p-primary-color);
+  --p-toggleswitch-checked-hover-background: var(--p-primary-hover-color);
+  --p-toggleswitch-handle-background: #ffffff;
+  --p-toggleswitch-handle-hover-background: #ffffff;
+  --p-toggleswitch-handle-checked-background: #ffffff;
+  --p-toggleswitch-handle-checked-hover-background: #ffffff;
+
   --e-duet-text-color: light-dark(#2c5fd6, #7fa6ff);
   --e-bg-text-color: light-dark(#7a45d1, #c3a0ff);
 }
