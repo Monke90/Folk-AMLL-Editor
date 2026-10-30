@@ -1,0 +1,176 @@
+// Folk redesign: a calm "studio" look with one warm accent.
+//
+// Everything here works by re-pointing design tokens (PrimeVue's surface ramp, radii and
+// the accent ramp) and by restyling existing components, so no behaviour changes.
+
+// Warm accent ramp. Dark mode uses level 400 as the accent and light mode level 500, which
+// is deep enough to carry white text.
+:root:root {
+  --p-amber-50: #fff6ec;
+  --p-amber-100: #ffe9d2;
+  --p-amber-200: #fdd2a6;
+  --p-amber-300: #f9bb7d;
+  --p-amber-400: #f5a65b;
+  --p-amber-500: #b85a0b;
+  --p-amber-600: #964609;
+  --p-amber-700: #763709;
+  --p-amber-800: #5c2c0b;
+  --p-amber-900: #47230c;
+  --p-amber-950: #271106;
+
+  --p-border-radius-md: 8px;
+  --p-border-radius-lg: 10px;
+  --p-border-radius-xl: 12px;
+
+  --e-duet-text-color: light-dark(#2c5fd6, #7fa6ff);
+  --e-bg-text-color: light-dark(#7a45d1, #c3a0ff);
+}
+
+// Dark: ink background, slightly lifted panels.
+:root.app-dark:root {
+  --p-surface-0: #e8eaf0;
+  --p-surface-50: #eceef3;
+  --p-surface-100: #dde0e8;
+  --p-surface-200: #c5c9d6;
+  --p-surface-300: #a9aebd;
+  --p-surface-400: #8b92a5;
+  --p-surface-500: #4a5163;
+  --p-surface-600: #3a4152;
+  --p-surface-700: #2a2f3b;
+  --p-surface-800: #1d212a;
+  --p-surface-900: #15181f;
+  --p-surface-950: #0e1014;
+  --global-background: #0e1014;
+  --e-duet-hover-background: color-mix(in srgb, #7fa6ff, transparent 88%);
+  --e-bg-hover-background: color-mix(in srgb, #c3a0ff, transparent 88%);
+}
+
+// Light: warm paper.
+:root:not(.app-dark):root {
+  --p-surface-0: #ffffff;
+  --p-surface-50: #f6f5f2;
+  --p-surface-100: #efede8;
+  --p-surface-200: #e2e0d8;
+  --p-surface-300: #cfccc2;
+  --p-surface-400: #9a978d;
+  --p-surface-500: #77746b;
+  --p-surface-600: #5a5850;
+  --p-surface-700: #3f3d37;
+  --p-surface-800: #2a2925;
+  --p-surface-900: #1b1a17;
+  --p-surface-950: #0f0f0d;
+  --global-background: #faf9f6;
+}
+
+// ---- Title bar ----
+.titlebar {
+  align-items: center;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
+  border-bottom: 1px solid var(--p-content-border-color);
+  .centerbar {
+    flex: 0 0 auto;
+  }
+  .leftbar {
+    align-items: center;
+  }
+  .brand-mark {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-right: 0.4rem;
+    border-radius: 8px;
+    background: var(--p-primary-color);
+    color: var(--p-primary-contrast-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .filename-section .filename-text .name {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  .filename-section .filename-text .asterisk {
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    margin-left: 0.5rem;
+    border-radius: 50%;
+    background: var(--p-primary-color);
+    font-size: 0;
+    vertical-align: middle;
+  }
+}
+.view-switcher.view-switcher {
+  padding: 3px;
+  gap: 2px;
+  border-radius: 10px;
+  background: var(--p-content-background);
+  border: 1px solid var(--p-content-border-color);
+  --p-togglebutton-border-radius: 7px;
+  --p-togglebutton-background: transparent;
+  --p-togglebutton-border-color: transparent;
+  --p-togglebutton-color: var(--p-text-muted-color);
+  --p-togglebutton-hover-background: transparent;
+  --p-togglebutton-hover-color: var(--p-text-color);
+  --p-togglebutton-checked-background: var(--p-primary-color);
+  --p-togglebutton-checked-border-color: transparent;
+  --p-togglebutton-checked-color: var(--p-primary-contrast-color);
+  --p-togglebutton-content-checked-background: transparent;
+  --p-togglebutton-content-checked-shadow: none;
+  --p-togglebutton-padding: 0.35rem 1.4rem;
+  .p-togglebutton {
+    font-weight: 500;
+    border-radius: 7px;
+  }
+}
+
+// ---- Ribbon ----
+.ribbon.ribbon {
+  --p-card-background: transparent;
+  --p-card-shadow: none;
+  border: none;
+  background: transparent;
+  margin: 0;
+  padding: 0.6rem 1rem 0.2rem;
+  .p-card-content {
+    gap: 0.5rem;
+    height: 8.2rem;
+  }
+}
+.ribbon-group {
+  padding-right: 0;
+  border-radius: 10px;
+  border: 1px solid var(--p-content-border-color);
+  background: var(--p-content-background);
+  &::after {
+    display: none;
+  }
+}
+.ribbon-group-label-text {
+  color: var(--p-text-muted-color);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ribbon-group-label-button {
+  --p-button-text-secondary-color: var(--p-text-muted-color);
+}
+
+// ---- Player ----
+.player.player {
+  margin: 0.5rem 1rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--p-content-border-color);
+  background: var(--p-content-background);
+  box-shadow: none;
+}
+
+// ---- Sidebar ----
+.sidebar.sidebar {
+  margin: 0;
+  background: var(--p-content-background);
+}

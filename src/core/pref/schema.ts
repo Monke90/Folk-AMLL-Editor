@@ -68,7 +68,7 @@ export const getDefaultPref = (): PreferenceSchema => ({
   spectrogramShowSyllableBlocks: false,
   spectrogramBlockScope: 'all',
   themeMode: 'system',
-  themeAccent: 'emerald',
+  themeAccent: 'amber',
   spellCheckEnabled: false,
   notifyCompatIssuesOnStartup: true,
   sidebarWidth: 360,

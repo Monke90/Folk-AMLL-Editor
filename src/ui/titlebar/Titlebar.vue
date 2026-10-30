@@ -1,6 +1,7 @@
 <template>
   <header class="titlebar" :data-tauri-drag-region="isDesktopApp || undefined">
     <div class="leftbar" :data-tauri-drag-region="isDesktopApp || undefined">
+      <div class="brand-mark" aria-hidden="true">F</div>
       <SplitButton
         :label="tt.open()"
         :icon="`mdi ${openWorking ? 'mdi-refresh' : 'mdi-folder-outline'}`"
