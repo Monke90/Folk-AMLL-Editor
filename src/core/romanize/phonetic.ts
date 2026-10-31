@@ -329,7 +329,7 @@ export async function getPhoneticSyllables(
     if (capPhonetics[i]) {
       // Still advance syllableIndex so the master pointer stays in sync for any
       // subsequent capsules that do need the fallback path.
-      let charSyllableCount = Math.round((charWeights[i] / totalWeight) * masterSyllables.length)
+      let charSyllableCount = Math.round(((charWeights[i] ?? 0) / totalWeight) * masterSyllables.length)
       if (i === originalCapsules.length - 1 || totalWeight === 0) {
         charSyllableCount = masterSyllables.length - syllableIndex
       }
@@ -344,12 +344,12 @@ export async function getPhoneticSyllables(
         }
       }
       syllableIndex += charSyllableCount
-      results.push(capPhonetics[i])
+      results.push(capPhonetics[i] ?? '')
       continue
     }
 
     // Fallback: distribute from the master line phonetic
-    let charSyllableCount = Math.round((charWeights[i] / totalWeight) * masterSyllables.length)
+    let charSyllableCount = Math.round(((charWeights[i] ?? 0) / totalWeight) * masterSyllables.length)
     if (i === originalCapsules.length - 1 || totalWeight === 0) {
       charSyllableCount = masterSyllables.length - syllableIndex
     }

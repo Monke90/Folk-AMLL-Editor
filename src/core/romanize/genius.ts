@@ -36,7 +36,8 @@ export async function findGeniusRomanization(
   for (const query of queries) {
     const tracks = await searchGenius(query.trim(), accessToken)
     for (const track of tracks) {
-      if (seen.has(track.id) || !isRomanizationPage(track.name, track.artist)) continue
+      if (!track.fetchLyrics || seen.has(track.id)) continue
+      if (!isRomanizationPage(track.name, track.artist)) continue
       seen.add(track.id)
       if (tried++ >= MAX_CANDIDATES) return null
       try {
