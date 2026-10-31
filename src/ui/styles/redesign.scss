@@ -29,6 +29,10 @@
   --p-textarea-border-radius: 10px;
 
   // Toggle switches: accent track with a light knob in both states
+  --p-toggleswitch-width: 2.6rem;
+  --p-toggleswitch-height: 1.5rem;
+  --p-toggleswitch-gap: 0.2rem;
+  --p-toggleswitch-handle-size: 1.1rem;
   --p-toggleswitch-checked-background: var(--p-primary-color);
   --p-toggleswitch-checked-hover-background: var(--p-primary-hover-color);
   --p-toggleswitch-handle-background: #ffffff;

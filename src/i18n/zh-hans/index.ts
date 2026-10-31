@@ -340,6 +340,8 @@ const zhHans = {
         spectrogramHeightDesc: '频谱图的高度 (像素)',
         spectrogramColor: '配色方案',
         spectrogramColorDesc: '选择预设色彩方案或自定义渐变',
+        spectrogramStyle: '显示样式',
+        spectrogramStyleDesc: '条形图显示响度，频谱图显示频率',
       },
     },
   },

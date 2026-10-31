@@ -22,7 +22,8 @@
               : 'Editing selected line only — click to switch to all lines'
           "
           @click="
-            prefStore.spectrogramBlockScope = prefStore.spectrogramBlockScope === 'all' ? 'selected' : 'all'
+            prefStore.spectrogramBlockScope =
+              prefStore.spectrogramBlockScope === 'all' ? 'selected' : 'all'
           "
         />
       </div>
@@ -48,7 +49,9 @@
         ref="containerEl"
         :style="{ height: `${ctx.displayHeight.value}px` }"
       >
+        <WaveBars v-if="barsMode" />
         <div
+          v-else
           class="spectrogram-content"
           :style="{
             width: `${ctx.totalContentWidth.value}px`,
@@ -93,6 +96,7 @@ import Playhead from './Playhead.vue'
 import Ruler from './Ruler.vue'
 import SyllableBlocks from './SyllableBlocks.vue'
 import Tile from './Tile.vue'
+import WaveBars from './WaveBars.vue'
 import EmptyTip from '@ui/components/EmptyTip.vue'
 import { Button, Slider } from 'primevue'
 
@@ -161,9 +165,11 @@ watch(
 )
 
 // 获取瓦片
+const barsMode = computed(() => prefStore.spectrogramStyle === 'bars')
 const { visibleTiles } = useSpectrogramTiles({
   ctx,
   audioBuffer: audioBufferComputed,
+  enabled: computed(() => !barsMode.value),
 })
 
 // 无音频时点击「显示音节块」按钮，闪红提示而不是切换

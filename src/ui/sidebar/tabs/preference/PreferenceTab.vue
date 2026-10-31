@@ -52,6 +52,10 @@ watch(selectedLanguageItem, (val) => {
   localeOptRef.value = val.code
 })
 
+const specStyleOptns = [
+  { label: 'Bars', value: 'bars' },
+  { label: 'Spectrogram', value: 'spectrogram' },
+]
 const specColorOptns = [
   { label: 'Amber', value: 'amber' },
   { label: 'Icy Blue', value: 'icyBlue' },
@@ -176,6 +180,14 @@ function selectAccent(accent: ThemeAccent) {
     </div>
     <div class="pref-group">
       <div class="pref-group-title">{{ tt.groups.spectrogram() }}</div>
+      <PrefItem :label="tt.items.spectrogramStyle()" :desc="tt.items.spectrogramStyleDesc()">
+        <Select
+          v-model="prefStore.spectrogramStyle"
+          :options="specStyleOptns"
+          optionLabel="label"
+          optionValue="value"
+        />
+      </PrefItem>
       <PrefItem :label="tt.items.spectrogramColor()" :desc="tt.items.spectrogramColorDesc()">
         <Select v-model="selectedSpecColorOptn" :options="specColorOptns" optionLabel="label" />
       </PrefItem>
