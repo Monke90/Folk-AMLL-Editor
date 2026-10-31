@@ -248,7 +248,8 @@ function handleMouseDown() {
   flex: 1;
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: -1px;
+  align-content: flex-start;
+  padding: 0.1rem 0.4rem;
   cursor: cell;
 }
 </style>

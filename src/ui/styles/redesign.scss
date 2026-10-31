@@ -92,12 +92,52 @@
   }
   .leftbar {
     align-items: center;
+    gap: 0.5rem;
+  }
+  .rightbar {
+    align-items: center;
+    gap: 0.6rem;
+  }
+  // Bigger controls; the view switcher in the middle keeps its own size
+  .leftbar,
+  .rightbar {
+    .p-button {
+      font-size: 1.05rem;
+      min-height: 2.6rem;
+    }
+    .p-button-icon {
+      font-size: 1.3rem;
+    }
+    .p-button-icon-only {
+      width: 2.6rem;
+    }
+    .filename-text .name {
+      font-size: 1.2rem;
+    }
+  }
+  .save-state-section {
+    font-size: 0.95rem;
+  }
+  // Main button and its arrow stay joined, with only a hairline between them
+  .p-splitbutton {
+    gap: 2px;
+    .p-splitbutton-button.p-button {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .p-splitbutton-dropdown.p-button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      width: 2.4rem;
+      padding-inline: 0;
+    }
   }
   .brand-mark {
-    width: 1.8rem;
-    height: 1.8rem;
-    margin-right: 0.4rem;
-    border-radius: 8px;
+    width: 2.4rem;
+    height: 2.4rem;
+    margin-right: 0.5rem;
+    border-radius: 10px;
+    font-size: 1.2rem;
     background: var(--p-primary-color);
     color: var(--p-primary-contrast-color);
     display: flex;
