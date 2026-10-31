@@ -216,36 +216,90 @@
     var(--p-primary-color) 0 0 0 1px,
     color-mix(in srgb, var(--p-primary-color), transparent 75%) 0 0 0 2px;
 }
-// Chips sit in their own strip along the bottom of the band instead of covering it
+// Chips sit in their own strip above the ruler instead of covering the bars
 .syl-blocks-layer.syl-blocks-layer {
   top: auto;
-  bottom: 6px;
-  height: 40px !important;
+  bottom: 4px;
+  height: 36px !important;
 }
-.syl-line {
+.syl-line.syl-line {
   background-color: transparent;
   border-color: transparent;
 }
 .syl-word.syl-word {
+  --chip-bg: var(--p-surface-800);
+  --chip-border: color-mix(in srgb, var(--p-text-color), transparent 72%);
+  --chip-color: var(--p-text-color);
   justify-content: center;
-  padding: 0 6px;
+  padding: 0 8px;
   font-size: 12px;
   font-weight: 500;
-  border-radius: 8px;
-  border-color: var(--p-content-border-color);
-  background-color: var(--p-surface-800);
-  color: var(--p-text-color);
-  &.selected {
-    background-color: color-mix(in srgb, var(--p-primary-color), transparent 80%);
-    border-color: var(--p-primary-color);
-    color: var(--p-primary-color);
-  }
+  border-radius: 6px;
+  border: 1px solid var(--chip-border);
+  background-color: var(--chip-bg);
+  color: var(--chip-color);
+  box-shadow: 0 1px 0 rgb(0 0 0 / 0.25);
   &:hover,
   &:focus-visible {
     border-color: var(--p-primary-color);
+  }
+  &.selected {
+    --chip-bg: color-mix(in srgb, var(--p-primary-color), transparent 78%);
+    --chip-border: var(--p-primary-color);
+    --chip-color: var(--p-primary-color);
+  }
+
+  // Background vocals: dashed violet outline, tinted fill, italic text and a small BG tag,
+  // so they read differently from lead vocals even when the chip is narrow.
+  &.bg-vocal {
+    --chip-bg: color-mix(in srgb, #a78bfa, transparent 86%);
+    --chip-border: #a78bfa;
+    --chip-color: #c4b5fd;
+    border-style: dashed;
+    font-style: italic;
+    &::before {
+      content: 'BG';
+      position: absolute;
+      top: 2px;
+      left: 4px;
+      font-size: 8px;
+      font-weight: 700;
+      font-style: normal;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      color: #a78bfa;
+      opacity: 0.9;
+    }
+    &.selected {
+      --chip-bg: color-mix(in srgb, #a78bfa, transparent 70%);
+      --chip-color: #ede9fe;
+      border-style: solid;
+    }
+  }
+}
+:root:not(.app-dark) .syl-word.syl-word {
+  --chip-bg: var(--p-surface-0);
+  box-shadow: 0 1px 0 rgb(0 0 0 / 0.08);
+  &.bg-vocal {
+    --chip-color: #6d28d9;
+    --chip-bg: color-mix(in srgb, #8b5cf6, transparent 88%);
+    --chip-border: #8b5cf6;
+    &::before {
+      color: #7c3aed;
+    }
   }
 }
 .syl-word-roman.syl-word-roman {
   font-size: 10px;
   line-height: 1.1;
+}
+
+// ---- Toggle switch ----
+// The track is a flex item in rows with long labels, where it was being squeezed narrower than
+// the width the knob position is computed from, so the knob stuck out of the track.
+.p-toggleswitch.p-toggleswitch {
+  flex: 0 0 auto;
+  min-width: var(--p-toggleswitch-width);
+  width: var(--p-toggleswitch-width);
+  height: var(--p-toggleswitch-height);
 }

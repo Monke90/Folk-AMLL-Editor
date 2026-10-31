@@ -14,6 +14,8 @@ const props = defineProps<{
   scrollLeft: number
   duration: number
   width: number
+  /** Hang the ticks from the top edge instead of standing on the bottom edge */
+  flip?: boolean
 }>()
 
 const RULER_HEIGHT = 30
@@ -39,6 +41,7 @@ const textOpacity = 0.5
 const markOpacity = 0.3
 const markFontSize = 12
 const textOffsetY = 13
+const flippedTextY = 22
 const majorMarkHeight = 8
 const minorMarkHeight = 5
 const strokeWidth = 1
@@ -119,17 +122,17 @@ function drawRuler() {
   for (const time of majorTimes) {
     if (time < 0 || time > props.duration) continue
     const x = (time * props.zoom - props.scrollLeft) * dpr
-    ctx.moveTo(x, height - majorMarkHeight * dpr)
-    ctx.lineTo(x, height)
+    ctx.moveTo(x, props.flip ? 0 : height - majorMarkHeight * dpr)
+    ctx.lineTo(x, props.flip ? majorMarkHeight * dpr : height)
     const label = ms2strShort(Math.round(time * 1000))
-    ctx.fillText(label, x, height - textOffsetY * dpr)
+    ctx.fillText(label, x, props.flip ? flippedTextY * dpr : height - textOffsetY * dpr)
   }
   ctx.stroke()
   ctx.beginPath()
   for (const time of minorTimes) {
     const x = (time * props.zoom - props.scrollLeft) * dpr
-    ctx.moveTo(x, height - minorMarkHeight * dpr)
-    ctx.lineTo(x, height)
+    ctx.moveTo(x, props.flip ? 0 : height - minorMarkHeight * dpr)
+    ctx.lineTo(x, props.flip ? minorMarkHeight * dpr : height)
   }
   ctx.stroke()
 }

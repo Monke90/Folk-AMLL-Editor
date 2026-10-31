@@ -2,32 +2,23 @@
   <Card class="player">
     <template #content>
       <div class="player-toolbar">
-        <div class="player-transport">
-          <Button
-            icon="mdi mdi-chevron-double-left"
-            severity="secondary"
-            variant="text"
-            :disabled="!activatedRef"
-            @click="audioEngine.seekBy(-optimizedStep)"
-            v-tooltip="tipHotkey(t.hotkey.commands.seekBackward(), 'seekBackward')"
-          />
-          <Button
-            :icon="`mdi ${playingComputed ? 'mdi-pause' : 'mdi-play'}`"
-            class="player-play"
-            @click="audioEngine.togglePlay()"
-            :disabled="!activatedRef"
-            v-tooltip="tipHotkey(playingComputed ? tt.pause() : tt.play(), 'playPauseAudio')"
-            ref="playPauseButton"
-          />
-          <Button
-            icon="mdi mdi-chevron-double-right"
-            severity="secondary"
-            variant="text"
-            :disabled="!activatedRef"
-            @click="audioEngine.seekBy(optimizedStep)"
-            v-tooltip="tipHotkey(t.hotkey.commands.seekForward(), 'seekForward')"
-          />
-        </div>
+        <Button
+          :icon="`mdi ${loading ? 'mdi-refresh' : 'mdi-folder-music-outline'}`"
+          :disabled="loading"
+          severity="secondary"
+          variant="outlined"
+          class="player-icon-btn"
+          @click="() => handleSelectFile()"
+          v-tooltip="tipHotkey(tt.chooseAudioFile(), 'chooseMedia')"
+        />
+        <Button
+          :icon="`mdi ${playingComputed ? 'mdi-pause' : 'mdi-play'}`"
+          class="player-play"
+          @click="audioEngine.togglePlay()"
+          :disabled="!activatedRef"
+          v-tooltip="tipHotkey(playingComputed ? tt.pause() : tt.play(), 'playPauseAudio')"
+          ref="playPauseButton"
+        />
         <ProgressTime />
         <div class="player-spacer"></div>
         <div class="player-control">
@@ -57,30 +48,21 @@
             :disabled="!showSpectrogram"
           />
         </div>
-        <div class="player-tools">
-          <Button
-            :icon="`mdi ${loading ? 'mdi-refresh' : 'mdi-folder-music-outline'}`"
-            :disabled="loading"
-            severity="secondary"
-            variant="text"
-            @click="() => handleSelectFile()"
-            v-tooltip="tipHotkey(tt.chooseAudioFile(), 'chooseMedia')"
-          />
-          <Button
-            icon="mdi mdi-chart-box-outline"
-            :severity="showSpectrogram ? 'primary' : 'secondary'"
-            :variant="showSpectrogram ? undefined : 'text'"
-            @click="showSpectrogram = !showSpectrogram"
-            v-tooltip="
-              !compatibilityMap.sharedArrayBuffer
-                ? tt.spectrogramUnavailable()
-                : showSpectrogram
-                  ? tt.hideSpectrogram()
-                  : tt.showSpectrogram()
-            "
-            :disabled="!compatibilityMap.sharedArrayBuffer"
-          />
-        </div>
+        <Button
+          icon="mdi mdi-chart-box-outline"
+          :severity="showSpectrogram ? 'primary' : 'secondary'"
+          :variant="showSpectrogram ? undefined : 'outlined'"
+          class="player-icon-btn"
+          @click="showSpectrogram = !showSpectrogram"
+          v-tooltip="
+            !compatibilityMap.sharedArrayBuffer
+              ? tt.spectrogramUnavailable()
+              : showSpectrogram
+                ? tt.hideSpectrogram()
+                : tt.showSpectrogram()
+          "
+          :disabled="!compatibilityMap.sharedArrayBuffer"
+        />
       </div>
       <div class="player-overview">
         <Waveform :show-view-region="showSpectrogram" />
@@ -207,8 +189,8 @@ function handlePopBtnWheel(e: WheelEvent) {
   )
 }
 
-// Open with the spectrogram showing, like the design, whenever the browser can compute it
-const showSpectrogram = ref(compatibilityMap.sharedArrayBuffer)
+// Closed until asked for; the waveform overview is enough to start with
+const showSpectrogram = ref(false)
 
 const volumePercent = computed({
   get: () => Math.round(volumeRef.value * 100),
@@ -263,10 +245,18 @@ const zoomPercent = computed({
     gap: 1.2rem;
     padding: 0.6rem 1rem;
   }
-  .player-transport {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
+  .player-icon-btn.player-icon-btn {
+    flex-shrink: 0;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 10px;
+    border: 1px solid color-mix(in srgb, var(--p-text-color), transparent 60%);
+    &:not(:disabled):hover {
+      border-color: var(--p-primary-color);
+    }
+    &.p-button-primary {
+      border-color: var(--p-primary-color);
+    }
   }
   .player-play {
     flex-shrink: 0;
@@ -303,11 +293,6 @@ const zoomPercent = computed({
     --p-slider-track-background: var(--p-content-border-color);
     --p-slider-handle-width: 0.8rem;
     --p-slider-handle-height: 0.8rem;
-  }
-  .player-tools {
-    display: flex;
-    align-items: center;
-    gap: 0.2rem;
   }
   .player-overview {
     display: flex;

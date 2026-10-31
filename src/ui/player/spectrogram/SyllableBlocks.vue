@@ -14,7 +14,11 @@
         v-for="entry in lineEntries"
         :key="entry.id"
         class="syl-line"
-        :class="{ 'touching-start': entry.touchingStart, 'touching-end': entry.touchingEnd }"
+        :class="{
+          'touching-start': entry.touchingStart,
+          'touching-end': entry.touchingEnd,
+          'bg-vocal': entry.line.background,
+        }"
         :style="{ left: `${entry.left}px`, width: `${entry.width}px` }"
         role="button"
         tabindex="0"
@@ -42,7 +46,7 @@
           <div
             v-else-if="part.kind === 'word'"
             class="syl-word"
-            :class="{ selected: part.selected }"
+            :class="{ selected: part.selected, 'bg-vocal': entry.line.background }"
             :style="{ left: `${part.left}px`, width: `${part.width}px` }"
             role="button"
             tabindex="0"

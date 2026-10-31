@@ -36,14 +36,6 @@
       @mouseenter="handleMouseEnter"
       @mouseleave="handleMouseLeave"
     >
-      <div class="spectrogram-ruler-clickable" @mousedown="handleRulerMouseDown">
-        <Ruler
-          :zoom="ctx.zoom.value"
-          :scrollLeft="ctx.scrollLeft.value"
-          :duration="audioEngine.lengthComputed.value / 1000"
-          :width="containerWidth"
-        />
-      </div>
       <div
         class="spectrogram-container"
         ref="containerEl"
@@ -70,6 +62,15 @@
           :title="tt.emptyTip.title()"
           :tip="tt.emptyTip.detail()"
           compact
+        />
+      </div>
+      <div class="spectrogram-ruler-clickable" @mousedown="handleRulerMouseDown">
+        <Ruler
+          :zoom="ctx.zoom.value"
+          :scrollLeft="ctx.scrollLeft.value"
+          :duration="audioEngine.lengthComputed.value / 1000"
+          :width="containerWidth"
+          flip
         />
       </div>
     </div>
