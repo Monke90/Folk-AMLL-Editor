@@ -6,6 +6,7 @@
         :label="tt.open()"
         :icon="`mdi ${openWorking ? 'mdi-refresh' : 'mdi-folder-outline'}`"
         severity="secondary"
+        size="large"
         :model="openMenuItems"
         @click="handleOpenClick"
         v-tooltip="tipHotkey(tt.openTip(), 'open')"
@@ -19,6 +20,7 @@
       <Button
         icon="mdi mdi-cog"
         variant="text"
+        size="large"
         v-tooltip="tipHotkey(tt.preferences(), 'preferences')"
         :severity="
           runtimeStore.openedSidebars.includes(SidebarKey.Preference) ? undefined : 'secondary'
@@ -28,6 +30,7 @@
       <Button
         icon="mdi mdi-undo"
         variant="text"
+        size="large"
         severity="secondary"
         @click="editHistory.undo()"
         :disabled="!editHistory.undoable.value"
@@ -36,6 +39,7 @@
       <Button
         icon="mdi mdi-redo"
         variant="text"
+        size="large"
         severity="secondary"
         @click="editHistory.redo()"
         :disabled="!editHistory.redoable.value"
@@ -66,6 +70,7 @@
       <SplitButton
         :label="tt.save()"
         :icon="`mdi ${saveWorking ? 'mdi-refresh' : 'mdi-content-save-outline'}`"
+        size="large"
         :model="saveMenuItems"
         @click="handleSaveClick"
         v-tooltip="tipHotkey(tt.saveTip(), 'save')"

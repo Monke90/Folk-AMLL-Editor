@@ -14,9 +14,9 @@ const runtimeStore = useRuntimeStore()
 
 // Middle view selector
 const viewOptions = [
-  { name: tt.content(), value: View.Content },
-  { name: tt.timing(), value: View.Timing },
-  { name: tt.preview(), value: View.Preview },
+  { name: tt.content(), value: View.Content, icon: 'mdi-format-align-left' },
+  { name: tt.timing(), value: View.Timing, icon: 'mdi-clock-outline' },
+  { name: tt.preview(), value: View.Preview, icon: 'mdi-eye-outline' },
 ]
 
 const stateToView = () => viewOptions.find((v) => v.value === runtimeStore.currentView)!
@@ -39,12 +39,23 @@ watch(
     optionDisabled="disabled"
     size="large"
     class="view-switcher"
-  />
+  >
+    <template #option="{ option }">
+      <i :class="['mdi', option.icon, 'view-switcher-icon']" aria-hidden="true"></i>
+      <span>{{ option.name }}</span>
+    </template>
+  </SelectButton>
 </template>
 
 <style lang="scss">
 .view-switcher.view-switcher {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  .p-togglebutton-content {
+    gap: 0.45rem;
+  }
+  .view-switcher-icon {
+    font-size: 1.15em;
+  }
 }
 </style>

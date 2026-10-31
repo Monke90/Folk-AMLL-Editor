@@ -1,35 +1,6 @@
 <template>
   <div class="audio-popover-pane">
     <span class="audio-popover-label">
-      <i class="mdi mdi-volume-high audio-popover-icon"></i>{{ tt.volume() }}</span
-    >
-    <Slider class="audio-popover-slider" :max="100" :min="0" v-model="volumeInputRef" />
-    <InputGroup>
-      <InputNumber
-        class="monospace audio-popover-input"
-        fluid
-        :min="0"
-        :max="100"
-        suffix="%"
-        size="small"
-        placeholder="100%"
-        v-model="volumeInputRef"
-      />
-      <InputGroupAddon class="audio-popover-addon">
-        <Button
-          class="audio-popover-reset"
-          icon="mdi mdi-refresh"
-          severity="secondary"
-          variant="text"
-          size="small"
-          fluid
-          @click="volumeInputRef = 100"
-          v-tooltip="tt.resetTo('100%')"
-        />
-      </InputGroupAddon>
-    </InputGroup>
-
-    <span class="audio-popover-label">
       <i class="mdi mdi-speedometer audio-popover-icon"></i>{{ tt.rate() }}</span
     >
     <Slider
@@ -80,12 +51,11 @@ import { useRuntimeStore } from '@states/stores'
 
 import { Button, InputGroup, InputGroupAddon, InputNumber, Slider } from 'primevue'
 
-const { volumeRef, playbackRateRef } = audioEngine
+const { playbackRateRef } = audioEngine
 const runtimeStore = useRuntimeStore()
 
 const tt = t.player
 
-const volumeInputRef = ref<number | undefined>(Math.round(volumeRef.value * 100))
 const rateInputRef = ref<number | undefined>(parseFloat(playbackRateRef.value.toFixed(2)))
 
 const MAXRATE = 2
@@ -103,14 +73,6 @@ const rateToSlider = (r: number) => {
   if (r < 1) return -DOMAIN * ((1 - r) / (1 - MINRATE)) ** (1 / SMOOTH)
   return 0
 }
-
-watch(volumeRef, (value) => {
-  volumeInputRef.value = Math.round(value * 100)
-})
-watch(volumeInputRef, (value) => {
-  if (value === undefined) volumeInputRef.value = 100
-  else volumeRef.value = Math.min(Math.max(value / 100, 0), 1)
-})
 
 watch(playbackRateRef, (value) => {
   rateInputRef.value = parseFloat(value.toFixed(2))
