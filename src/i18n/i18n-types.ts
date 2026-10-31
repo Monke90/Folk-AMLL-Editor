@@ -450,6 +450,96 @@ type RootTranslation = {
 			 */
 			batchTimeShiftDesc: string
 		}
+		romanize: {
+			/**
+			 * 音译
+			 */
+			groupLabel: string
+			/**
+			 * 音译语言
+			 */
+			language: string
+			/**
+			 * 所选歌词的语言。大多数歌曲可使用自动检测。
+			 */
+			languageDesc: string
+			/**
+			 * 自动检测
+			 */
+			autoDetect: string
+			/**
+			 * 日语（罗马字）
+			 */
+			ja: string
+			/**
+			 * 中文（拼音）
+			 */
+			zh: string
+			/**
+			 * 粤语（粤拼）
+			 */
+			yue: string
+			/**
+			 * 韩语（罗马字）
+			 */
+			ko: string
+			/**
+			 * 音译
+			 */
+			romanize: string
+			/**
+			 * 为所选行或音节填入音译。优先使用 Genius，其次是 Google 和内置转换器。
+			 */
+			romanizeDesc: string
+			/**
+			 * 启用
+			 */
+			enabled: string
+			/**
+			 * 在每个音节下方显示其音译。
+			 */
+			enabledDesc: string
+			/**
+			 * 关于音译
+			 */
+			aboutTitle: string
+			/**
+			 * 优先在 Genius 查找（需要在导入歌词中填入 Genius 令牌，并在元数据中填写歌名）。若没有逐行匹配的页面，则使用 Google 音译，再使用内置转换器。
+			 */
+			aboutHow: string
+			/**
+			 * ✓ 可以：日语罗马字、普通话拼音、粤语粤拼和韩语罗马字，包括汉字。Genius 页面还涵盖其他文字。
+			 */
+			aboutCanDo: string
+			/**
+			 * ✗ 不能：保证生僻汉字或人名正确。备用方案仅支持中日韩文字，可能有少量错误。
+			 */
+			aboutCannotDo: string
+			/**
+			 * 请先选择行或音节
+			 */
+			noSelection: string
+			/**
+			 * 已填入音译
+			 */
+			done: string
+			/**
+			 * 所选内容无需音译
+			 */
+			nothingToRomanize: string
+			/**
+			 * 音译失败
+			 */
+			failed: string
+			/**
+			 * Genius
+			 */
+			sourceGenius: string
+			/**
+			 * 备用
+			 */
+			sourceFallback: string
+		}
 		view: {
 			/**
 			 * 视​图
@@ -3112,6 +3202,96 @@ export type TranslationFunctions = {
 			 * 打开批量时移对话框，调整多个音节或行的时间戳。
 			 */
 			batchTimeShiftDesc: () => LocalizedString
+		}
+		romanize: {
+			/**
+			 * 音译
+			 */
+			groupLabel: () => LocalizedString
+			/**
+			 * 音译语言
+			 */
+			language: () => LocalizedString
+			/**
+			 * 所选歌词的语言。大多数歌曲可使用自动检测。
+			 */
+			languageDesc: () => LocalizedString
+			/**
+			 * 自动检测
+			 */
+			autoDetect: () => LocalizedString
+			/**
+			 * 日语（罗马字）
+			 */
+			ja: () => LocalizedString
+			/**
+			 * 中文（拼音）
+			 */
+			zh: () => LocalizedString
+			/**
+			 * 粤语（粤拼）
+			 */
+			yue: () => LocalizedString
+			/**
+			 * 韩语（罗马字）
+			 */
+			ko: () => LocalizedString
+			/**
+			 * 音译
+			 */
+			romanize: () => LocalizedString
+			/**
+			 * 为所选行或音节填入音译。优先使用 Genius，其次是 Google 和内置转换器。
+			 */
+			romanizeDesc: () => LocalizedString
+			/**
+			 * 启用
+			 */
+			enabled: () => LocalizedString
+			/**
+			 * 在每个音节下方显示其音译。
+			 */
+			enabledDesc: () => LocalizedString
+			/**
+			 * 关于音译
+			 */
+			aboutTitle: () => LocalizedString
+			/**
+			 * 优先在 Genius 查找（需要在导入歌词中填入 Genius 令牌，并在元数据中填写歌名）。若没有逐行匹配的页面，则使用 Google 音译，再使用内置转换器。
+			 */
+			aboutHow: () => LocalizedString
+			/**
+			 * ✓ 可以：日语罗马字、普通话拼音、粤语粤拼和韩语罗马字，包括汉字。Genius 页面还涵盖其他文字。
+			 */
+			aboutCanDo: () => LocalizedString
+			/**
+			 * ✗ 不能：保证生僻汉字或人名正确。备用方案仅支持中日韩文字，可能有少量错误。
+			 */
+			aboutCannotDo: () => LocalizedString
+			/**
+			 * 请先选择行或音节
+			 */
+			noSelection: () => LocalizedString
+			/**
+			 * 已填入音译
+			 */
+			done: () => LocalizedString
+			/**
+			 * 所选内容无需音译
+			 */
+			nothingToRomanize: () => LocalizedString
+			/**
+			 * 音译失败
+			 */
+			failed: () => LocalizedString
+			/**
+			 * Genius
+			 */
+			sourceGenius: () => LocalizedString
+			/**
+			 * 备用
+			 */
+			sourceFallback: () => LocalizedString
 		}
 		view: {
 			/**

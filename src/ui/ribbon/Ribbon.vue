@@ -7,6 +7,7 @@
         <SylAttrGroup />
         <TimeShiftGroup />
         <MarkGroup />
+        <RomanizeGroup v-if="runtimeStore.isContentView" />
         <ViewGroup />
         <!-- <PerformanceGroup /> -->
       </template>
@@ -17,14 +18,19 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
+import { useRuntimeStore } from '@states/stores'
+
 import ContentProcessGroup from './groups/ContentGroup.vue'
 import LineAttrGroup from './groups/LineAttrGroup.vue'
 import MarkGroup from './groups/MarkGroup.vue'
+import RomanizeGroup from './groups/RomanizeGroup.vue'
 import SylAttrGroup from './groups/SyllableAttrGroup.vue'
 // import PerformanceGroup from './groups/PerformanceGroup.vue'
 import TimeShiftGroup from './groups/TimeShiftGroup.vue'
 import ViewGroup from './groups/ViewGroup.vue'
 import { Card } from 'primevue'
+
+const runtimeStore = useRuntimeStore()
 
 function handleWheel(e: WheelEvent) {
   if (!ribbonEl.value) return
