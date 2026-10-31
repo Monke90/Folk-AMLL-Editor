@@ -5,15 +5,34 @@
  * sure about singing buried in a loud mix. When it cannot be loaded (offline, blocked, no
  * WebAssembly) callers fall back to {@link detectVocals}, the signal-processing estimate.
  */
-import type * as Ort from 'onnxruntime-web'
-
 import { type VocalMap, detectVocals } from './vocalDetect'
 
 export type VocalModel = 'estimate' | 'neural'
 
+// The ONNX runtime is loaded from a CDN the first time it is needed instead of being an npm
+// dependency, so it adds nothing to the bundle or the lockfile.
 const ORT_VERSION = '1.22.0'
-/** The runtime's WebAssembly files are fetched from here, as they are not part of the bundle */
-const ORT_WASM_PATH = `https://cdn.jsdelivr.net/npm/onnxruntime-web@${ORT_VERSION}/dist/`
+const ORT_BASE = `https://cdn.jsdelivr.net/npm/onnxruntime-web@${ORT_VERSION}/dist/`
+const ORT_MODULE = `${ORT_BASE}ort.min.mjs`
+
+// Just the parts of the runtime used here
+interface Ort {
+  env: { wasm: { wasmPaths: string; numThreads: number } }
+  Tensor: new (
+    type: 'float32' | 'int64',
+    data: Float32Array | BigInt64Array,
+    dims: number[],
+  ) => Tensor
+  InferenceSession: {
+    create(url: string, options: { executionProviders: string[] }): Promise<Session>
+  }
+}
+interface Tensor {
+  data: Float32Array | BigInt64Array
+}
+interface Session {
+  run(feeds: Record<string, Tensor>): Promise<Record<string, Tensor>>
+}
 const MODEL_URL = `${import.meta.env.BASE_URL}models/silero_vad.onnx`
 
 const SAMPLE_RATE = 16000
@@ -24,12 +43,12 @@ const HOP_MS = (CHUNK / SAMPLE_RATE) * 1000
 const FRAMES_PER_SLICE = 150
 
 const cache = new WeakMap<AudioBuffer, Promise<VocalMap>>()
-let sessionJob: Promise<{ ort: typeof Ort; session: Ort.InferenceSession }> | null = null
+let sessionJob: Promise<{ ort: Ort; session: Session }> | null = null
 
 function getSession() {
   sessionJob ??= (async () => {
-    const ort = await import('onnxruntime-web')
-    ort.env.wasm.wasmPaths = ORT_WASM_PATH
+    const ort = (await import(/* @vite-ignore */ ORT_MODULE)) as Ort
+    ort.env.wasm.wasmPaths = ORT_BASE
     ort.env.wasm.numThreads = 1
     const session = await ort.InferenceSession.create(MODEL_URL, {
       executionProviders: ['wasm'],
@@ -78,7 +97,7 @@ async function analyze(buffer: AudioBuffer): Promise<VocalMap> {
       sr: sampleRate,
     })
     probs[f] = (result.output!.data as Float32Array)[0]!
-    state = result.stateN as Ort.Tensor
+    state = result.stateN!
 
     if (f % FRAMES_PER_SLICE === FRAMES_PER_SLICE - 1) {
       await new Promise<void>((resolve) => setTimeout(resolve, 0))
