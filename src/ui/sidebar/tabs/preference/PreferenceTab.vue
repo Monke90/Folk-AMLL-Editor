@@ -56,6 +56,10 @@ const specStyleOptns = [
   { label: 'Bars', value: 'bars' },
   { label: 'Spectrogram', value: 'spectrogram' },
 ]
+const vocalModelOptns = [
+  { label: 'Estimate (fast)', value: 'estimate' },
+  { label: 'Neural (Silero)', value: 'neural' },
+]
 const specColorOptns = [
   { label: 'Amber', value: 'amber' },
   { label: 'Icy Blue', value: 'icyBlue' },
@@ -195,6 +199,19 @@ function selectAccent(accent: ThemeAccent) {
         pref-key="spectrogramDetectVocals"
         :disabled="prefStore.spectrogramStyle !== 'bars'"
       />
+      <PrefItem
+        :label="tt.items.spectrogramVocalModel()"
+        :desc="tt.items.spectrogramVocalModelDesc()"
+        :disabled="prefStore.spectrogramStyle !== 'bars' || !prefStore.spectrogramDetectVocals"
+      >
+        <Select
+          v-model="prefStore.spectrogramVocalModel"
+          :options="vocalModelOptns"
+          optionLabel="label"
+          optionValue="value"
+          :disabled="prefStore.spectrogramStyle !== 'bars' || !prefStore.spectrogramDetectVocals"
+        />
+      </PrefItem>
       <PrefItem :label="tt.items.spectrogramColor()" :desc="tt.items.spectrogramColorDesc()">
         <Select v-model="selectedSpecColorOptn" :options="specColorOptns" optionLabel="label" />
       </PrefItem>

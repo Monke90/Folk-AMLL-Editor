@@ -343,6 +343,8 @@ const zhHans = {
         spectrogramStyle: '显示样式',
         spectrogramStyleDesc: '条形图显示响度，频谱图显示频率',
         spectrogramDetectVocals: '突出人声',
+        spectrogramVocalModel: '人声检测方式',
+        spectrogramVocalModelDesc: '估算法速度快且可离线使用；神经网络使用 Silero 模型（首次需联网），加载失败时自动回退到估算法',
         spectrogramDetectVocalsDesc: '仅条形图样式：听起来像人声的部分保持彩色，其余变灰（估算结果）',
       },
     },

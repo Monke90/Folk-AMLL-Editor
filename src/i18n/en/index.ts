@@ -352,6 +352,8 @@ const en = {
         spectrogramStyle: 'Display style',
         spectrogramStyleDesc: 'Bars follow the loudness; Spectrogram shows frequencies',
         spectrogramDetectVocals: 'Highlight vocals',
+        spectrogramVocalModel: 'Vocal detection method',
+        spectrogramVocalModelDesc: 'Estimate is quick and works offline; Neural uses the Silero model (needs a connection the first time) and falls back to the estimate if it cannot load',
         spectrogramDetectVocalsDesc: 'Bars style only: parts that sound like a voice stay colored, the rest turn gray (an estimate)',
         spectrogramShowSyllableBlocks: 'Show syllable blocks',
         spectrogramShowSyllableBlocksDesc: 'Overlay adjustable syllable timing blocks on the spectrogram',

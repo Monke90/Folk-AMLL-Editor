@@ -15,6 +15,10 @@ for certain proprietary audio container formats.
 
 The files `src/lib/ncm/wasm/ncmdump.js` and `src/lib/ncm/wasm/ncmdump.wasm` are directly built from the `ncmdump-web` repository. Minor modifications were made only to integrate with this project's build process and to remove or rename sensitive identifiers for clarity.
 
+- **Silero VAD** (`public/models/silero_vad.onnx`)  
+  Source: [https://github.com/snakers4/silero-vad](https://github.com/snakers4/silero-vad)  
+  License: MIT License
+
 ### Purpose and Scope
 
 This project does **NOT** provide, promote, or enable circumvention of any Digital Rights Management (DRM) or other access control mechanisms. The included components are used solely to enable interoperability and playback of media files supplied by end users.
