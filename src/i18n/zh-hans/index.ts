@@ -348,6 +348,8 @@ const zhHans = {
     playOptions: '播放选项',
     playOptionsWheel: '使用鼠标滚轮调整音量',
     volume: '音量',
+    speed: '速度',
+    zoom: '缩放',
     rate: '速率',
     resetTo: '重置到 {0}',
     play: '播放',

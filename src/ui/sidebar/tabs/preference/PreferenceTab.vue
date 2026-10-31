@@ -53,6 +53,7 @@ watch(selectedLanguageItem, (val) => {
 })
 
 const specColorOptns = [
+  { label: 'Amber', value: 'amber' },
   { label: 'Icy Blue', value: 'icyBlue' },
   { label: 'Inferno', value: 'inferno' },
   { label: 'Cubehelix', value: 'cubehelix' },

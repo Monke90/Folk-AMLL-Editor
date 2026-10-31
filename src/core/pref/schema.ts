@@ -64,7 +64,7 @@ export const getDefaultPref = (): PreferenceSchema => ({
   sylRomanEnabled: false,
   swapTranslateRoman: false,
   hideTranslateRoman: false,
-  spectrogramColor: 'icyBlue',
+  spectrogramColor: 'amber',
   spectrogramShowSyllableBlocks: false,
   spectrogramBlockScope: 'all',
   themeMode: 'system',

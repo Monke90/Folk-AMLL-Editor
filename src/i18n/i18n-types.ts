@@ -1106,6 +1106,14 @@ type RootTranslation = {
 		 */
 		volume: string
 		/**
+		 * 速度
+		 */
+		speed: string
+		/**
+		 * 缩放
+		 */
+		zoom: string
+		/**
 		 * 速​率
 		 */
 		rate: string
@@ -3735,6 +3743,14 @@ export type TranslationFunctions = {
 		 * 音量
 		 */
 		volume: () => LocalizedString
+		/**
+		 * 速度
+		 */
+		speed: () => LocalizedString
+		/**
+		 * 缩放
+		 */
+		zoom: () => LocalizedString
 		/**
 		 * 速率
 		 */
