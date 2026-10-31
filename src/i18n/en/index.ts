@@ -361,6 +361,8 @@ const en = {
     playOptions: 'Playback options',
     playOptionsWheel: 'Use mouse wheel to adjust volume',
     volume: 'Volume',
+    speed: 'Speed',
+    zoom: 'Zoom',
     rate: 'Rate',
     resetTo: 'Reset to {0}',
     play: 'Play',

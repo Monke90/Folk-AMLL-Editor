@@ -199,3 +199,49 @@
   // must sit on the page background too or those bars show up as darker strips.
   background: var(--global-background);
 }
+
+// ---- Spectrogram band: bars on top, a row of syllable chips underneath ----
+.spectrogram-view {
+  margin: 0 1rem 0.8rem;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--global-background);
+}
+.spectrogram-playhead {
+  box-shadow:
+    var(--p-primary-color) 0 0 0 1px,
+    color-mix(in srgb, var(--p-primary-color), transparent 75%) 0 0 0 2px;
+}
+// Chips sit in their own strip along the bottom of the band instead of covering it
+.syl-blocks-layer.syl-blocks-layer {
+  top: auto;
+  bottom: 6px;
+  height: 40px !important;
+}
+.syl-line {
+  background-color: transparent;
+  border-color: transparent;
+}
+.syl-word.syl-word {
+  justify-content: center;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 8px;
+  border-color: var(--p-content-border-color);
+  background-color: var(--p-surface-800);
+  color: var(--p-text-color);
+  &.selected {
+    background-color: color-mix(in srgb, var(--p-primary-color), transparent 80%);
+    border-color: var(--p-primary-color);
+    color: var(--p-primary-color);
+  }
+  &:hover,
+  &:focus-visible {
+    border-color: var(--p-primary-color);
+  }
+}
+.syl-word-roman.syl-word-roman {
+  font-size: 10px;
+  line-height: 1.1;
+}

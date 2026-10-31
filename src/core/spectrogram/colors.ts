@@ -10,6 +10,7 @@ import {
  */
 
 export type SpectrogramColor =
+  | 'amber'
   | 'icyBlue'
   | 'inferno'
   | 'cubehelix'
@@ -30,8 +31,18 @@ function invertColorFn(fn: (t: number) => [r: number, g: number, b: number]) {
   return (t: number): [r: number, g: number, b: number] => fn(1 - t)
 }
 
+const AMBER_STOPS: ColorStop[] = [
+  { id: 'amber-0', pos: 0, color: '#0f1218' },
+  { id: 'amber-1', pos: 0.3, color: '#3a2f2a' },
+  { id: 'amber-2', pos: 0.55, color: '#8a5a35' },
+  { id: 'amber-3', pos: 0.8, color: '#e0884a' },
+  { id: 'amber-4', pos: 1, color: '#ffd9a8' },
+]
+
 export function parseSpectrogramColor(input: SpectrogramColor): Uint8Array {
   switch (input) {
+    case 'amber':
+      return generateLutFromStops(AMBER_STOPS)
     case 'icyBlue':
       return generatePalette(getIcyBlueColor)
     case 'inferno':
