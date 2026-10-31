@@ -7,7 +7,6 @@
             icon="mdi mdi-chevron-double-left"
             severity="secondary"
             variant="text"
-            rounded
             :disabled="!activatedRef"
             @click="audioEngine.seekBy(-optimizedStep)"
             v-tooltip="tipHotkey(t.hotkey.commands.seekBackward(), 'seekBackward')"
@@ -15,7 +14,6 @@
           <Button
             :icon="`mdi ${playingComputed ? 'mdi-pause' : 'mdi-play'}`"
             class="player-play"
-            rounded
             @click="audioEngine.togglePlay()"
             :disabled="!activatedRef"
             v-tooltip="tipHotkey(playingComputed ? tt.pause() : tt.play(), 'playPauseAudio')"
@@ -25,16 +23,12 @@
             icon="mdi mdi-chevron-double-right"
             severity="secondary"
             variant="text"
-            rounded
             :disabled="!activatedRef"
             @click="audioEngine.seekBy(optimizedStep)"
             v-tooltip="tipHotkey(t.hotkey.commands.seekForward(), 'seekForward')"
           />
         </div>
-        <div class="player-time monospace">
-          <span class="player-time-now">{{ ms2str(amendedProgressComputed) }}</span>
-          <span class="player-time-total"> / {{ ms2str(lengthComputed) }}</span>
-        </div>
+        <ProgressTime />
         <div class="player-spacer"></div>
         <div class="player-control">
           <span class="player-control-label">{{ tt.speed() }}</span>
@@ -117,24 +111,17 @@ import {
 
 import { usePrefStore } from '@states/stores'
 
-import { ms2str } from '@utils/formatTime'
 import { tipHotkey, tipMultiLine } from '@utils/generateTooltip'
 
 import PopoverPane from './Popover.vue'
+import ProgressTime from './ProgressTime.vue'
 import Waveform from './Waveform.vue'
 import Spectrogram from './spectrogram/Spectrogram.vue'
 import { Button, Card, Popover, Slider, useToast } from 'primevue'
 
 const tt = t.player
 
-const {
-  playingComputed,
-  activatedRef,
-  amendedProgressComputed,
-  lengthComputed,
-  playbackRateRef,
-  volumeRef,
-} = audioEngine
+const { playingComputed, activatedRef, lengthComputed, playbackRateRef, volumeRef } = audioEngine
 const playPauseButton = useTemplateRef('playPauseButton')
 
 const toast = useToast()
@@ -285,19 +272,6 @@ const zoomPercent = computed({
     flex-shrink: 0;
     width: 2.6rem;
     height: 2.6rem;
-  }
-  .player-time {
-    display: flex;
-    align-items: baseline;
-    white-space: pre;
-    font-size: 1.05rem;
-  }
-  .player-time-now {
-    color: var(--p-primary-color);
-    font-weight: 500;
-  }
-  .player-time-total {
-    color: var(--p-text-muted-color);
   }
   .player-spacer {
     flex: 1;

@@ -120,46 +120,73 @@ function handleResizeStart(e: MouseEvent) {
     padding: 0.3rem 0.5rem 0 1rem;
   }
   &.multiple {
-    --p-tabs-tab-padding: 0.4rem 0.4rem 0.4rem 0.9rem;
+    --p-tabs-tab-padding: 0 0.35rem 0 0.8rem;
     --p-tabs-active-bar-height: 0px;
     --p-tabs-tablist-border-width: 0;
     --p-tabs-tablist-border-color: transparent;
     --p-tabs-tablist-background: transparent;
     --p-tabs-tab-background: transparent;
-    --p-button-sm-icon-only-width: 1.3rem;
+    --p-button-sm-icon-only-width: 1.4rem;
     --p-button-sm-font-size: 0.8rem;
     display: flex;
     align-items: center;
-    padding: 0 0.5rem;
+    padding: 0 0.6rem;
+    .p-tabs,
+    .p-tablist,
+    .p-tablist-content,
+    .p-tablist-tab-list {
+      background: transparent;
+      border: none;
+      min-width: 0;
+    }
+    .p-tabs {
+      flex: 1;
+      min-width: 0;
+    }
+    .p-tablist-content {
+      overflow-x: auto;
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
     .p-tablist-active-bar {
       display: none;
     }
     .p-tablist-tab-list {
-      gap: 0.3rem;
-      background: transparent;
-      border: none;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0;
     }
     .p-tab {
+      flex-shrink: 0;
+      height: 2.1rem;
+      box-sizing: border-box;
       padding: 0;
+      display: flex;
+      align-items: center;
       // Tabs are <button>s, which don't inherit the page font by themselves. Without this the
       // labels fall back to the browser's default button font once two tabs are open.
       font-family: inherit;
       font-size: inherit;
       line-height: inherit;
+      white-space: nowrap;
       animation: sidebar-tab-in 0.25s var(--global-ease);
-      border: 1px solid transparent;
+      border: 1px solid var(--p-content-border-color);
       border-radius: 10px;
-      background: transparent;
+      background: var(--p-content-background);
       color: var(--p-text-muted-color);
       transition:
         background 0.15s,
         border-color 0.15s,
         color 0.15s;
       &:hover {
-        background: color-mix(in srgb, var(--p-text-color), transparent 92%);
+        border-color: color-mix(in srgb, var(--p-primary-color), transparent 55%);
+        color: var(--p-text-color);
       }
       &-active {
-        background: var(--p-content-background);
+        background: color-mix(in srgb, var(--p-primary-color), transparent 88%);
         border-color: var(--p-primary-color);
         color: var(--p-primary-color);
       }
@@ -179,6 +206,7 @@ function handleResizeStart(e: MouseEvent) {
       display: flex;
       align-items: center;
       gap: 0.3rem;
+      height: 100%;
     }
   }
 }

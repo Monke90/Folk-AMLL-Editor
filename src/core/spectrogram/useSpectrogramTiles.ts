@@ -20,9 +20,11 @@ export interface VisibleTile {
 interface UseSpectrogramTilesOptions {
   ctx: SpectrogramContext
   audioBuffer: Ref<AudioBuffer | null>
+  /** Turn off to stop requesting tiles (e.g. while the bar view is showing) */
+  enabled?: Ref<boolean>
 }
 
-export function useSpectrogramTiles({ ctx, audioBuffer }: UseSpectrogramTilesOptions) {
+export function useSpectrogramTiles({ ctx, audioBuffer, enabled }: UseSpectrogramTilesOptions) {
   const { requestTileIfNeeded, tileCache, lastTileTimestamp } = useSpectrogramWorker(
     audioBuffer,
     ctx.palette,
@@ -31,6 +33,10 @@ export function useSpectrogramTiles({ ctx, audioBuffer }: UseSpectrogramTilesOpt
   const visibleTiles = shallowRef<VisibleTile[]>([])
 
   const updateVisibleTiles = () => {
+    if (enabled && !enabled.value) {
+      if (visibleTiles.value.length) visibleTiles.value = []
+      return
+    }
     const duration = ctx.duration.value
     if (duration === 0 || ctx.containerWidth.value === 0) return
 
@@ -97,6 +103,7 @@ export function useSpectrogramTiles({ ctx, audioBuffer }: UseSpectrogramTilesOpt
       ctx.renderHeight,
       lastTileTimestamp,
       audioBuffer,
+      ...(enabled ? [enabled] : []),
     ],
     () => {
       updateVisibleTiles()

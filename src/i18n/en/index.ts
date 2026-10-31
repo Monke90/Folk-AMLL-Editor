@@ -349,6 +349,8 @@ const en = {
         spectrogramHeightDesc: 'Height of the spectrogram (pixels)',
         spectrogramColor: 'Color scheme',
         spectrogramColorDesc: 'Choose a preset or custom gradient',
+        spectrogramStyle: 'Display style',
+        spectrogramStyleDesc: 'Bars follow the loudness; Spectrogram shows frequencies',
         spectrogramShowSyllableBlocks: 'Show syllable blocks',
         spectrogramShowSyllableBlocksDesc: 'Overlay adjustable syllable timing blocks on the spectrogram',
         spellCheckEnabled: 'Spell check',

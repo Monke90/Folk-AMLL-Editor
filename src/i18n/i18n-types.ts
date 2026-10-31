@@ -1069,6 +1069,14 @@ type RootTranslation = {
 				 * 选​择​预​设​色​彩​方​案​或​自​定​义​渐​变
 				 */
 				spectrogramColorDesc: string
+				/**
+				 * 显示样式
+				 */
+				spectrogramStyle: string
+				/**
+				 * 条形图显示响度，频谱图显示频率
+				 */
+				spectrogramStyleDesc: string
 
 
         
@@ -3707,6 +3715,14 @@ export type TranslationFunctions = {
 				 * 选择预设色彩方案或自定义渐变
 				 */
 				spectrogramColorDesc: () => LocalizedString
+				/**
+				 * 显示样式
+				 */
+				spectrogramStyle: () => LocalizedString
+				/**
+				 * 条形图显示响度，频谱图显示频率
+				 */
+				spectrogramStyleDesc: () => LocalizedString
 
 
 
