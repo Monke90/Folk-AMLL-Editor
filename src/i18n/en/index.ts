@@ -351,6 +351,8 @@ const en = {
         spectrogramColorDesc: 'Choose a preset or custom gradient',
         spectrogramStyle: 'Display style',
         spectrogramStyleDesc: 'Bars follow the loudness; Spectrogram shows frequencies',
+        spectrogramDetectVocals: 'Highlight vocals',
+        spectrogramDetectVocalsDesc: 'Bars style only: parts that sound like a voice stay colored, the rest turn gray (an estimate)',
         spectrogramShowSyllableBlocks: 'Show syllable blocks',
         spectrogramShowSyllableBlocksDesc: 'Overlay adjustable syllable timing blocks on the spectrogram',
         spellCheckEnabled: 'Spell check',

@@ -1,26 +1,31 @@
 <template>
   <Card class="player">
     <template #content>
+      <KeepAlive>
+        <Spectrogram v-if="showSpectrogram" class="spectrogram-view" />
+      </KeepAlive>
       <div class="player-toolbar">
-        <Button
-          :icon="`mdi ${loading ? 'mdi-refresh' : 'mdi-folder-music-outline'}`"
-          :disabled="loading"
-          severity="secondary"
-          variant="outlined"
-          class="player-icon-btn"
-          @click="() => handleSelectFile()"
-          v-tooltip="tipHotkey(tt.chooseAudioFile(), 'chooseMedia')"
-        />
-        <Button
-          :icon="`mdi ${playingComputed ? 'mdi-pause' : 'mdi-play'}`"
-          class="player-play"
-          @click="audioEngine.togglePlay()"
-          :disabled="!activatedRef"
-          v-tooltip="tipHotkey(playingComputed ? tt.pause() : tt.play(), 'playPauseAudio')"
-          ref="playPauseButton"
-        />
-        <ProgressTime />
-        <div class="player-spacer"></div>
+        <div class="player-lead">
+          <Button
+            :icon="`mdi ${loading ? 'mdi-refresh' : 'mdi-folder-music-outline'}`"
+            :disabled="loading"
+            severity="secondary"
+            variant="outlined"
+            class="player-icon-btn"
+            @click="() => handleSelectFile()"
+            v-tooltip="tipHotkey(tt.chooseAudioFile(), 'chooseMedia')"
+          />
+          <Button
+            :icon="`mdi ${playingComputed ? 'mdi-pause' : 'mdi-play'}`"
+            class="player-play"
+            @click="audioEngine.togglePlay()"
+            :disabled="!activatedRef"
+            v-tooltip="tipHotkey(playingComputed ? tt.pause() : tt.play(), 'playPauseAudio')"
+            ref="playPauseButton"
+          />
+          <ProgressTime />
+        </div>
+        <Waveform class="player-waveform" :show-view-region="showSpectrogram" />
         <div class="player-control">
           <span class="player-control-label">{{ tt.speed() }}</span>
           <button
@@ -64,12 +69,6 @@
           :disabled="!compatibilityMap.sharedArrayBuffer"
         />
       </div>
-      <div class="player-overview">
-        <Waveform :show-view-region="showSpectrogram" />
-      </div>
-      <KeepAlive>
-        <Spectrogram v-if="showSpectrogram" class="spectrogram-view" />
-      </KeepAlive>
     </template>
   </Card>
 </template>
@@ -242,7 +241,7 @@ const zoomPercent = computed({
   .player-toolbar {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1rem;
     padding: 0.6rem 1rem;
   }
   .player-icon-btn.player-icon-btn {
@@ -260,11 +259,15 @@ const zoomPercent = computed({
   }
   .player-play {
     flex-shrink: 0;
-    width: 2.6rem;
-    height: 2.6rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 10px;
   }
-  .player-spacer {
-    flex: 1;
+  .player-lead {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-shrink: 0;
   }
   .player-control {
     display: flex;
@@ -294,15 +297,16 @@ const zoomPercent = computed({
     --p-slider-handle-width: 0.8rem;
     --p-slider-handle-height: 0.8rem;
   }
-  .player-overview {
-    display: flex;
-    height: 2.2rem;
-    margin: 0 1rem 0.5rem;
-  }
+  // The overview shares the toolbar row with the controls, drawn as amber bars
   .waveform {
+    height: 2.4rem;
+    min-width: 8rem;
     border: 1px solid var(--p-content-border-color);
     border-radius: 10px;
     background: var(--global-background);
+  }
+  .wavesurfer-container::part(canvases) {
+    opacity: 0.85;
   }
 }
 </style>

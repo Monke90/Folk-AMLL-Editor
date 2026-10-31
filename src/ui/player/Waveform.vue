@@ -138,6 +138,9 @@ const createWs = () => {
     progressColor: primaryColor.value,
     cursorWidth: 0,
     barHeight: 0.8,
+    barWidth: 3,
+    barGap: 2,
+    barRadius: 2,
     interact: false,
   })
 }

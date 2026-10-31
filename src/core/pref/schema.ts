@@ -31,6 +31,7 @@ export interface PreferenceSchema {
   // Spectrogram
   spectrogramColor: SpectrogramColor
   spectrogramStyle: 'bars' | 'spectrogram'
+  spectrogramDetectVocals: boolean
   spectrogramShowSyllableBlocks: boolean
   spectrogramBlockScope: 'selected' | 'all'
   // Theme
@@ -67,6 +68,7 @@ export const getDefaultPref = (): PreferenceSchema => ({
   hideTranslateRoman: false,
   spectrogramColor: 'amber',
   spectrogramStyle: 'bars',
+  spectrogramDetectVocals: true,
   spectrogramShowSyllableBlocks: false,
   spectrogramBlockScope: 'all',
   themeMode: 'system',

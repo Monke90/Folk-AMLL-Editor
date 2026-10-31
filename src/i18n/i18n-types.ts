@@ -1077,6 +1077,14 @@ type RootTranslation = {
 				 * 条形图显示响度，频谱图显示频率
 				 */
 				spectrogramStyleDesc: string
+				/**
+				 * 突出人声
+				 */
+				spectrogramDetectVocals: string
+				/**
+				 * 仅条形图样式：听起来像人声的部分保持彩色，其余变灰（估算结果）
+				 */
+				spectrogramDetectVocalsDesc: string
 
 
         
@@ -3723,6 +3731,14 @@ export type TranslationFunctions = {
 				 * 条形图显示响度，频谱图显示频率
 				 */
 				spectrogramStyleDesc: () => LocalizedString
+				/**
+				 * 突出人声
+				 */
+				spectrogramDetectVocals: () => LocalizedString
+				/**
+				 * 仅条形图样式：听起来像人声的部分保持彩色，其余变灰（估算结果）
+				 */
+				spectrogramDetectVocalsDesc: () => LocalizedString
 
 
 
