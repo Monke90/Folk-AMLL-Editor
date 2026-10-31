@@ -8,7 +8,8 @@ import { nextTick, onMounted, onUnmounted, shallowRef, useTemplateRef, watch } f
 
 import { audioEngine } from '@core/audio'
 import { useSpectrogramContext } from '@core/spectrogram/SpectrogramContext'
-import { type VocalMap, detectVocals, vocalScoreBetween } from '@core/spectrogram/vocalDetect'
+import { type VocalMap, vocalScoreBetween } from '@core/spectrogram/vocalDetect'
+import { detectVocalsWith } from '@core/spectrogram/vocalNeural'
 import { useEffectiveDark } from '@core/theme'
 
 import { usePrefStore } from '@states/stores'
@@ -58,12 +59,18 @@ function getEnvelope(buffer: AudioBuffer) {
 // Which parts sound like a voice. Computed in the background; bars are all colored until it lands
 const vocals = shallowRef<VocalMap | null>(null)
 watch(
-  [() => audioEngine.audioBuffer, () => prefStore.spectrogramDetectVocals],
-  async ([buffer, enabled]) => {
+  [
+    () => audioEngine.audioBuffer,
+    () => prefStore.spectrogramDetectVocals,
+    () => prefStore.spectrogramVocalModel,
+  ],
+  async ([buffer, enabled, model]) => {
     vocals.value = null
     if (!buffer || !enabled) return
-    const result = await detectVocals(buffer)
-    if (audioEngine.audioBuffer === buffer) vocals.value = result
+    const result = await detectVocalsWith(buffer, model)
+    if (audioEngine.audioBuffer === buffer && prefStore.spectrogramVocalModel === model) {
+      vocals.value = result
+    }
   },
   { immediate: true },
 )

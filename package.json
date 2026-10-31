@@ -43,6 +43,7 @@
     "lodash-es": "^4.17.23",
     "mitt": "^3.0.1",
     "nanoid": "^5.1.7",
+    "onnxruntime-web": "1.22.0",
     "pinia": "^3.0.4",
     "primeicons": "^7.0.0",
     "primevue": "^4.5.4",
