@@ -29,7 +29,7 @@
           <div
             v-if="part.kind === 'divider'"
             class="syl-divider"
-            :class="{ touching: part.touching }"
+            :class="{ touching: part.touching, 'at-start': part.segmentIndex === -1 }"
             :style="{ left: `${part.left}px`, width: `${DIVIDER_WIDTH_PX}px` }"
             role="separator"
             tabindex="0"

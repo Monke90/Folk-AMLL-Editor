@@ -342,6 +342,8 @@ const zhHans = {
         spectrogramColorDesc: '选择预设色彩方案或自定义渐变',
         spectrogramStyle: '显示样式',
         spectrogramStyleDesc: '条形图显示响度，频谱图显示频率',
+        spectrogramDetectVocals: '突出人声',
+        spectrogramDetectVocalsDesc: '仅条形图样式：听起来像人声的部分保持彩色，其余变灰（估算结果）',
       },
     },
   },

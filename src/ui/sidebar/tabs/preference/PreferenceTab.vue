@@ -144,7 +144,10 @@ function selectAccent(accent: ThemeAccent) {
             v-for="optn in themeAccentOptns"
             :key="optn.accent"
             class="theme-accent-swatch"
-            :class="[`theme-swatch-${optn.accent}`, { selected: prefStore.themeAccent === optn.accent }]"
+            :class="[
+              `theme-swatch-${optn.accent}`,
+              { selected: prefStore.themeAccent === optn.accent },
+            ]"
             :title="optn.label"
             @click="selectAccent(optn.accent)"
           ></div>
@@ -188,6 +191,10 @@ function selectAccent(accent: ThemeAccent) {
           optionValue="value"
         />
       </PrefItem>
+      <PrefSwitchItem
+        pref-key="spectrogramDetectVocals"
+        :disabled="prefStore.spectrogramStyle !== 'bars'"
+      />
       <PrefItem :label="tt.items.spectrogramColor()" :desc="tt.items.spectrogramColorDesc()">
         <Select v-model="selectedSpecColorOptn" :options="specColorOptns" optionLabel="label" />
       </PrefItem>

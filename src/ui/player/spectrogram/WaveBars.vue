@@ -4,10 +4,11 @@
 
 <script setup lang="ts">
 import { useElementSize } from '@vueuse/core'
-import { nextTick, onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
+import { nextTick, onMounted, onUnmounted, shallowRef, useTemplateRef, watch } from 'vue'
 
 import { audioEngine } from '@core/audio'
 import { useSpectrogramContext } from '@core/spectrogram/SpectrogramContext'
+import { type VocalMap, detectVocals, vocalScoreBetween } from '@core/spectrogram/vocalDetect'
 import { useEffectiveDark } from '@core/theme'
 
 import { usePrefStore } from '@states/stores'
@@ -54,6 +55,19 @@ function getEnvelope(buffer: AudioBuffer) {
   return envelope
 }
 
+// Which parts sound like a voice. Computed in the background; bars are all colored until it lands
+const vocals = shallowRef<VocalMap | null>(null)
+watch(
+  [() => audioEngine.audioBuffer, () => prefStore.spectrogramDetectVocals],
+  async ([buffer, enabled]) => {
+    vocals.value = null
+    if (!buffer || !enabled) return
+    const result = await detectVocals(buffer)
+    if (audioEngine.audioBuffer === buffer) vocals.value = result
+  },
+  { immediate: true },
+)
+
 type Rgb = [number, number, number]
 function readColor(el: HTMLElement, cssColor: string): Rgb {
   el.style.color = cssColor
@@ -61,8 +75,12 @@ function readColor(el: HTMLElement, cssColor: string): Rgb {
   if (!match) return [245, 166, 91]
   return [Number(match[0]), Number(match[1]), Number(match[2])]
 }
-const mix = (a: Rgb, b: Rgb, t: number) =>
-  `rgb(${a.map((v, i) => Math.round(v * t + b[i]! * (1 - t))).join(',')})`
+const mixRgb = (a: Rgb, b: Rgb, t: number): Rgb => [
+  Math.round(a[0] * t + b[0] * (1 - t)),
+  Math.round(a[1] * t + b[1] * (1 - t)),
+  Math.round(a[2] * t + b[2] * (1 - t)),
+]
+const css = (c: Rgb) => `rgb(${c[0]},${c[1]},${c[2]})`
 
 let frame = 0
 function scheduleDraw() {
@@ -87,9 +105,11 @@ function draw() {
 
   const accent = readColor(canvas, 'var(--p-primary-color)')
   const ground = readColor(canvas, 'var(--global-background)')
-  const high = mix(accent, ground, 1)
-  const mid = mix(accent, ground, 0.55)
-  const low = mix(accent, ground, 0.22)
+  const muted = readColor(canvas, 'var(--p-text-muted-color)')
+  // Loud bars are the most saturated, quiet ones fade toward the background
+  const shade = (base: Rgb, level: number) =>
+    mixRgb(base, ground, level > 0.7 ? 1 : level > 0.45 ? 0.55 : 0.22)
+  const voices = vocals.value
 
   const { peaks, max } = getEnvelope(buffer)
   const zoom = ctx.zoom.value
@@ -110,7 +130,9 @@ function draw() {
     for (let i = from; i < to; i++) if (peaks[i]! > peak) peak = peaks[i]!
     const level = Math.min(1, Math.sqrt(peak / max) * gain)
     const h = Math.max(2, level * baseline * 0.96)
-    g.fillStyle = level > 0.7 ? high : level > 0.45 ? mid : low
+    // Voice-like bars keep the accent; everything else is pulled toward gray
+    const voice = voices ? vocalScoreBetween(voices, k * barSec, (k + 1) * barSec) : 1
+    g.fillStyle = css(mixRgb(shade(accent, level), shade(muted, level * 0.8), voice))
     g.fillRect(k * BAR_PX - scroll, baseline - h, BAR_PX - GAP_PX, h)
   }
 }
@@ -126,6 +148,7 @@ watch(
     height,
     () => audioEngine.audioBuffer,
     () => prefStore.themeAccent,
+    vocals,
     isDark,
   ],
   scheduleDraw,

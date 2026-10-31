@@ -1,5 +1,5 @@
 <template>
-  <div class="spectrogram-toolkit">
+  <div class="spectrogram-toolkit" :class="{ 'bars-mode': barsMode }">
     <div class="spectrogram-resize-handle" v-bind="resizeHandleProps"></div>
     <div class="spectrogram-slider">
       <div class="spectrogram-block-toolbar">
