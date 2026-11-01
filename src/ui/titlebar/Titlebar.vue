@@ -1,7 +1,13 @@
 <template>
   <header class="titlebar" :data-tauri-drag-region="isDesktopApp || undefined">
     <div class="leftbar" :data-tauri-drag-region="isDesktopApp || undefined">
-      <div class="brand-mark" aria-hidden="true">F</div>
+      <img
+        class="brand-mark"
+        :src="isDark ? '/favicons/favicon-light.svg' : '/favicons/favicon-dark.svg'"
+        alt=""
+        draggable="false"
+        aria-hidden="true"
+      />
       <SplitButton
         :label="tt.open()"
         :icon="`mdi ${openWorking ? 'mdi-refresh' : 'mdi-folder-outline'}`"
@@ -98,6 +104,7 @@ import { nextTick, ref, useTemplateRef } from 'vue'
 import { compatibilityMap } from '@core/compat'
 import { fileState as FS } from '@core/file'
 import { useGlobalKeyboard } from '@core/hotkey'
+import { useEffectiveDark } from '@core/theme'
 
 import { editHistory } from '@states/services/history'
 import { useRuntimeStore } from '@states/stores'
@@ -126,6 +133,8 @@ const {
 const { isDirty } = editHistory
 
 const runtimeStore = useRuntimeStore()
+// The light icon sits on the dark theme and the dark icon on the light theme
+const isDark = useEffectiveDark()
 
 // Double-click the file name to rename the project
 const renaming = ref(false)
