@@ -223,12 +223,6 @@ type RootTranslation = {
 			 */
 			endTime: string
 		}
-		preview: {
-			/**
-			 * 重​载​ ​A​M​L​L
-			 */
-			reloadAmll: string
-		}
 	}
 	titlebar: {
 		/**
@@ -916,6 +910,7 @@ type RootTranslation = {
 				 * 频​谱
 				 */
 				spectrogram: string
+				preview: string
 				/**
 				 * 兼​容​性
 				 */
@@ -1235,6 +1230,23 @@ type RootTranslation = {
         
 
         spellCheckEnabledDesc: string
+        spicySimpleLyrics: string
+        spicySimpleLyricsDesc: string
+        spicyForceLineSynced: string
+        spicyForceLineSyncedDesc: string
+        spicyJoinSplitWords: string
+        spicyJoinSplitWordsDesc: string
+        spicyShowTranslation: string
+        spicyShowTranslationDesc: string
+        spicyShowRomanization: string
+        spicyShowRomanizationDesc: string
+        spicyBackground: string
+        spicyBackgroundDesc: string
+        spicyShowFps: string
+        spicyShowFpsDesc: string
+        spicyBackgroundAnimated: string
+        spicyBackgroundColor: string
+        spicyBackgroundNone: string
 			}
 		}
 	}
@@ -3013,12 +3025,6 @@ export type TranslationFunctions = {
 			 */
 			endTime: () => LocalizedString
 		}
-		preview: {
-			/**
-			 * 重载 AMLL
-			 */
-			reloadAmll: () => LocalizedString
-		}
 	}
 	titlebar: {
 		/**
@@ -3705,6 +3711,7 @@ export type TranslationFunctions = {
 				 * 频谱
 				 */
 				spectrogram: () => LocalizedString
+				preview: () => LocalizedString
 				/**
 				 * 兼容性
 				 */
@@ -4023,6 +4030,23 @@ export type TranslationFunctions = {
 
 
         spellCheckEnabledDesc: () => LocalizedString
+        spicySimpleLyrics: () => LocalizedString
+        spicySimpleLyricsDesc: () => LocalizedString
+        spicyForceLineSynced: () => LocalizedString
+        spicyForceLineSyncedDesc: () => LocalizedString
+        spicyJoinSplitWords: () => LocalizedString
+        spicyJoinSplitWordsDesc: () => LocalizedString
+        spicyShowTranslation: () => LocalizedString
+        spicyShowTranslationDesc: () => LocalizedString
+        spicyShowRomanization: () => LocalizedString
+        spicyShowRomanizationDesc: () => LocalizedString
+        spicyBackground: () => LocalizedString
+        spicyBackgroundDesc: () => LocalizedString
+        spicyShowFps: () => LocalizedString
+        spicyShowFpsDesc: () => LocalizedString
+        spicyBackgroundAnimated: () => LocalizedString
+        spicyBackgroundColor: () => LocalizedString
+        spicyBackgroundNone: () => LocalizedString
 			}
 		}
 	}
