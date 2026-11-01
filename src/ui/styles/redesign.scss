@@ -94,18 +94,18 @@
     align-items: center;
   }
   // One control height for the whole row, so buttons, switcher and logo line up
-  --tb-h: 2.2rem;
-  padding: 0.4rem 0.9rem;
+  --tb-h: 2.5rem;
+  padding: 0.5rem 1rem;
   .leftbar,
   .rightbar {
     .p-button {
       height: var(--tb-h);
       min-height: 0;
       padding-block: 0;
-      font-size: 0.95rem;
+      font-size: 1.02rem;
     }
     .p-button-icon {
-      font-size: 1.15rem;
+      font-size: 1.3rem;
     }
     .p-button-icon-only {
       width: var(--tb-h);
@@ -119,10 +119,10 @@
   .view-switcher .p-togglebutton {
     height: calc(var(--tb-h) - 8px);
     padding-block: 0;
-    font-size: 0.95rem;
+    font-size: 1.02rem;
   }
   .save-state-section {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
   }
   // Main button and its arrow stay joined, with only a hairline between them
   .p-splitbutton {
@@ -134,7 +134,7 @@
     .p-splitbutton-dropdown.p-button {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
-      width: 2rem;
+      width: 2.2rem;
     }
   }
   .brand-mark {
@@ -142,7 +142,7 @@
     height: var(--tb-h);
     margin-right: 0.2rem;
     border-radius: 10px;
-    font-size: 1rem;
+    font-size: 1.15rem;
     background: var(--p-primary-color);
     color: var(--p-primary-contrast-color);
     display: flex;
@@ -152,7 +152,7 @@
     flex-shrink: 0;
   }
   .filename-section .filename-text .name {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     font-weight: 500;
   }
   .filename-section .filename-text .asterisk {
