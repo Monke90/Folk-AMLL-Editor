@@ -117,7 +117,7 @@
     gap: 0.4rem;
   }
   .view-switcher .p-togglebutton {
-    height: calc(var(--tb-h) - 8px);
+    height: calc(var(--tb-h) - 5px);
     padding-block: 0;
     font-size: 1.02rem;
   }
@@ -141,15 +141,11 @@
     width: var(--tb-h);
     height: var(--tb-h);
     margin-right: 0.2rem;
-    border-radius: 10px;
-    font-size: 1.15rem;
-    background: var(--p-primary-color);
-    color: var(--p-primary-contrast-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
+    padding: 0.25rem;
+    box-sizing: border-box;
+    object-fit: contain;
     flex-shrink: 0;
+    user-select: none;
   }
   .filename-section .filename-text .name {
     font-size: 1.05rem;
