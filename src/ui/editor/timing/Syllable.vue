@@ -138,6 +138,10 @@ function handleTextDbClick() {
   }
   &.active {
     background-color: color-mix(in srgb, var(--p-primary-color), transparent 82%);
+    .tsyl-timestamp {
+      color: var(--p-primary-color);
+      opacity: 1;
+    }
     .tsyl-content {
       color: var(--p-primary-color);
       border-color: var(--p-primary-color);
@@ -145,13 +149,23 @@ function handleTextDbClick() {
     }
   }
 }
-.tsyl-timestamp {
-  opacity: 0.8;
+.tsyl-timestamp.tsyl-timestamp {
+  // Plain small monospace times, no tinted background
+  --timestamp-bg-color: transparent;
+  --p-inputtext-background: transparent;
+  color: var(--p-text-muted-color);
+  opacity: 0.85;
   .timestamp-caption,
   .timestamp-input {
-    width: 8.5ch;
-    font-size: 0.78rem;
+    width: 9ch;
+    padding-block: 0.1rem;
+    font-family: var(--font-monospace);
+    font-size: 0.68rem;
+    letter-spacing: 0.01em;
     text-align: center;
+  }
+  .timestamp-input {
+    border: 1px solid var(--p-content-border-color);
   }
 }
 .tsyl-content {

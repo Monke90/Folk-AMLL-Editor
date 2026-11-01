@@ -6,7 +6,6 @@
         :label="tt.open()"
         :icon="`mdi ${openWorking ? 'mdi-refresh' : 'mdi-folder-outline'}`"
         severity="secondary"
-        size="large"
         :model="openMenuItems"
         @click="handleOpenClick"
         v-tooltip="tipHotkey(tt.openTip(), 'open')"
@@ -20,7 +19,6 @@
       <Button
         icon="mdi mdi-cog"
         variant="text"
-        size="large"
         v-tooltip="tipHotkey(tt.preferences(), 'preferences')"
         :severity="
           runtimeStore.openedSidebars.includes(SidebarKey.Preference) ? undefined : 'secondary'
@@ -30,7 +28,6 @@
       <Button
         icon="mdi mdi-undo"
         variant="text"
-        size="large"
         severity="secondary"
         @click="editHistory.undo()"
         :disabled="!editHistory.undoable.value"
@@ -39,14 +36,24 @@
       <Button
         icon="mdi mdi-redo"
         variant="text"
-        size="large"
         severity="secondary"
         @click="editHistory.redo()"
         :disabled="!editHistory.redoable.value"
         v-tooltip="tipHotkey(tt.redo(), 'redo')"
       />
       <div class="filename-section" :data-tauri-drag-region="isDesktopApp || undefined">
-        <div class="filename-text">
+        <input
+          v-if="renaming"
+          ref="renameInput"
+          class="filename-input"
+          v-model="renameDraft"
+          :aria-label="tt.rename()"
+          spellcheck="false"
+          @keydown.enter.prevent="commitRename"
+          @keydown.esc.prevent="renaming = false"
+          @blur="commitRename"
+        />
+        <div v-else class="filename-text" @dblclick="startRename" v-tooltip="tt.renameTip()">
           <span class="name">{{ filename }}</span
           ><span class="asterisk" v-if="isDirty">*</span>
         </div>
@@ -70,7 +77,6 @@
       <SplitButton
         :label="tt.save()"
         :icon="`mdi ${saveWorking ? 'mdi-refresh' : 'mdi-content-save-outline'}`"
-        size="large"
         :model="saveMenuItems"
         @click="handleSaveClick"
         v-tooltip="tipHotkey(tt.saveTip(), 'save')"
@@ -87,7 +93,7 @@
 
 <script setup lang="ts">
 import { t } from '@i18n'
-import { ref } from 'vue'
+import { nextTick, ref, useTemplateRef } from 'vue'
 
 import { compatibilityMap } from '@core/compat'
 import { fileState as FS } from '@core/file'
@@ -120,6 +126,24 @@ const {
 const { isDirty } = editHistory
 
 const runtimeStore = useRuntimeStore()
+
+// Double-click the file name to rename the project
+const renaming = ref(false)
+const renameDraft = ref('')
+const renameInput = useTemplateRef('renameInput')
+function startRename() {
+  renameDraft.value = filename.value.replace(/\.(ttml|alp)$/i, '')
+  renaming.value = true
+  nextTick(() => {
+    renameInput.value?.focus()
+    renameInput.value?.select()
+  })
+}
+function commitRename() {
+  if (!renaming.value) return
+  renaming.value = false
+  if (renameDraft.value.trim()) FS.renameFile(renameDraft.value)
+}
 
 const openWorking = ref(false)
 const saveWorking = ref(false)
@@ -176,7 +200,19 @@ useGlobalKeyboard('importFromClipboard', handleImportFromClipboard)
     overflow-x: hidden;
     position: relative;
     mask-image: linear-gradient(to left, transparent, black 1.5rem);
+    .filename-input {
+      all: unset;
+      box-sizing: border-box;
+      width: 100%;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid var(--p-primary-color);
+      border-radius: 8px;
+      background: var(--p-content-background);
+      color: var(--p-text-color);
+      font-size: 1rem;
+    }
     .filename-text {
+      cursor: text;
       line-height: 1;
       .name {
         font-size: 1.1rem;

@@ -12,6 +12,16 @@
     <div class="tline-head">
       <div class="tline-head-btns">
         <Button
+          v-if="lineComments.length"
+          severity="info"
+          variant="text"
+          size="small"
+          icon="mdi mdi-comment-text-outline"
+          class="active"
+          @click.stop="openComments"
+          v-tooltip="commentTip"
+        />
+        <Button
           :severity="props.line.bookmarked ? 'warn' : 'secondary'"
           variant="text"
           size="small"
@@ -86,6 +96,7 @@
 import { t } from '@i18n'
 import { computed } from 'vue'
 
+import { commentsOfLine } from '@core/comments'
 import type { LyricLine } from '@core/types'
 
 import { usePrefStore, useRuntimeStore } from '@states/stores'
@@ -110,6 +121,15 @@ const props = defineProps<{
 
 const prefStore = usePrefStore()
 const runtimeStore = useRuntimeStore()
+
+const lineComments = computed(() => commentsOfLine(props.line))
+const commentTip = computed(() =>
+  tipMultiLine(...lineComments.value.map((c) => (c.target ? `${c.target}: ${c.text}` : c.text))),
+)
+function openComments() {
+  runtimeStore.selectLine(props.line)
+  runtimeStore.dialogShown.comment = true
+}
 
 function handleMouseDown() {
   forceOutsideBlur()

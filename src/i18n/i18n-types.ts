@@ -273,6 +273,14 @@ type RootTranslation = {
 		 * 保​存​文​件
 		 */
 		saveTip: string
+		/**
+		 * 文件名
+		 */
+		rename: string
+		/**
+		 * 双击重命名。下次保存时会询问保存位置。
+		 */
+		renameTip: string
 		saveMenu: {
 			/**
 			 * 另​存​为
@@ -583,6 +591,34 @@ type RootTranslation = {
 			 * 添​加​批​注
 			 */
 			addComment: string
+			/**
+			 * 为所选行或音节添加备注。备注会保存在项目和 TTML 文件中，并在对应行显示备注图标。
+			 */
+			commentDesc: string
+			/**
+			 * 备注
+			 */
+			dialogHeader: string
+			/**
+			 * 所选行的备注
+			 */
+			commentOnLines: string
+			/**
+			 * 所选音节的备注
+			 */
+			commentOnSyllables: string
+			/**
+			 * 输入备注…
+			 */
+			commentPlaceholder: string
+			/**
+			 * 保存
+			 */
+			commentSave: string
+			/**
+			 * 移除
+			 */
+			commentRemove: string
 			/**
 			 * 移​除​全​部
 			 */
@@ -3027,6 +3063,14 @@ export type TranslationFunctions = {
 		 * 保存文件
 		 */
 		saveTip: () => LocalizedString
+		/**
+		 * 文件名
+		 */
+		rename: () => LocalizedString
+		/**
+		 * 双击重命名。下次保存时会询问保存位置。
+		 */
+		renameTip: () => LocalizedString
 		saveMenu: {
 			/**
 			 * 另存为
@@ -3336,6 +3380,34 @@ export type TranslationFunctions = {
 			 * 添加批注
 			 */
 			addComment: () => LocalizedString
+			/**
+			 * 为所选行或音节添加备注。备注会保存在项目和 TTML 文件中，并在对应行显示备注图标。
+			 */
+			commentDesc: () => LocalizedString
+			/**
+			 * 备注
+			 */
+			dialogHeader: () => LocalizedString
+			/**
+			 * 所选行的备注
+			 */
+			commentOnLines: () => LocalizedString
+			/**
+			 * 所选音节的备注
+			 */
+			commentOnSyllables: () => LocalizedString
+			/**
+			 * 输入备注…
+			 */
+			commentPlaceholder: () => LocalizedString
+			/**
+			 * 保存
+			 */
+			commentSave: () => LocalizedString
+			/**
+			 * 移除
+			 */
+			commentRemove: () => LocalizedString
 			/**
 			 * 移除全部
 			 */

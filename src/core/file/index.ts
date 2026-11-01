@@ -235,6 +235,26 @@ async function saveFile() {
   return filename
 }
 
+/**
+ * Gives the project a new name. The file on disk keeps its old name, so the link to it is
+ * dropped: the next save asks where to put the file, with the new name already filled in.
+ * @returns Whether the name was accepted
+ */
+function renameFile(newName: string) {
+  const base = newName
+    .replace(/[\\/:*?"<>|]/g, '')
+    .replace(/\.(ttml|alp)$/i, '')
+    .trim()
+  if (!base) return false
+  const ext = displayFilenameRef.value.match(/\.(ttml|alp)$/i)?.[0] ?? ''
+  displayFilenameRef.value = `${base}${ext}`
+  if (currHandle) {
+    currHandle = null
+    readonlyRef.value = false
+  }
+  return true
+}
+
 function suggestName() {
   const [displayName] = breakExtension(displayFilenameRef.value)
   if (!displayName.startsWith(tt.untitled())) return displayName
@@ -400,6 +420,7 @@ export const fileState = {
   importPersist,
   createBlankProject,
   suggestName,
+  renameFile,
   init,
   createdAtComputed: readonly(createdAtRef),
   displayFilenameComputed: readonly(displayFilenameRef),

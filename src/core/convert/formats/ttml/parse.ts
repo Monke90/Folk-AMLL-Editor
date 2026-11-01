@@ -217,6 +217,8 @@ export function parseTTML(ttmlText: string): Persist {
 
     const lBookmarked = lineEl.getAttribute('amll:bookmarked')
     if (lBookmarked) line.bookmarked = lBookmarked === 'true'
+    const lComment = lineEl.getAttribute('amll:comment')
+    if (lComment) line.comment = lComment
     const connectNext = lineEl.getAttribute('amll:connect-next')
     if (connectNext) line.connectNext = connectNext === 'true'
 
@@ -274,6 +276,8 @@ export function parseTTML(ttmlText: string): Persist {
           if (placeholdingBeat) syllable.placeholdingBeat = Number(placeholdingBeat)
           const sBookmarked = sylEl.getAttribute('amll:bookmarked')
           if (sBookmarked) syllable.bookmarked = sBookmarked === 'true'
+          const sComment = sylEl.getAttribute('amll:comment')
+          if (sComment) syllable.comment = sComment
 
           if (availableRomanWords.length > 0) {
             const matchIndex = availableRomanWords.findIndex(

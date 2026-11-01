@@ -15,8 +15,10 @@
       icon="mdi mdi-comment-outline"
       :label="tt.addComment()"
       size="small"
-      disabled
-      severity="secondary"
+      :disabled="actionDisabled"
+      :severity="runtimeStore.dialogShown.comment ? undefined : 'secondary'"
+      @click="runtimeStore.dialogShown.comment = true"
+      v-tooltip="tipDesc(tt.addComment(), tt.commentDesc())"
     />
     <Button
       icon="mdi mdi-eraser"
@@ -67,7 +69,11 @@ const coreStore = useCoreStore()
 function removeAllMarks() {
   coreStore.lyricLines.forEach((line) => {
     line.bookmarked = false
-    line.syllables.forEach((syl) => (syl.bookmarked = false))
+    line.comment = ''
+    line.syllables.forEach((syl) => {
+      syl.bookmarked = false
+      syl.comment = ''
+    })
   })
 }
 </script>

@@ -112,6 +112,8 @@ const en = {
     },
     save: 'Save',
     saveTip: 'Save File',
+    rename: 'File name',
+    renameTip: 'Double-click to rename. The next save asks where to put the file.',
     saveMenu: {
       saveAs: 'Save As...',
       exportToProject: 'Export as project file',
@@ -208,6 +210,13 @@ const en = {
       bookmarkDesc:
         'Add or remove bookmark on the selected line(s) or syllable(s). Bookmarks help mark important sections and are not exported to the lyric file.',
       addComment: 'Comment',
+      commentDesc: 'Add a note to the selected line(s) or syllable(s). Comments are saved in the project and TTML file, and shown with a comment icon on the line.',
+      dialogHeader: 'Comment',
+      commentOnLines: 'Note for the selected line(s)',
+      commentOnSyllables: 'Note for the selected syllable(s)',
+      commentPlaceholder: 'Write a note…',
+      commentSave: 'Save',
+      commentRemove: 'Remove',
       removeAll: 'Remove All',
       removeAllDesc:
         'Remove all bookmarks and comments from the entire document. This action can be undone.',

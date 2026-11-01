@@ -33,10 +33,12 @@ export interface ProjData_0_1 {
       romanization: string
       placeholdingBeat: number
       bookmarked: boolean
+      comment?: string
     }[]
     ignoreInTiming: boolean
     bookmarked: boolean
     connectNext?: boolean
+    comment?: string
   }[]
 }
 
