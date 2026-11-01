@@ -109,6 +109,8 @@ const zhHans = {
     },
     save: '保存',
     saveTip: '保存文件',
+    rename: '文件名',
+    renameTip: '双击重命名。下次保存时会询问保存位置。',
     saveMenu: {
       saveAs: '另存为',
       exportToProject: '导出为项目文件',
@@ -203,6 +205,13 @@ const zhHans = {
       bookmarkDesc:
         '在选定行或音节上添加或移除书签。书签可以用于标记重要的部分，且不会导出到歌词文件中。',
       addComment: '添加批注',
+      commentDesc: '为所选行或音节添加备注。备注会保存在项目和 TTML 文件中，并在对应行显示备注图标。',
+      dialogHeader: '备注',
+      commentOnLines: '所选行的备注',
+      commentOnSyllables: '所选音节的备注',
+      commentPlaceholder: '输入备注…',
+      commentSave: '保存',
+      commentRemove: '移除',
       removeAll: '移除全部',
       removeAllDesc: '移除全文所有行和音节的书签与批注。您可以稍后撤销。',
     },

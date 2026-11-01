@@ -25,6 +25,8 @@ export interface LyricLine {
   ignoreInTiming: boolean
   /** 已添加书签 */
   bookmarked: boolean
+  /** 备注，可选 */
+  comment?: string
   /** 结束时间延长到下一行的开始时间 */
   connectNext: boolean
 }
@@ -46,6 +48,8 @@ export interface LyricSyllable {
   currentplaceholdingBeat: number
   /** 已添加书签 */
   bookmarked: boolean
+  /** 备注，可选 */
+  comment?: string
 }
 
 /** 批注 */

@@ -37,7 +37,6 @@ watch(
     :options="viewOptions"
     optionLabel="name"
     optionDisabled="disabled"
-    size="large"
     class="view-switcher"
   >
     <template #option="{ option }">

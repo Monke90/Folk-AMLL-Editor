@@ -74,6 +74,15 @@
     </div>
     <div class="cline-tools">
       <Button
+        v-if="lineComments.length"
+        class="cline-tag cline-comment active"
+        severity="info"
+        variant="text"
+        icon="mdi mdi-comment-text-outline"
+        @click.stop="openComments"
+        v-tooltip="commentTip"
+      />
+      <Button
         class="cline-tag cline-bookmark"
         :severity="props.line.bookmarked ? 'warn' : 'secondary'"
         variant="text"
@@ -108,6 +117,7 @@
 import { t } from '@i18n'
 import { computed, nextTick, onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
 
+import { commentsOfLine } from '@core/comments'
 import type { LyricLine } from '@core/types'
 
 import { useCoreStore, usePrefStore, useRuntimeStore, useStaticStore } from '@states/stores'
@@ -132,6 +142,15 @@ const prefStore = usePrefStore()
 const coreStore = useCoreStore()
 const staticStore = useStaticStore()
 const isSelected = computed(() => runtimeStore.selectedLines.has(props.line))
+
+const lineComments = computed(() => commentsOfLine(props.line))
+const commentTip = computed(() =>
+  tipMultiLine(...lineComments.value.map((c) => (c.target ? `${c.target}: ${c.text}` : c.text))),
+)
+function openComments() {
+  runtimeStore.selectLine(props.line)
+  runtimeStore.dialogShown.comment = true
+}
 
 const pgmignored = computed(() => prefStore.alwaysIgnoreBackground && props.line.background)
 const mnlignored = computed(() => props.line.ignoreInTiming)
