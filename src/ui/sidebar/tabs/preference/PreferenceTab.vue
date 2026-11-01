@@ -60,6 +60,11 @@ const vocalModelOptns = [
   { label: 'Estimate (fast)', value: 'estimate' },
   { label: 'Neural (Silero)', value: 'neural' },
 ]
+const spicyBackgroundOptns = [
+  { label: tt.items.spicyBackgroundAnimated(), value: 'animated' },
+  { label: tt.items.spicyBackgroundColor(), value: 'color' },
+  { label: tt.items.spicyBackgroundNone(), value: 'none' },
+]
 const specColorOptns = [
   { label: 'Amber', value: 'amber' },
   { label: 'Icy Blue', value: 'icyBlue' },
@@ -215,6 +220,23 @@ function selectAccent(accent: ThemeAccent) {
       <PrefItem :label="tt.items.spectrogramColor()" :desc="tt.items.spectrogramColorDesc()">
         <Select v-model="selectedSpecColorOptn" :options="specColorOptns" optionLabel="label" />
       </PrefItem>
+    </div>
+    <div class="pref-group">
+      <div class="pref-group-title">{{ tt.groups.preview() }}</div>
+      <PrefSwitchItem pref-key="spicySimpleLyrics" />
+      <PrefSwitchItem pref-key="spicyForceLineSynced" />
+      <PrefSwitchItem pref-key="spicyJoinSplitWords" />
+      <PrefSwitchItem pref-key="spicyShowTranslation" />
+      <PrefSwitchItem pref-key="spicyShowRomanization" />
+      <PrefItem :label="tt.items.spicyBackground()" :desc="tt.items.spicyBackgroundDesc()">
+        <Select
+          v-model="prefStore.spicyBackground"
+          :options="spicyBackgroundOptns"
+          optionLabel="label"
+          optionValue="value"
+        />
+      </PrefItem>
+      <PrefSwitchItem pref-key="spicyShowFps" />
     </div>
     <div class="pref-group">
       <div class="pref-group-title">{{ tt.groups.compatibility() }}</div>

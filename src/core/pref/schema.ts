@@ -35,6 +35,14 @@ export interface PreferenceSchema {
   spectrogramVocalModel: 'estimate' | 'neural'
   spectrogramShowSyllableBlocks: boolean
   spectrogramBlockScope: 'selected' | 'all'
+  // Preview (Spicy Lyrics renderer)
+  spicySimpleLyrics: boolean
+  spicyForceLineSynced: boolean
+  spicyJoinSplitWords: boolean
+  spicyShowTranslation: boolean
+  spicyShowRomanization: boolean
+  spicyBackground: 'animated' | 'color' | 'none'
+  spicyShowFps: boolean
   // Theme
   themeMode: 'system' | 'light' | 'dark'
   themeAccent: ThemeAccent
@@ -73,6 +81,13 @@ export const getDefaultPref = (): PreferenceSchema => ({
   spectrogramVocalModel: 'estimate',
   spectrogramShowSyllableBlocks: false,
   spectrogramBlockScope: 'all',
+  spicySimpleLyrics: false,
+  spicyForceLineSynced: false,
+  spicyJoinSplitWords: false,
+  spicyShowTranslation: true,
+  spicyShowRomanization: false,
+  spicyBackground: 'animated',
+  spicyShowFps: false,
   themeMode: 'system',
   themeAccent: 'amber',
   spellCheckEnabled: false,
